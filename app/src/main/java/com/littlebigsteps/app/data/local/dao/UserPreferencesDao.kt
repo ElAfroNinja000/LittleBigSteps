@@ -14,4 +14,8 @@ interface UserPreferencesDao {
 
     @Query("SELECT * FROM user_preferences WHERE id = ${UserPreferencesEntity.SINGLETON_ID}")
     fun observe(): Flow<UserPreferencesEntity?>
+
+    /** Lecture ponctuelle utilisée pour les mises à jour partielles (ex: setPremium). */
+    @Query("SELECT * FROM user_preferences WHERE id = ${UserPreferencesEntity.SINGLETON_ID}")
+    suspend fun getOnce(): UserPreferencesEntity?
 }

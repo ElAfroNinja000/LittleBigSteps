@@ -2,12 +2,44 @@ package com.littlebigsteps.app
 
 import android.app.Application
 import com.littlebigsteps.app.data.local.AppDatabase
+import com.littlebigsteps.app.data.remote.ContentApiService
+import com.littlebigsteps.app.data.remote.NetworkConfig
+import com.littlebigsteps.app.data.repository.ChallengeRepository
+import com.littlebigsteps.app.data.repository.ChallengeRepositoryImpl
+import com.littlebigsteps.app.data.repository.ContentSyncRepository
+import com.littlebigsteps.app.data.repository.ContentSyncRepositoryImpl
+import com.littlebigsteps.app.data.repository.ProgressRepository
+import com.littlebigsteps.app.data.repository.ProgressRepositoryImpl
+import com.littlebigsteps.app.data.repository.UserPreferencesRepository
+import com.littlebigsteps.app.data.repository.UserPreferencesRepositoryImpl
 
 /**
- * Point d'accès manuel (service locator léger) à la base locale. Pas de framework
- * DI au stade squelette — à revisiter (Hilt ?) si la complexité le justifie.
+ * Point d'accès manuel (service locator léger) aux repositories. Pas de
+ * framework DI au stade squelette — à revisiter (Hilt ?) si la complexité le
+ * justifie. Les ViewModels récupèrent ces instances via
+ * `(application as LittleBigStepsApplication)`.
  */
 class LittleBigStepsApplication : Application() {
 
     val database: AppDatabase by lazy { AppDatabase.getInstance(this) }
+
+    private val contentApi: ContentApiService by lazy {
+        NetworkConfig.buildRetrofit().create(ContentApiService::class.java)
+    }
+
+    val userPreferencesRepository: UserPreferencesRepository by lazy {
+        UserPreferencesRepositoryImpl(database.userPreferencesDao())
+    }
+
+    val progressRepository: ProgressRepository by lazy {
+        ProgressRepositoryImpl(database)
+    }
+
+    val challengeRepository: ChallengeRepository by lazy {
+        ChallengeRepositoryImpl(database, progressRepository)
+    }
+
+    val contentSyncRepository: ContentSyncRepository by lazy {
+        ContentSyncRepositoryImpl(contentApi, database)
+    }
 }

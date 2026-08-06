@@ -1,0 +1,17 @@
+package com.littlebigsteps.app.domain
+
+/**
+ * Règles de progression, centralisées pour rester faciles à retoucher
+ * (équilibrage) sans toucher aux repositories. Voir CLAUDE.md §4.
+ */
+object GamificationRules {
+
+    /** XP gagné par défi complété. Volontairement plat pour le MVP : pas de
+     *  barème par niveau de difficulté tant qu'un seul niveau (BEGINNER) existe. */
+    const val XP_PER_COMPLETION = 20
+
+    private const val XP_PER_LEVEL = 100
+
+    /** Niveau 1 à 0 xp, +1 niveau tous les XP_PER_LEVEL xp. */
+    fun levelForXp(xp: Int): Int = (xp / XP_PER_LEVEL) + 1
+}

@@ -116,10 +116,22 @@ Un fichier par médium (ex. `drawing.json`) :
 `MediumProgressEntity` s'incrémente à chaque complétion (xp, count).
 `GlobalProgressEntity` gère le streak transversalement, indépendamment du médium.
 
+### MediumContentVersionEntity — une ligne par médium
+Dernière version de contenu synchronisée, comparée à `manifest.json` pour ne
+retélécharger que ce qui a changé.
+| champ | type |
+|---|---|
+| mediumType | MediumType (PK) |
+| syncedVersion | String |
+
 ## Correspondance code
 
 - Entités Room : `app/src/main/java/com/littlebigsteps/app/data/local/entity/`
 - DAOs : `app/src/main/java/com/littlebigsteps/app/data/local/dao/`
 - Base de données : `app/src/main/java/com/littlebigsteps/app/data/local/AppDatabase.kt`
 - DTOs contenu distant : `app/src/main/java/com/littlebigsteps/app/data/remote/dto/`
+- Service HTTP : `app/src/main/java/com/littlebigsteps/app/data/remote/ContentApiService.kt`
+- Repositories : `app/src/main/java/com/littlebigsteps/app/data/repository/`
+  (`ChallengeRepository`, `ProgressRepository`, `UserPreferencesRepository`, `ContentSyncRepository`)
+- Règles de gamification (XP/niveau) : `app/src/main/java/com/littlebigsteps/app/domain/GamificationRules.kt`
 - Enums domaine : `app/src/main/java/com/littlebigsteps/app/domain/model/`

@@ -17,6 +17,10 @@ interface ChallengeDao {
     @Query("SELECT * FROM challenges WHERE mediumType = :mediumType ORDER BY id")
     fun observeByMedium(mediumType: MediumType): Flow<List<ChallengeEntity>>
 
+    /** Lecture ponctuelle utilisée pour tirer les 2-3 défis proposés à chaque itération. */
+    @Query("SELECT * FROM challenges WHERE mediumType = :mediumType")
+    suspend fun getAllByMedium(mediumType: MediumType): List<ChallengeEntity>
+
     @Query("SELECT * FROM challenges WHERE id = :id")
     suspend fun getById(id: String): ChallengeEntity?
 

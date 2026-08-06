@@ -19,11 +19,8 @@ interface MediumProgressDao {
     @Query("SELECT * FROM medium_progress")
     fun observeAll(): Flow<List<MediumProgressEntity>>
 
-    /** Incrément atomique lors d'une complétion ; le niveau se dérive de xp en couche service. */
-    @Query(
-        "UPDATE medium_progress SET xp = xp + :xpGained, " +
-            "challengesCompletedCount = challengesCompletedCount + 1 " +
-            "WHERE mediumType = :mediumType"
-    )
-    suspend fun addCompletion(mediumType: MediumType, xpGained: Int)
+    /** Lecture ponctuelle : le repository lit, recalcule xp/niveau, puis upsert
+     *  dans une seule transaction (voir ProgressRepositoryImpl.recordCompletion). */
+    @Query("SELECT * FROM medium_progress WHERE mediumType = :mediumType")
+    suspend fun getOnce(mediumType: MediumType): MediumProgressEntity?
 }

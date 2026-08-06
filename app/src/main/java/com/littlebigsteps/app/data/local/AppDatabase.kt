@@ -9,12 +9,14 @@ import com.littlebigsteps.app.data.local.dao.ChallengeDao
 import com.littlebigsteps.app.data.local.dao.CompletedChallengeDao
 import com.littlebigsteps.app.data.local.dao.ContentManifestDao
 import com.littlebigsteps.app.data.local.dao.GlobalProgressDao
+import com.littlebigsteps.app.data.local.dao.MediumContentVersionDao
 import com.littlebigsteps.app.data.local.dao.MediumProgressDao
 import com.littlebigsteps.app.data.local.dao.UserPreferencesDao
 import com.littlebigsteps.app.data.local.entity.ChallengeEntity
 import com.littlebigsteps.app.data.local.entity.CompletedChallengeEntity
 import com.littlebigsteps.app.data.local.entity.ContentManifestEntity
 import com.littlebigsteps.app.data.local.entity.GlobalProgressEntity
+import com.littlebigsteps.app.data.local.entity.MediumContentVersionEntity
 import com.littlebigsteps.app.data.local.entity.MediumProgressEntity
 import com.littlebigsteps.app.data.local.entity.UserPreferencesEntity
 
@@ -31,7 +33,8 @@ import com.littlebigsteps.app.data.local.entity.UserPreferencesEntity
         MediumProgressEntity::class,
         GlobalProgressEntity::class,
         UserPreferencesEntity::class,
-        ContentManifestEntity::class
+        ContentManifestEntity::class,
+        MediumContentVersionEntity::class
     ],
     version = 1,
     exportSchema = true
@@ -45,6 +48,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun globalProgressDao(): GlobalProgressDao
     abstract fun userPreferencesDao(): UserPreferencesDao
     abstract fun contentManifestDao(): ContentManifestDao
+    abstract fun mediumContentVersionDao(): MediumContentVersionDao
 
     companion object {
         private const val DATABASE_NAME = "little_big_steps.db"

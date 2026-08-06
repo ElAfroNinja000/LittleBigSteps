@@ -13,11 +13,15 @@ via JSON statique (voir `/content`). Détails dans CLAUDE.md §10.
 
 ```
 app/src/main/java/com/littlebigsteps/app/
-├── LittleBigStepsApplication.kt
-├── domain/model/       # enums partagés (MediumType, ChallengeLevel, Frequency)
+├── LittleBigStepsApplication.kt   # service locator manuel (pas de framework DI)
+├── domain/
+│   ├── model/            # enums partagés (MediumType, ChallengeLevel, Frequency)
+│   └── GamificationRules.kt  # formule XP/niveau, source unique de vérité
 ├── data/
-│   ├── local/           # Room : entités, DAOs, base, convertisseurs
-│   └── remote/dto/      # DTOs du contenu JSON distant
+│   ├── local/             # Room : entités, DAOs, base, convertisseurs
+│   ├── remote/             # ContentApiService (Retrofit) + DTOs du JSON distant
+│   └── repository/         # ChallengeRepository, ProgressRepository,
+│                            # UserPreferencesRepository, ContentSyncRepository
 └── ui/
     ├── theme/            # thème Compose (Material3)
     └── MainActivity.kt
@@ -25,6 +29,14 @@ app/src/main/java/com/littlebigsteps/app/
 content/                  # exemples de fichiers JSON statiques (manifest + par médium)
 docs/data-model.md         # référence du schéma de données
 ```
+
+## Notes sur la couche repository
+
+- Toutes les écritures multi-tables (compléter un défi, mettre à jour le streak)
+  passent par `AppDatabase.withTransaction` pour rester atomiques.
+- `NetworkConfig.CONTENT_BASE_URL` est un placeholder — à remplacer par l'URL
+  CDN réelle une fois le contenu déployé.
+- Pas encore branché à l'UI : les ViewModels restent à écrire.
 
 ## Ouvrir le projet
 
