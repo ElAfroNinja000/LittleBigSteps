@@ -1,0 +1,14 @@
+{
+  "mediumId": "photo",
+  "challenges": [
+    {
+      "id": "photo_001",
+      "title": "Une ombre intéressante",
+      "description": "Trouve et photographie une ombre qui te plaît, où que tu sois.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["lumière", "quotidien"]
+    }
+  ]
+}

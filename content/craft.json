@@ -1,0 +1,14 @@
+{
+  "mediumId": "craft",
+  "challenges": [
+    {
+      "id": "craft_001",
+      "title": "Origami simple",
+      "description": "Plie une feuille de papier (ou un ticket, une pub) en une forme simple : bateau, grue, avion.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["origami", "recyclage"]
+    }
+  ]
+}

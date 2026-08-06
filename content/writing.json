@@ -1,0 +1,14 @@
+{
+  "mediumId": "writing",
+  "challenges": [
+    {
+      "id": "writing_001",
+      "title": "Six mots",
+      "description": "Écris une micro-histoire complète en exactement six mots.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["micro-fiction"]
+    }
+  ]
+}

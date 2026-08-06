@@ -1,0 +1,9 @@
+{
+  "version": "2026.08.0-example",
+  "mediums": [
+    { "id": "drawing", "file": "drawing.json", "version": "1" },
+    { "id": "photo", "file": "photo.json", "version": "1" },
+    { "id": "writing", "file": "writing.json", "version": "1" },
+    { "id": "craft", "file": "craft.json", "version": "1" }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "mediumId": "drawing",
+  "challenges": [
+    {
+      "id": "drawing_001",
+      "title": "Dessine l'objet le plus proche de toi",
+      "description": "Pose le regard sur l'objet le plus proche, à portée de main, et dessine-le tel quel en 10 minutes.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["nature-morte", "observation"]
+    },
+    {
+      "id": "drawing_002",
+      "title": "Autoportrait de dos",
+      "description": "Dessine-toi de dos, ou de mémoire, sans te regarder dans un miroir.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["portrait"]
+    }
+  ]
+}
