@@ -116,6 +116,10 @@ Un fichier par médium (ex. `drawing.json`) :
 `MediumProgressEntity` s'incrémente à chaque complétion (xp, count).
 `GlobalProgressEntity` gère le streak transversalement, indépendamment du médium.
 
+### PortfolioEntryEntity — projection de requête (pas une table)
+Jointure `completed_challenges` + `challenges` (titre), utilisée par le portfolio.
+`challengeTitle` est `null` si le défi a depuis disparu du catalogue.
+
 ### MediumContentVersionEntity — une ligne par médium
 Dernière version de contenu synchronisée, comparée à `manifest.json` pour ne
 retélécharger que ce qui a changé.

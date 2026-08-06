@@ -4,6 +4,7 @@ import androidx.room.withTransaction
 import com.littlebigsteps.app.data.local.AppDatabase
 import com.littlebigsteps.app.data.local.entity.ChallengeEntity
 import com.littlebigsteps.app.data.local.entity.CompletedChallengeEntity
+import com.littlebigsteps.app.data.local.entity.PortfolioEntryEntity
 import com.littlebigsteps.app.domain.model.MediumType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.Clock
@@ -21,8 +22,9 @@ interface ChallengeRepository {
     /** Tire `count` défis au hasard dans le médium (2-3 par défaut, CLAUDE.md §3). */
     suspend fun pickDailyOptions(mediumType: MediumType, count: Int = 3): List<ChallengeEntity>
 
-    fun observePortfolio(): Flow<List<CompletedChallengeEntity>>
-    fun observePortfolio(mediumType: MediumType): Flow<List<CompletedChallengeEntity>>
+    /** Vue chronologique pour le portfolio, titre du défi inclus (CLAUDE.md §4). */
+    fun observePortfolio(): Flow<List<PortfolioEntryEntity>>
+    fun observePortfolio(mediumType: MediumType): Flow<List<PortfolioEntryEntity>>
 
     /**
      * Marque un défi terminé, enregistre le souvenir optionnel (non vérifié,
@@ -50,10 +52,10 @@ class ChallengeRepositoryImpl(
     override suspend fun pickDailyOptions(mediumType: MediumType, count: Int): List<ChallengeEntity> =
         challengeDao.getAllByMedium(mediumType).shuffled().take(count)
 
-    override fun observePortfolio(): Flow<List<CompletedChallengeEntity>> =
+    override fun observePortfolio(): Flow<List<PortfolioEntryEntity>> =
         completedChallengeDao.observeAll()
 
-    override fun observePortfolio(mediumType: MediumType): Flow<List<CompletedChallengeEntity>> =
+    override fun observePortfolio(mediumType: MediumType): Flow<List<PortfolioEntryEntity>> =
         completedChallengeDao.observeByMedium(mediumType)
 
     override suspend fun completeChallenge(
