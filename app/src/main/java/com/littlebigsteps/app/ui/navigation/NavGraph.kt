@@ -1,16 +1,11 @@
 package com.littlebigsteps.app.ui.navigation
 
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.littlebigsteps.app.ui.challenge.ChallengeSelectionScreen
+import com.littlebigsteps.app.ui.challenge.ChallengeSelectionViewModelFactory
 import com.littlebigsteps.app.ui.onboarding.OnboardingScreen
 import com.littlebigsteps.app.ui.onboarding.OnboardingViewModelFactory
 
@@ -21,11 +16,14 @@ private object Routes {
 
 /**
  * Point d'entrée de la navigation. Démarre toujours sur l'onboarding pour
- * l'instant — à faire dépendre de UserPreferencesRepository une fois l'écran
- * d'accueil (sélection de défi) prêt, pour sauter l'onboarding déjà fait.
+ * l'instant — à faire dépendre de UserPreferencesRepository une fois qu'on
+ * veut sauter l'onboarding déjà fait lors d'un relancement de l'app.
  */
 @Composable
-fun LittleBigStepsNavGraph(onboardingViewModelFactory: OnboardingViewModelFactory) {
+fun LittleBigStepsNavGraph(
+    onboardingViewModelFactory: OnboardingViewModelFactory,
+    challengeSelectionViewModelFactory: ChallengeSelectionViewModelFactory
+) {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = Routes.ONBOARDING) {
@@ -40,18 +38,7 @@ fun LittleBigStepsNavGraph(onboardingViewModelFactory: OnboardingViewModelFactor
             )
         }
         composable(Routes.HOME) {
-            HomePlaceholder()
+            ChallengeSelectionScreen(factory = challengeSelectionViewModelFactory)
         }
-    }
-}
-
-@Composable
-private fun HomePlaceholder(modifier: Modifier = Modifier) {
-    Surface(modifier = modifier.fillMaxSize()) {
-        Text(
-            text = "Onboarding terminé 🌱 — sélection de défi à venir",
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(24.dp)
-        )
     }
 }
