@@ -9,6 +9,87 @@
       "level": "beginner",
       "isPremiumOnly": false,
       "tags": ["lumière", "quotidien"]
+    },
+    {
+      "id": "photo_002",
+      "title": "Un détail ignoré",
+      "description": "Photographie un détail que tu ne remarques jamais d'habitude, dans un endroit familier.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["observation", "détail"]
+    },
+    {
+      "id": "photo_003",
+      "title": "Une texture en gros plan",
+      "description": "Approche-toi le plus possible d'une surface qui t'intrigue et capture sa texture.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["macro", "texture"]
+    },
+    {
+      "id": "photo_004",
+      "title": "Quelque chose de rouge",
+      "description": "Pars à la recherche d'un objet ou d'un élément rouge et photographie-le.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["couleur"]
+    },
+    {
+      "id": "photo_005",
+      "title": "Ton reflet inattendu",
+      "description": "Trouve une surface réfléchissante inhabituelle (vitrine, cuillère, flaque) et photographie ton reflet.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["reflet", "jeu"]
+    },
+    {
+      "id": "photo_006",
+      "title": "Un angle inhabituel",
+      "description": "Choisis un objet du quotidien et photographie-le sous un angle que tu n'utilises jamais.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["perspective"]
+    },
+    {
+      "id": "photo_007",
+      "title": "La lumière du moment",
+      "description": "Photographie la lumière telle qu'elle est là, maintenant, dans la pièce ou dehors.",
+      "estimatedMinutes": 5,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["lumière"]
+    },
+    {
+      "id": "photo_008",
+      "title": "Un flou volontaire",
+      "description": "Photographie une scène en mouvement en laissant volontairement du flou.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["mouvement", "expérimentation"]
+    },
+    {
+      "id": "photo_009",
+      "title": "Un motif qui se répète",
+      "description": "Repère un motif ou une répétition (carrelage, fenêtres, feuilles) et photographie-le.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["motif", "composition"]
+    },
+    {
+      "id": "photo_010",
+      "title": "Ce qui te fait sourire",
+      "description": "Photographie la première chose qui te fait sourire aujourd'hui.",
+      "estimatedMinutes": 5,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["quotidien", "émotion"]
     }
   ]
 }

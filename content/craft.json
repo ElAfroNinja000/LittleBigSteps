@@ -9,6 +9,87 @@
       "level": "beginner",
       "isPremiumOnly": false,
       "tags": ["origami", "recyclage"]
+    },
+    {
+      "id": "craft_002",
+      "title": "Marque-page recyclé",
+      "description": "Fabrique un marque-page à partir de papier ou carton que tu allais jeter.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["recyclage", "utile"]
+    },
+    {
+      "id": "craft_003",
+      "title": "Une seconde vie",
+      "description": "Transforme un objet destiné à la poubelle en petite décoration.",
+      "estimatedMinutes": 20,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["recyclage", "décoration"]
+    },
+    {
+      "id": "craft_004",
+      "title": "Mini collage",
+      "description": "Fais un petit collage avec des chutes de papier ou de vieux magazines.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["collage"]
+    },
+    {
+      "id": "craft_005",
+      "title": "Grue en origami",
+      "description": "Plie une grue en papier, symbole classique de l'origami — un tuto suffit si besoin.",
+      "estimatedMinutes": 20,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["origami"]
+    },
+    {
+      "id": "craft_006",
+      "title": "Carte improvisée",
+      "description": "Fabrique une carte de vœux improvisée pour quelqu'un, avec ce que tu as sous la main.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["carte", "cadeau"]
+    },
+    {
+      "id": "craft_007",
+      "title": "Mini herbier",
+      "description": "Ramasse une feuille ou une fleur dehors et commence un mini herbier.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["nature", "herbier"]
+    },
+    {
+      "id": "craft_008",
+      "title": "Boîte relookée",
+      "description": "Décore une boîte, un bocal ou un pot que tu allais jeter.",
+      "estimatedMinutes": 20,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["recyclage", "décoration"]
+    },
+    {
+      "id": "craft_009",
+      "title": "Bracelet improvisé",
+      "description": "Fabrique un bracelet ou un porte-clés avec ce que tu as sous la main.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["bijou", "improvisation"]
+    },
+    {
+      "id": "craft_010",
+      "title": "Guirlande en papier",
+      "description": "Plie et découpe une guirlande simple en papier.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["papier", "décoration"]
     }
   ]
 }

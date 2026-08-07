@@ -18,6 +18,78 @@
       "level": "beginner",
       "isPremiumOnly": false,
       "tags": ["portrait"]
+    },
+    {
+      "id": "drawing_003",
+      "title": "Ta main qui tient un objet",
+      "description": "Choisis un objet du quotidien, tiens-le, et dessine ta main en train de le tenir.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["observation", "anatomie"]
+    },
+    {
+      "id": "drawing_004",
+      "title": "Croquis minute par la fenêtre",
+      "description": "Regarde par la fenêtre la plus proche et croque ce que tu vois en 5 minutes chrono.",
+      "estimatedMinutes": 5,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["croquis-rapide", "paysage"]
+    },
+    {
+      "id": "drawing_005",
+      "title": "Ton repas avant de le manger",
+      "description": "Avant ton prochain repas ou snack, prends deux minutes pour le croquer.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["nature-morte", "quotidien"]
+    },
+    {
+      "id": "drawing_006",
+      "title": "Une texture qui t'entoure",
+      "description": "Trouve une texture intéressante autour de toi (tissu, bois, mur) et dessine-la en détail.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["texture", "observation"]
+    },
+    {
+      "id": "drawing_007",
+      "title": "Un animal de mémoire",
+      "description": "Dessine un animal de ton choix uniquement de mémoire, sans regarder de référence.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["mémoire", "imagination"]
+    },
+    {
+      "id": "drawing_008",
+      "title": "Une ombre",
+      "description": "Repère une ombre projetée (la tienne ou celle d'un objet) et dessine sa forme.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["lumière", "forme"]
+    },
+    {
+      "id": "drawing_009",
+      "title": "Une plante croisée aujourd'hui",
+      "description": "Dessine une plante ou une fleur que tu croises aujourd'hui, en vrai ou en photo.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["nature", "observation"]
+    },
+    {
+      "id": "drawing_010",
+      "title": "Une pièce en 10 traits",
+      "description": "Dessine une pièce de ta maison en te limitant à 10 traits maximum.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["contrainte", "intérieur"]
     }
   ]
 }

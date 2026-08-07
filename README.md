@@ -26,7 +26,9 @@ app/src/main/java/com/littlebigsteps/app/
     ├── theme/            # thème Compose (Material3)
     └── MainActivity.kt
 
-content/                  # exemples de fichiers JSON statiques (manifest + par médium)
+content/                  # contenu JSON servi tel quel via raw.githubusercontent.com
+                           # (10 défis placeholder par médium — à remplacer par le
+                           # catalogue final de 30-50/médium, CLAUDE.md §5)
 docs/data-model.md         # référence du schéma de données
 ```
 

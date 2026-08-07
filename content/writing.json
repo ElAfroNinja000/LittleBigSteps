@@ -9,6 +9,87 @@
       "level": "beginner",
       "isPremiumOnly": false,
       "tags": ["micro-fiction"]
+    },
+    {
+      "id": "writing_002",
+      "title": "Lettre à ton toi de dans 10 ans",
+      "description": "Écris quelques lignes à la personne que tu seras dans dix ans.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["lettre", "introspection"]
+    },
+    {
+      "id": "writing_003",
+      "title": "Une couleur sans la nommer",
+      "description": "Décris une couleur de ton choix sans jamais prononcer son nom.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["contrainte", "description"]
+    },
+    {
+      "id": "writing_004",
+      "title": "Dialogue entendu au café",
+      "description": "Imagine un dialogue entre deux inconnus que tu aurais pu entendre dans un café.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["dialogue", "fiction"]
+    },
+    {
+      "id": "writing_005",
+      "title": "La porte était restée ouverte...",
+      "description": "Écris le début d'une histoire qui commence par : \"La porte était restée ouverte...\"",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["micro-fiction", "amorce"]
+    },
+    {
+      "id": "writing_006",
+      "title": "Trois remarques du jour",
+      "description": "Note trois choses que tu as remarquées aujourd'hui, chacune en une seule phrase.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["journaling", "observation"]
+    },
+    {
+      "id": "writing_007",
+      "title": "Haïku de l'instant",
+      "description": "Écris un haïku (5-7-5 syllabes) sur ton humeur du moment.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["poésie", "haïku"]
+    },
+    {
+      "id": "writing_008",
+      "title": "Dix mots qui te plaisent",
+      "description": "Fais la liste de dix mots que tu aimes, sans te justifier.",
+      "estimatedMinutes": 5,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["liste", "jeu-de-mots"]
+    },
+    {
+      "id": "writing_009",
+      "title": "Le souvenir d'une odeur",
+      "description": "Décris un souvenir associé à une odeur précise.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["souvenir", "sensoriel"]
+    },
+    {
+      "id": "writing_010",
+      "title": "Carte postale",
+      "description": "Écris une carte postale à quelqu'un que tu n'as pas vu depuis longtemps.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["lettre", "quotidien"]
     }
   ]
 }
