@@ -6,10 +6,12 @@ import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.spacedBy
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -85,23 +87,48 @@ fun ProgressScreen(
             }
         }
         item {
-            ExportSection { format ->
-                coroutineScope.launch {
-                    val uri = viewModel.exportSummary(format)
-                    shareExport(context, uri, format)
-                }
-            }
+            ExportSection(
+                isPremium = state.isPremium,
+                onExport = { format ->
+                    coroutineScope.launch {
+                        val uri = viewModel.exportSummary(format)
+                        shareExport(context, uri, format)
+                    }
+                },
+                onNavigateToPremium = onNavigateToPremium
+            )
         }
     }
 }
 
+/** Image et PDF pour tout le monde ; le format story et l'enrichissement
+ *  (souvenirs illimités, photos, badges — voir ExportRenderer) sont réservés
+ *  au premium (CLAUDE.md §7). Le tap sur "Story" redirige vers Premium plutôt
+ *  que d'exporter tant que l'abonnement n'est pas actif. */
 @Composable
-private fun ExportSection(onExport: (ExportFormat) -> Unit) {
+private fun ExportSection(
+    isPremium: Boolean,
+    onExport: (ExportFormat) -> Unit,
+    onNavigateToPremium: () -> Unit
+) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text("Exporter ma progression", style = MaterialTheme.typography.titleMedium)
+        if (isPremium) {
+            Text(
+                "Version enrichie : plus de souvenirs, photos incluses, badges.",
+                style = MaterialTheme.typography.bodyLarge
+            )
+        }
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedButton(onClick = { onExport(ExportFormat.IMAGE) }) { Text("Image") }
             Button(onClick = { onExport(ExportFormat.PDF) }) { Text("PDF") }
+            OutlinedButton(onClick = { if (isPremium) onExport(ExportFormat.STORY) else onNavigateToPremium() }) {
+                if (!isPremium) {
+                    Icon(Icons.Filled.Lock, contentDescription = "Verrouillé (premium)")
+                    Spacer(modifier = Modifier.width(4.dp))
+                }
+                Text("Story")
+            }
         }
     }
 }

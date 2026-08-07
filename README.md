@@ -76,11 +76,18 @@ retirés, même si le streak qui les a déclenchés redescend ensuite).
 
 ## Export
 
-`ProgressExportGenerator` dessine le résumé de progression (streak, niveaux,
-derniers souvenirs) sur un Canvas natif partagé entre image PNG et PDF
-(`ExportRenderer`), écrit dans le cache de l'app, puis le partage via
-`FileProvider` + l'Intent système (`ACTION_SEND`) — pas de feed, pas de compte,
-juste un export autonome (CLAUDE.md §6). Boutons sur l'écran Progression.
+`ProgressExportGenerator` dessine le résumé de progression sur un Canvas natif
+partagé entre image PNG, PDF et story (`ExportRenderer`), écrit dans le cache
+de l'app, puis le partage via `FileProvider` + l'Intent système
+(`ACTION_SEND`) — pas de feed, pas de compte, juste un export autonome
+(CLAUDE.md §6). Boutons sur l'écran Progression.
+
+**Formats enrichis premium (§7)** : gratuit = 5 derniers souvenirs (texte
+seul) ; premium = jusqu'à 10 souvenirs avec miniatures photo intégrées, section
+badges, et un 3ᵉ format exclusif **Story** (ratio 9:16, mise en page dédiée
+pour le partage réseaux sociaux — pas un simple redimensionnement du résumé
+classique). Le tap sur "Story" en gratuit redirige vers Premium au lieu
+d'exporter.
 
 ## Tests
 
@@ -132,7 +139,7 @@ wrapper Gradle sera généré automatiquement au premier sync. Le projet cible
 ## État actuel
 
 Core loop complet (onboarding → sélection/complétion → portfolio →
-progression) + notifications, export, capture photo, Google Play Billing,
-packs thématiques, badges premium, analytics et suite de tests E2E. Reste :
-formats d'export enrichis en premium, catalogue final de défis (30-50/médium),
-config externe à finaliser (Play Console, PostHog, CDN de prod), CI.
+progression) + notifications, export enrichi (image/PDF/story), capture photo,
+Google Play Billing, packs thématiques, badges premium, analytics et suite de
+tests E2E. Reste : catalogue final de défis (30-50/médium), config externe à
+finaliser (Play Console, PostHog, CDN de prod), CI.

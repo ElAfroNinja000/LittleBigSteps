@@ -7,19 +7,22 @@ import com.littlebigsteps.app.analytics.AnalyticsTracker
 import com.littlebigsteps.app.data.repository.ChallengeRepository
 import com.littlebigsteps.app.data.repository.ProgressRepository
 import com.littlebigsteps.app.data.repository.UserPreferencesRepository
+import com.littlebigsteps.app.export.ExportData
 import com.littlebigsteps.app.export.ExportFormat
 import com.littlebigsteps.app.export.ProgressExportGenerator
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * Streak global + XP/niveau par médium (CLAUDE.md §4), simple lecture réactive
- * de ProgressRepository. Gère aussi l'export image/PDF de ce même résumé (§4, §6)
- * et l'affichage des badges premium (§7).
+ * de ProgressRepository. Gère aussi l'export du résumé — image/PDF pour tous,
+ * plus de souvenirs/photos/badges/format story pour le premium (§4, §6, §7).
  */
 class ProgressViewModel(
     private val progressRepository: ProgressRepository,
@@ -53,20 +56,34 @@ class ProgressViewModel(
         }
     }
 
-    /** Régénère le résumé (streak, niveaux, derniers souvenirs) et renvoie un
-     *  URI content:// prêt à être partagé (voir ProgressScreen). */
-    suspend fun exportSummary(format: ExportFormat): Uri {
+    /** Régénère le résumé (streak, niveaux, souvenirs, badges) et renvoie un
+     *  URI content:// prêt à être partagé (voir ProgressScreen). L'enrichissement
+     *  (plus de souvenirs, photos, badges, format story) dépend d'isPremium,
+     *  déterminé ici et non par l'appelant. Décodage bitmap potentiellement
+     *  coûteux (photos premium) : hors du thread principal. */
+    suspend fun exportSummary(format: ExportFormat): Uri = withContext(Dispatchers.IO) {
         val global = progressRepository.observeGlobalProgress().first()
         val mediums = progressRepository.observeAllMediumProgress().first()
+        val isPremium = userPreferencesRepository.observePreferences().first()?.isPremium ?: false
+        val unlockedBadges = progressRepository.observeUnlockedBadges().first().map { it.badge }.toSet()
         val souvenirs = challengeRepository.observePortfolio().first()
-            .filter { it.completion.souvenirNote != null }
-            .take(5)
+            .filter { it.completion.souvenirNote != null || it.completion.souvenirPhotoPath != null }
+            .take(20) // ExportRenderer applique ensuite la limite gratuite/premium
+
+        val data = ExportData(
+            globalProgress = global,
+            mediumProgress = mediums,
+            recentSouvenirs = souvenirs,
+            isPremium = isPremium,
+            unlockedBadges = unlockedBadges
+        )
 
         val uri = when (format) {
-            ExportFormat.IMAGE -> exportGenerator.exportAsImage(global, mediums, souvenirs)
-            ExportFormat.PDF -> exportGenerator.exportAsPdf(global, mediums, souvenirs)
+            ExportFormat.IMAGE -> exportGenerator.exportAsImage(data)
+            ExportFormat.PDF -> exportGenerator.exportAsPdf(data)
+            ExportFormat.STORY -> exportGenerator.exportAsStory(data)
         }
         analyticsTracker.trackExport(format.name)
-        return uri
+        uri
     }
 }
