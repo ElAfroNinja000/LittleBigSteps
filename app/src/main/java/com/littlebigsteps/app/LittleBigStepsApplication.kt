@@ -24,6 +24,7 @@ import com.littlebigsteps.app.notification.NotificationScheduler
 import com.littlebigsteps.app.notification.WorkManagerNotificationScheduler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 
 /**
  * Point d'accès manuel (service locator léger) aux repositories. Pas de
@@ -91,5 +92,9 @@ class LittleBigStepsApplication : Application() {
         // Connexion démarrée tôt pour restaurer un abonnement existant (réinstallation,
         // nouvel appareil) avant même que l'utilisateur ouvre l'écran Premium.
         billingRepository.startConnection()
+        // Synchro best-effort au lancement (CLAUDE.md §10 : "télécharge le JSON au
+        // lancement + périodiquement"). Échec silencieux : le cache local existant
+        // (s'il y en a un) reste utilisable hors-ligne.
+        applicationScope.launch { runCatching { contentSyncRepository.syncIfNeeded() } }
     }
 }

@@ -70,6 +70,21 @@ derniers souvenirs) sur un Canvas natif partagé entre image PNG et PDF
 `FileProvider` + l'Intent système (`ACTION_SEND`) — pas de feed, pas de compte,
 juste un export autonome (CLAUDE.md §6). Boutons sur l'écran Progression.
 
+## Tests
+
+Suite E2E en Jetpack Compose UI Testing (`app/src/androidTest`) : parcours
+complet onboarding → sélection → complétion avec souvenir → portfolio →
+progression, plus le skip d'onboarding au relancement. Room en mémoire + fakes
+pour Billing/notifications/analytics uniquement — le reste (repositories,
+ViewModels, écrans) est le vrai code de l'app. Détails et rationale dans
+[CLAUDE.md](CLAUDE.md) §11.
+
+```bash
+./gradlew connectedAndroidTest
+```
+
+Nécessite un appareil ou émulateur connecté.
+
 ## Analytics
 
 `AnalyticsTracker` (implémenté par `PostHogAnalyticsTracker`) suit les métriques
