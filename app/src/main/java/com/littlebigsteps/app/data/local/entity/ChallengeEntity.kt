@@ -19,5 +19,8 @@ data class ChallengeEntity(
     val estimatedMinutes: Int,
     val level: ChallengeLevel,
     val isPremiumOnly: Boolean,
-    val tags: List<String>? = null
+    val tags: List<String>? = null,
+    /** Null si le défi appartient au catalogue de base plutôt qu'à un pack
+     *  thématique/saisonnier (voir ChallengePackEntity, CLAUDE.md §7). */
+    val packId: String? = null
 )

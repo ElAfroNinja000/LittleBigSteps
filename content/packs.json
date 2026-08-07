@@ -1,0 +1,12 @@
+{
+  "version": "1",
+  "packs": [
+    {
+      "id": "pack_rentree_creative",
+      "mediumId": "drawing",
+      "title": "Pack Rentrée créative",
+      "description": "Une sélection de défis pour retrouver l'habitude de dessiner régulièrement.",
+      "isPremiumOnly": true
+    }
+  ]
+}

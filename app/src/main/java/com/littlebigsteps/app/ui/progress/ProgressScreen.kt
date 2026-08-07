@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.spacedBy
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.EmojiEvents
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material3.Button
@@ -33,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.littlebigsteps.app.data.local.entity.MediumProgressEntity
 import com.littlebigsteps.app.domain.GamificationRules
+import com.littlebigsteps.app.domain.model.Badge
 import com.littlebigsteps.app.export.ExportFormat
 import com.littlebigsteps.app.ui.common.label
 import kotlinx.coroutines.launch
@@ -67,6 +69,13 @@ fun ProgressScreen(
         }
         items(state.mediumProgress, key = { it.mediumType }) { progress ->
             MediumProgressCard(progress)
+        }
+        item {
+            BadgesSection(
+                isPremium = state.isPremium,
+                unlockedBadges = state.unlockedBadges,
+                onNavigateToPremium = onNavigateToPremium
+            )
         }
         if (state.mediumProgress.any { !it.isUnlocked }) {
             item {
@@ -124,6 +133,44 @@ private fun StreakCard(currentStreak: Int, longestStreak: Int, totalChallengesCo
             // juste le compteur actuel, le record, et le total cumulé.
             Text("Record : $longestStreak jour(s)", style = MaterialTheme.typography.bodyLarge)
             Text("$totalChallengesCompleted défis complétés au total", style = MaterialTheme.typography.bodyLarge)
+        }
+    }
+}
+
+/** Cosmétiques exclusifs premium (CLAUDE.md §7) : aucun badge visible pour un
+ *  utilisateur gratuit, juste une invitation à passer premium. */
+@Composable
+private fun BadgesSection(
+    isPremium: Boolean,
+    unlockedBadges: Set<Badge>,
+    onNavigateToPremium: () -> Unit
+) {
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text("Badges", style = MaterialTheme.typography.titleMedium)
+            if (!isPremium) {
+                Text(
+                    "Cosmétique exclusif premium — débloque-les en passant premium.",
+                    style = MaterialTheme.typography.bodyLarge
+                )
+                OutlinedButton(onClick = onNavigateToPremium) {
+                    Text("Débloquer les badges (Premium)")
+                }
+            } else {
+                Badge.entries.forEach { badge ->
+                    val earned = badge in unlockedBadges
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Icon(
+                            if (earned) Icons.Filled.EmojiEvents else Icons.Filled.Lock,
+                            contentDescription = null
+                        )
+                        Text(badge.label(), style = MaterialTheme.typography.bodyLarge)
+                    }
+                }
+            }
         }
     }
 }

@@ -90,6 +90,36 @@
       "level": "beginner",
       "isPremiumOnly": false,
       "tags": ["contrainte", "intérieur"]
+    },
+    {
+      "id": "drawing_pack_rentree_001",
+      "title": "Ton bureau de rentrée",
+      "description": "Dessine ton espace de travail tel qu'il est là, maintenant, sans le ranger avant.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": true,
+      "tags": ["rentree", "intérieur"],
+      "packId": "pack_rentree_creative"
+    },
+    {
+      "id": "drawing_pack_rentree_002",
+      "title": "Une routine du matin",
+      "description": "Dessine en trois vignettes les trois premiers gestes de ta matinée.",
+      "estimatedMinutes": 20,
+      "level": "beginner",
+      "isPremiumOnly": true,
+      "tags": ["rentree", "routine"],
+      "packId": "pack_rentree_creative"
+    },
+    {
+      "id": "drawing_pack_rentree_003",
+      "title": "Ton carnet du mois",
+      "description": "Dessine la couverture imaginaire d'un carnet qui raconterait ton mois à venir.",
+      "estimatedMinutes": 20,
+      "level": "beginner",
+      "isPremiumOnly": true,
+      "tags": ["rentree", "imagination"],
+      "packId": "pack_rentree_creative"
     }
   ]
 }

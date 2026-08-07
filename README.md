@@ -62,6 +62,18 @@ reverrouille sur le seul médium gratuit choisi à l'onboarding.
 un placeholder : il doit correspondre à un abonnement réellement créé dans
 Play Console pour que `queryPremiumProductDetails()` renvoie une offre.
 
+## Packs thématiques & badges (premium)
+
+Les packs (`ChallengePackEntity`, synchronisés depuis `content/packs.json`,
+optionnel) se parcourent en entier une fois débloqués — leurs défis
+(`ChallengeEntity.packId` non-null) sont exclus du tirage aléatoire du jour.
+Un pack verrouillé redirige vers l'écran Premium au lieu de s'ouvrir.
+
+Les badges (`Badge`, `UnlockedBadgeEntity`) sont des cosmétiques exclusifs
+premium — évalués à chaque complétion (`domain/BadgeEvaluator.kt`) uniquement
+pour les utilisateurs premium, et débloqués une fois pour toutes (jamais
+retirés, même si le streak qui les a déclenchés redescend ensuite).
+
 ## Export
 
 `ProgressExportGenerator` dessine le résumé de progression (streak, niveaux,
@@ -119,6 +131,8 @@ wrapper Gradle sera généré automatiquement au premier sync. Le projet cible
 
 ## État actuel
 
-Squelette : structure Gradle, entités/DAOs Room réels, thème Compose et écran
-placeholder. Pas encore implémenté : onboarding, sélection de défi,
-synchronisation du contenu distant, notifications, export, billing.
+Core loop complet (onboarding → sélection/complétion → portfolio →
+progression) + notifications, export, capture photo, Google Play Billing,
+packs thématiques, badges premium, analytics et suite de tests E2E. Reste :
+formats d'export enrichis en premium, catalogue final de défis (30-50/médium),
+config externe à finaliser (Play Console, PostHog, CDN de prod), CI.

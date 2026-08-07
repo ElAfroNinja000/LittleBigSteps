@@ -5,9 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.littlebigsteps.app.analytics.AnalyticsTracker
 import com.littlebigsteps.app.data.local.entity.ChallengeEntity
+import com.littlebigsteps.app.data.local.entity.ChallengePackEntity
 import com.littlebigsteps.app.data.media.SouvenirPhotoStore
 import com.littlebigsteps.app.data.repository.ChallengeRepository
 import com.littlebigsteps.app.data.repository.ProgressRepository
+import com.littlebigsteps.app.data.repository.UserPreferencesRepository
 import com.littlebigsteps.app.domain.model.MediumType
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,12 +21,14 @@ import kotlinx.coroutines.launch
  * Étapes "Découverte du défi" et "Réalisation & complétion" du parcours
  * (CLAUDE.md §3.2-3.3) : propose toujours 2-3 défis, laisse en choisir un,
  * puis le marquer terminé avec un souvenir optionnel et non vérifié (texte
- * et/ou photo, stockée en local via SouvenirPhotoStore).
+ * et/ou photo, stockée en local via SouvenirPhotoStore). Gère aussi le
+ * parcours des packs thématiques/saisonniers premium (CLAUDE.md §7).
  */
 class ChallengeSelectionViewModel(
     private val challengeRepository: ChallengeRepository,
     private val progressRepository: ProgressRepository,
     private val souvenirPhotoStore: SouvenirPhotoStore,
+    private val userPreferencesRepository: UserPreferencesRepository,
     private val analyticsTracker: AnalyticsTracker
 ) : ViewModel() {
 
@@ -36,8 +40,13 @@ class ChallengeSelectionViewModel(
             val unlocked = progressRepository.observeAllMediumProgress().first()
                 .filter { it.isUnlocked }
                 .map { it.mediumType }
+            val isPremium = userPreferencesRepository.observePreferences().first()?.isPremium ?: false
             val defaultMedium = unlocked.firstOrNull()
-            _uiState.value = _uiState.value.copy(availableMediums = unlocked, mediumType = defaultMedium)
+            _uiState.value = _uiState.value.copy(
+                availableMediums = unlocked,
+                mediumType = defaultMedium,
+                isPremium = isPremium
+            )
             if (defaultMedium != null) loadOptions(defaultMedium) else {
                 _uiState.value = _uiState.value.copy(isLoading = false)
             }
@@ -57,6 +66,22 @@ class ChallengeSelectionViewModel(
 
     /** Retire un nouveau lot de défis pour le même médium, sans le changer. */
     fun refreshOptions() {
+        _uiState.value.mediumType?.let { loadOptions(it) }
+    }
+
+    /** Passe des suggestions du jour au contenu complet d'un pack (CLAUDE.md §7).
+     *  L'appelant (écran) doit vérifier isPremiumOnly/isPremium avant d'appeler
+     *  ceci — un pack verrouillé redirige plutôt vers l'écran Premium. */
+    fun selectPack(pack: ChallengePackEntity) {
+        _uiState.value = _uiState.value.copy(isLoading = true)
+        viewModelScope.launch {
+            val challenges = challengeRepository.challengesInPack(pack.id)
+            _uiState.value = _uiState.value.copy(activePack = pack, options = challenges, isLoading = false)
+        }
+    }
+
+    /** Revient aux suggestions aléatoires du jour pour le médium actif. */
+    fun exitPack() {
         _uiState.value.mediumType?.let { loadOptions(it) }
     }
 
@@ -145,17 +170,19 @@ class ChallengeSelectionViewModel(
         }
     }
 
-    /** Ferme le récap de complétion et retire un nouveau lot de défis pour continuer. */
+    /** Ferme le récap de complétion et retire un nouveau lot de défis pour continuer
+     *  (revient aux suggestions du jour, même si on complétait un défi de pack). */
     fun dismissCompletion() {
-        _uiState.value = _uiState.value.copy(lastCompletion = null)
+        _uiState.value = _uiState.value.copy(lastCompletion = null, activePack = null)
         _uiState.value.mediumType?.let { loadOptions(it) }
     }
 
     private fun loadOptions(mediumType: MediumType) {
-        _uiState.value = _uiState.value.copy(isLoading = true)
+        _uiState.value = _uiState.value.copy(isLoading = true, activePack = null)
         viewModelScope.launch {
             val options = challengeRepository.pickDailyOptions(mediumType)
-            _uiState.value = _uiState.value.copy(options = options, isLoading = false)
+            val packs = challengeRepository.packsForMedium(mediumType)
+            _uiState.value = _uiState.value.copy(options = options, availablePacks = packs, isLoading = false)
         }
     }
 

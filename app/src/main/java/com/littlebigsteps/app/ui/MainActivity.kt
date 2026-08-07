@@ -40,6 +40,7 @@ class MainActivity : ComponentActivity() {
             challengeRepository = app.challengeRepository,
             progressRepository = app.progressRepository,
             souvenirPhotoStore = app.souvenirPhotoStore,
+            userPreferencesRepository = app.userPreferencesRepository,
             analyticsTracker = app.analyticsTracker
         )
         val portfolioViewModelFactory = PortfolioViewModelFactory(
@@ -49,6 +50,7 @@ class MainActivity : ComponentActivity() {
             progressRepository = app.progressRepository,
             challengeRepository = app.challengeRepository,
             exportGenerator = app.progressExportGenerator,
+            userPreferencesRepository = app.userPreferencesRepository,
             analyticsTracker = app.analyticsTracker
         )
         val premiumViewModelFactory = PremiumViewModelFactory(

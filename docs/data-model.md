@@ -13,6 +13,8 @@ Décisions actées :
 - **MediumType** : `PHOTO`, `DRAWING`, `WRITING`, `CRAFT`
 - **ChallengeLevel** : `BEGINNER` (seul niveau au lancement), `INTERMEDIATE`, `ADVANCED` (réservés au futur)
 - **Frequency** : `DAILY`, `FEW_TIMES_WEEK`, `WEEKLY`
+- **Badge** : `STREAK_7`, `STREAK_30`, `TEN_COMPLETIONS`, `FIFTY_COMPLETIONS`, `LEVEL_5_ANY_MEDIUM`
+  — cosmétiques exclusifs premium (CLAUDE.md §7), voir `domain/BadgeEvaluator.kt`
 
 ## Entités Room (données locales utilisateur)
 
@@ -51,8 +53,29 @@ Le streak est **global**, pas par médium.
 | title / description | String | |
 | estimatedMinutes | Int | |
 | level | ChallengeLevel | |
-| isPremiumOnly | Boolean | packs thématiques premium |
+| isPremiumOnly | Boolean | exclu des suggestions du jour tant que non premium |
 | tags | List\<String\>? | saisonnier, thème... |
+| packId | String? | null = catalogue de base ; sinon FK logique vers `ChallengePackEntity.id` |
+
+### ChallengePackEntity — pack thématique/saisonnier premium (CLAUDE.md §7)
+| champ | type | note |
+|---|---|---|
+| id | String (PK) | |
+| mediumType | MediumType | |
+| title / description | String | |
+| isPremiumOnly | Boolean | `true` par défaut |
+
+Un pack se parcourt en entier (pas de tirage aléatoire) une fois débloqué ;
+ses défis sont exclus du tirage `pickDailyOptions` (voir ChallengeRepositoryImpl).
+
+### UnlockedBadgeEntity — badge premium débloqué, permanent
+| champ | type | note |
+|---|---|---|
+| badge | Badge (PK) | |
+| unlockedAt | Instant | jamais supprimé, même si la progression redescend ensuite |
+
+Évalué à chaque complétion via `domain/BadgeEvaluator.kt`, uniquement pour les
+utilisateurs premium (voir `ProgressRepositoryImpl.maybeUnlockBadges`).
 
 ### CompletedChallengeEntity — une ligne par complétion
 Un défi peut être refait : pas de contrainte d'unicité sur `challengeId`.
@@ -67,6 +90,9 @@ Un défi peut être refait : pas de contrainte d'unicité sur `challengeId`.
 | xpEarned | Int | snapshot au moment du complete (robuste si les règles XP changent) |
 
 ### ContentManifestEntity — singleton
+Suit la version synchronisée de `packs.json` (contenu additionnel, pas lié à
+un médium en particulier — le suivi par médium se fait via
+`MediumContentVersionEntity`).
 | champ | type |
 |---|---|
 | contentVersion | String |
@@ -104,7 +130,26 @@ Un fichier par médium (ex. `drawing.json`) :
       "estimatedMinutes": 15,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["object", "still-life"]
+      "tags": ["object", "still-life"],
+      "packId": null
+    }
+  ]
+}
+```
+
+`packs.json` — packs thématiques/saisonniers premium (§7), synchronisés à part,
+optionnel (son absence ne fait pas échouer la synchro du catalogue de base) :
+
+```json
+{
+  "version": "1",
+  "packs": [
+    {
+      "id": "pack_rentree_creative",
+      "mediumId": "drawing",
+      "title": "Pack Rentrée créative",
+      "description": "...",
+      "isPremiumOnly": true
     }
   ]
 }

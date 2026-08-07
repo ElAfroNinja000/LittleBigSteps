@@ -12,15 +12,20 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.spacedBy
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -29,17 +34,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.littlebigsteps.app.data.local.entity.ChallengeEntity
+import com.littlebigsteps.app.data.local.entity.ChallengePackEntity
 import com.littlebigsteps.app.domain.model.MediumType
 import com.littlebigsteps.app.ui.common.LocalPhotoThumbnail
 import com.littlebigsteps.app.ui.common.label
 
 /**
  * Écran cœur du core loop (CLAUDE.md §3.2-3.3) : propose 2-3 défis, laisse en
- * choisir un, puis le marquer terminé avec un souvenir optionnel.
+ * choisir un, puis le marquer terminé avec un souvenir optionnel. Permet aussi
+ * de parcourir les packs thématiques/saisonniers premium (§7).
  */
 @Composable
 fun ChallengeSelectionScreen(
     factory: ChallengeSelectionViewModelFactory,
+    onNavigateToPremium: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val viewModel: ChallengeSelectionViewModel = viewModel(factory = factory)
@@ -78,7 +86,10 @@ fun ChallengeSelectionScreen(
                 state = state,
                 onSelectMedium = viewModel::selectMedium,
                 onSelectChallenge = viewModel::selectChallenge,
-                onRefresh = viewModel::refreshOptions
+                onRefresh = viewModel::refreshOptions,
+                onSelectPack = viewModel::selectPack,
+                onExitPack = viewModel::exitPack,
+                onNavigateToPremium = onNavigateToPremium
             )
         }
     }
@@ -89,7 +100,10 @@ private fun ChallengeOptionsList(
     state: ChallengeSelectionUiState,
     onSelectMedium: (MediumType) -> Unit,
     onSelectChallenge: (ChallengeEntity) -> Unit,
-    onRefresh: () -> Unit
+    onRefresh: () -> Unit,
+    onSelectPack: (ChallengePackEntity) -> Unit,
+    onExitPack: () -> Unit,
+    onNavigateToPremium: () -> Unit
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         Text("Choisis ton défi", style = MaterialTheme.typography.titleMedium)
@@ -100,6 +114,35 @@ private fun ChallengeOptionsList(
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 state.availableMediums.forEach { medium ->
                     AssistChip(onClick = { onSelectMedium(medium) }, label = { Text(medium.label()) })
+                }
+            }
+        }
+
+        val activePack = state.activePack
+        when {
+            activePack != null -> Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(activePack.title, style = MaterialTheme.typography.titleMedium)
+                TextButton(onClick = onExitPack) { Text("Défis du jour") }
+            }
+            state.availablePacks.isNotEmpty() -> Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text("Packs thématiques", style = MaterialTheme.typography.titleMedium)
+                LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    items(state.availablePacks, key = { it.id }) { pack ->
+                        val locked = pack.isPremiumOnly && !state.isPremium
+                        AssistChip(
+                            onClick = { if (locked) onNavigateToPremium() else onSelectPack(pack) },
+                            label = { Text(pack.title) },
+                            leadingIcon = if (locked) {
+                                { Icon(Icons.Filled.Lock, contentDescription = "Verrouillé (premium)") }
+                            } else {
+                                null
+                            }
+                        )
+                    }
                 }
             }
         }
@@ -116,8 +159,10 @@ private fun ChallengeOptionsList(
                         ChallengeOptionCard(challenge = challenge, onClick = { onSelectChallenge(challenge) })
                     }
                 }
-                OutlinedButton(onClick = onRefresh) {
-                    Text("Voir d'autres propositions")
+                if (activePack == null) {
+                    OutlinedButton(onClick = onRefresh) {
+                        Text("Voir d'autres propositions")
+                    }
                 }
             }
         }

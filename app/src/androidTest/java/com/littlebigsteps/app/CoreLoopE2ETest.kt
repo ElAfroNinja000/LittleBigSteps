@@ -10,6 +10,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.littlebigsteps.app.data.local.entity.ChallengeEntity
+import com.littlebigsteps.app.data.local.entity.ChallengePackEntity
 import com.littlebigsteps.app.domain.model.ChallengeLevel
 import com.littlebigsteps.app.domain.model.Frequency
 import com.littlebigsteps.app.domain.model.MediumType
@@ -57,11 +58,20 @@ class CoreLoopE2ETest {
         tags = null
     )
 
+    private val lockedPack = ChallengePackEntity(
+        id = "test_pack_001",
+        mediumType = MediumType.DRAWING,
+        title = "Pack Test Exclusif",
+        description = "Un pack de test.",
+        isPremiumOnly = true
+    )
+
     @Before
     fun setUp() {
         graph = TestAppGraph(composeTestRule.activity)
         runBlocking {
             graph.database.challengeDao().upsertAll(listOf(seededChallenge, premiumOnlyChallenge))
+            graph.database.challengePackDao().upsertAll(listOf(lockedPack))
         }
     }
 
@@ -148,6 +158,27 @@ class CoreLoopE2ETest {
         // apparaître dans les propositions (voir ChallengeRepositoryImpl.pickDailyOptions).
         waitUntilExists(seededChallenge.title)
         composeTestRule.onNodeWithText(premiumOnlyChallenge.title).assertDoesNotExist()
+    }
+
+    @Test
+    fun tappingLockedPackNavigatesToPremium() {
+        setNavGraphContent()
+
+        composeTestRule.onNodeWithText("Un seul médium").performClick()
+        composeTestRule.onNodeWithText("Suivant").performClick()
+        composeTestRule.onNodeWithText("Dessin").performClick()
+        composeTestRule.onNodeWithText("Suivant").performClick()
+        composeTestRule.onNodeWithText("Tous les jours").performClick()
+        composeTestRule.onNodeWithText("Suivant").performClick()
+        composeTestRule.onNodeWithText("Matin (9h)").performClick()
+        composeTestRule.onNodeWithText("Terminer").performClick()
+
+        waitUntilExists(lockedPack.title)
+        composeTestRule.onNodeWithText(lockedPack.title).performClick()
+
+        // Le pack est premium et l'utilisateur ne l'est pas : le tap redirige
+        // vers Premium plutôt que d'ouvrir le pack (voir ChallengeOptionsList).
+        waitUntilExists("Premium")
     }
 
     @Test

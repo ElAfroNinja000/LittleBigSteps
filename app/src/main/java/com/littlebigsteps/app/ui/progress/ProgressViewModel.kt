@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.littlebigsteps.app.analytics.AnalyticsTracker
 import com.littlebigsteps.app.data.repository.ChallengeRepository
 import com.littlebigsteps.app.data.repository.ProgressRepository
+import com.littlebigsteps.app.data.repository.UserPreferencesRepository
 import com.littlebigsteps.app.export.ExportFormat
 import com.littlebigsteps.app.export.ProgressExportGenerator
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,12 +18,14 @@ import kotlinx.coroutines.launch
 
 /**
  * Streak global + XP/niveau par médium (CLAUDE.md §4), simple lecture réactive
- * de ProgressRepository. Gère aussi l'export image/PDF de ce même résumé (§4, §6).
+ * de ProgressRepository. Gère aussi l'export image/PDF de ce même résumé (§4, §6)
+ * et l'affichage des badges premium (§7).
  */
 class ProgressViewModel(
     private val progressRepository: ProgressRepository,
     private val challengeRepository: ChallengeRepository,
     private val exportGenerator: ProgressExportGenerator,
+    private val userPreferencesRepository: UserPreferencesRepository,
     private val analyticsTracker: AnalyticsTracker
 ) : ViewModel() {
 
@@ -33,13 +36,17 @@ class ProgressViewModel(
         viewModelScope.launch {
             combine(
                 progressRepository.observeGlobalProgress(),
-                progressRepository.observeAllMediumProgress()
-            ) { global, mediums ->
+                progressRepository.observeAllMediumProgress(),
+                progressRepository.observeUnlockedBadges(),
+                userPreferencesRepository.observePreferences()
+            ) { global, mediums, badges, prefs ->
                 ProgressUiState(
                     currentStreak = global?.currentStreak ?: 0,
                     longestStreak = global?.longestStreak ?: 0,
                     totalChallengesCompleted = global?.totalChallengesCompleted ?: 0,
                     mediumProgress = mediums.sortedBy { it.mediumType.ordinal },
+                    unlockedBadges = badges.map { it.badge }.toSet(),
+                    isPremium = prefs?.isPremium ?: false,
                     isLoading = false
                 )
             }.collect { _uiState.value = it }

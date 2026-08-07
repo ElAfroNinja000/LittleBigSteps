@@ -124,7 +124,10 @@ fun LittleBigStepsNavGraph(
                 )
             }
             composable(Routes.HOME) {
-                ChallengeSelectionScreen(factory = challengeSelectionViewModelFactory)
+                ChallengeSelectionScreen(
+                    factory = challengeSelectionViewModelFactory,
+                    onNavigateToPremium = { navController.navigate(Routes.PREMIUM) }
+                )
             }
             composable(Routes.PORTFOLIO) {
                 PortfolioScreen(factory = portfolioViewModelFactory)

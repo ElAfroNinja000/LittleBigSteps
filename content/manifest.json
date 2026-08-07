@@ -1,7 +1,7 @@
 {
-  "version": "2026.08.1-placeholder",
+  "version": "2026.08.2-placeholder",
   "mediums": [
-    { "id": "drawing", "file": "drawing.json", "version": "2" },
+    { "id": "drawing", "file": "drawing.json", "version": "3" },
     { "id": "photo", "file": "photo.json", "version": "2" },
     { "id": "writing", "file": "writing.json", "version": "2" },
     { "id": "craft", "file": "craft.json", "version": "2" }

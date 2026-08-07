@@ -24,6 +24,11 @@ interface ChallengeDao {
     @Query("SELECT * FROM challenges WHERE id = :id")
     suspend fun getById(id: String): ChallengeEntity?
 
+    /** Tous les défis d'un pack thématique/saisonnier — pas de tirage
+     *  aléatoire ici, l'utilisateur parcourt le pack en entier (CLAUDE.md §7). */
+    @Query("SELECT * FROM challenges WHERE packId = :packId ORDER BY id")
+    suspend fun getByPackId(packId: String): List<ChallengeEntity>
+
     @Query("DELETE FROM challenges WHERE mediumType = :mediumType")
     suspend fun deleteByMedium(mediumType: MediumType)
 }

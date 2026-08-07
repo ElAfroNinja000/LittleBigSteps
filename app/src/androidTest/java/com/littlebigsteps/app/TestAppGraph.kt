@@ -29,7 +29,7 @@ class TestAppGraph(context: Context) {
     val database: AppDatabase = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).build()
 
     val userPreferencesRepository = UserPreferencesRepositoryImpl(database.userPreferencesDao())
-    val progressRepository = ProgressRepositoryImpl(database)
+    val progressRepository = ProgressRepositoryImpl(database, userPreferencesRepository)
     val challengeRepository = ChallengeRepositoryImpl(database, progressRepository, userPreferencesRepository)
     val souvenirPhotoStore = InternalSouvenirPhotoStore(context)
     val exportGenerator = CanvasProgressExportGenerator(context)
@@ -48,6 +48,7 @@ class TestAppGraph(context: Context) {
         challengeRepository = challengeRepository,
         progressRepository = progressRepository,
         souvenirPhotoStore = souvenirPhotoStore,
+        userPreferencesRepository = userPreferencesRepository,
         analyticsTracker = analyticsTracker
     )
     val portfolioViewModelFactory = PortfolioViewModelFactory(
@@ -57,6 +58,7 @@ class TestAppGraph(context: Context) {
         progressRepository = progressRepository,
         challengeRepository = challengeRepository,
         exportGenerator = exportGenerator,
+        userPreferencesRepository = userPreferencesRepository,
         analyticsTracker = analyticsTracker
     )
     val premiumViewModelFactory = PremiumViewModelFactory(

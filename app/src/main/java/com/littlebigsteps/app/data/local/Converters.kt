@@ -1,6 +1,7 @@
 package com.littlebigsteps.app.data.local
 
 import androidx.room.TypeConverter
+import com.littlebigsteps.app.domain.model.Badge
 import com.littlebigsteps.app.domain.model.ChallengeLevel
 import com.littlebigsteps.app.domain.model.Frequency
 import com.littlebigsteps.app.domain.model.MediumType
@@ -73,6 +74,12 @@ class Converters {
 
     @TypeConverter
     fun stringToFrequency(value: String?): Frequency? = value?.let { Frequency.valueOf(it) }
+
+    @TypeConverter
+    fun badgeToString(value: Badge?): String? = value?.name
+
+    @TypeConverter
+    fun stringToBadge(value: String?): Badge? = value?.let { Badge.valueOf(it) }
 
     private companion object {
         const val ITEM_SEPARATOR = "|"

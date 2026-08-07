@@ -17,5 +17,8 @@ data class ChallengeDto(
     val estimatedMinutes: Int,
     val level: String,
     val isPremiumOnly: Boolean = false,
-    val tags: List<String>? = null
+    val tags: List<String>? = null,
+    /** Null si ce défi appartient au catalogue de base plutôt qu'à un pack
+     *  thématique/saisonnier (voir PacksDto, CLAUDE.md §7). */
+    val packId: String? = null
 )
