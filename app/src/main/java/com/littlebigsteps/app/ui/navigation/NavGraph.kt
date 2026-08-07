@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.Collections
+import androidx.compose.material.icons.filled.Insights
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -23,18 +24,22 @@ import com.littlebigsteps.app.ui.onboarding.OnboardingScreen
 import com.littlebigsteps.app.ui.onboarding.OnboardingViewModelFactory
 import com.littlebigsteps.app.ui.portfolio.PortfolioScreen
 import com.littlebigsteps.app.ui.portfolio.PortfolioViewModelFactory
+import com.littlebigsteps.app.ui.progress.ProgressScreen
+import com.littlebigsteps.app.ui.progress.ProgressViewModelFactory
 
 private object Routes {
     const val ONBOARDING = "onboarding"
     const val HOME = "home"
     const val PORTFOLIO = "portfolio"
+    const val PROGRESS = "progress"
 }
 
 private data class BottomDestination(val route: String, val label: String, val icon: ImageVector)
 
 private val bottomDestinations = listOf(
     BottomDestination(Routes.HOME, "Défis", Icons.Filled.AutoAwesome),
-    BottomDestination(Routes.PORTFOLIO, "Portfolio", Icons.Filled.Collections)
+    BottomDestination(Routes.PORTFOLIO, "Portfolio", Icons.Filled.Collections),
+    BottomDestination(Routes.PROGRESS, "Progression", Icons.Filled.Insights)
 )
 
 /**
@@ -47,12 +52,13 @@ private val bottomDestinations = listOf(
 fun LittleBigStepsNavGraph(
     onboardingViewModelFactory: OnboardingViewModelFactory,
     challengeSelectionViewModelFactory: ChallengeSelectionViewModelFactory,
-    portfolioViewModelFactory: PortfolioViewModelFactory
+    portfolioViewModelFactory: PortfolioViewModelFactory,
+    progressViewModelFactory: ProgressViewModelFactory
 ) {
     val navController = rememberNavController()
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backStackEntry?.destination?.route
-    val showBottomBar = currentRoute == Routes.HOME || currentRoute == Routes.PORTFOLIO
+    val showBottomBar = bottomDestinations.any { it.route == currentRoute }
 
     Scaffold(
         bottomBar = {
@@ -96,6 +102,9 @@ fun LittleBigStepsNavGraph(
             }
             composable(Routes.PORTFOLIO) {
                 PortfolioScreen(factory = portfolioViewModelFactory)
+            }
+            composable(Routes.PROGRESS) {
+                ProgressScreen(factory = progressViewModelFactory)
             }
         }
     }

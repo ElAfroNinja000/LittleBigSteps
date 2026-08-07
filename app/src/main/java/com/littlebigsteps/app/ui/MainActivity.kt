@@ -9,6 +9,7 @@ import com.littlebigsteps.app.ui.challenge.ChallengeSelectionViewModelFactory
 import com.littlebigsteps.app.ui.navigation.LittleBigStepsNavGraph
 import com.littlebigsteps.app.ui.onboarding.OnboardingViewModelFactory
 import com.littlebigsteps.app.ui.portfolio.PortfolioViewModelFactory
+import com.littlebigsteps.app.ui.progress.ProgressViewModelFactory
 import com.littlebigsteps.app.ui.theme.LittleBigStepsTheme
 
 /** Point d'entrée unique de l'app (une seule Activity, navigation gérée en Compose). */
@@ -29,13 +30,17 @@ class MainActivity : ComponentActivity() {
         val portfolioViewModelFactory = PortfolioViewModelFactory(
             challengeRepository = app.challengeRepository
         )
+        val progressViewModelFactory = ProgressViewModelFactory(
+            progressRepository = app.progressRepository
+        )
 
         setContent {
             LittleBigStepsTheme {
                 LittleBigStepsNavGraph(
                     onboardingViewModelFactory = onboardingViewModelFactory,
                     challengeSelectionViewModelFactory = challengeSelectionViewModelFactory,
-                    portfolioViewModelFactory = portfolioViewModelFactory
+                    portfolioViewModelFactory = portfolioViewModelFactory,
+                    progressViewModelFactory = progressViewModelFactory
                 )
             }
         }

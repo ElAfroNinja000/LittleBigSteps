@@ -14,4 +14,7 @@ object GamificationRules {
 
     /** Niveau 1 à 0 xp, +1 niveau tous les XP_PER_LEVEL xp. */
     fun levelForXp(xp: Int): Int = (xp / XP_PER_LEVEL) + 1
+
+    /** Progression (0f-1f) vers le niveau suivant, pour une barre de progression. */
+    fun progressToNextLevel(xp: Int): Float = (xp % XP_PER_LEVEL) / XP_PER_LEVEL.toFloat()
 }
