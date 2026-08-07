@@ -12,6 +12,7 @@ import com.littlebigsteps.app.ui.challenge.ChallengeSelectionViewModelFactory
 import com.littlebigsteps.app.ui.navigation.LittleBigStepsNavGraph
 import com.littlebigsteps.app.ui.onboarding.OnboardingViewModelFactory
 import com.littlebigsteps.app.ui.portfolio.PortfolioViewModelFactory
+import com.littlebigsteps.app.ui.premium.PremiumViewModelFactory
 import com.littlebigsteps.app.ui.progress.ProgressViewModelFactory
 import com.littlebigsteps.app.ui.theme.LittleBigStepsTheme
 
@@ -47,6 +48,10 @@ class MainActivity : ComponentActivity() {
             challengeRepository = app.challengeRepository,
             exportGenerator = app.progressExportGenerator
         )
+        val premiumViewModelFactory = PremiumViewModelFactory(
+            billingRepository = app.billingRepository,
+            userPreferencesRepository = app.userPreferencesRepository
+        )
 
         setContent {
             LittleBigStepsTheme {
@@ -55,6 +60,7 @@ class MainActivity : ComponentActivity() {
                     challengeSelectionViewModelFactory = challengeSelectionViewModelFactory,
                     portfolioViewModelFactory = portfolioViewModelFactory,
                     progressViewModelFactory = progressViewModelFactory,
+                    premiumViewModelFactory = premiumViewModelFactory,
                     onOnboardingComplete = ::requestNotificationPermissionIfNeeded
                 )
             }

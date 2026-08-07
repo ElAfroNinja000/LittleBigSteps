@@ -41,6 +41,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun ProgressScreen(
     factory: ProgressViewModelFactory,
+    onNavigateToPremium: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val viewModel: ProgressViewModel = viewModel(factory = factory)
@@ -66,6 +67,13 @@ fun ProgressScreen(
         }
         items(state.mediumProgress, key = { it.mediumType }) { progress ->
             MediumProgressCard(progress)
+        }
+        if (state.mediumProgress.any { !it.isUnlocked }) {
+            item {
+                Button(onClick = onNavigateToPremium) {
+                    Text("Débloquer tous les médiums (Premium)")
+                }
+            }
         }
         item {
             ExportSection { format ->

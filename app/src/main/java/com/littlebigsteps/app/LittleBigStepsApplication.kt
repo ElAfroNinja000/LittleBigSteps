@@ -1,6 +1,8 @@
 package com.littlebigsteps.app
 
 import android.app.Application
+import com.littlebigsteps.app.billing.BillingRepository
+import com.littlebigsteps.app.billing.PlayBillingRepository
 import com.littlebigsteps.app.data.local.AppDatabase
 import com.littlebigsteps.app.data.media.InternalSouvenirPhotoStore
 import com.littlebigsteps.app.data.media.SouvenirPhotoStore
@@ -18,6 +20,8 @@ import com.littlebigsteps.app.export.CanvasProgressExportGenerator
 import com.littlebigsteps.app.export.ProgressExportGenerator
 import com.littlebigsteps.app.notification.NotificationScheduler
 import com.littlebigsteps.app.notification.WorkManagerNotificationScheduler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 
 /**
  * Point d'accès manuel (service locator léger) aux repositories. Pas de
@@ -26,6 +30,10 @@ import com.littlebigsteps.app.notification.WorkManagerNotificationScheduler
  * `(application as LittleBigStepsApplication)`.
  */
 class LittleBigStepsApplication : Application() {
+
+    // Portée process : la connexion Billing doit survivre au-delà d'un seul
+    // écran/ViewModel (PurchasesUpdatedListener reste actif tant que l'app tourne).
+    private val applicationScope = CoroutineScope(SupervisorJob())
 
     val database: AppDatabase by lazy { AppDatabase.getInstance(this) }
 
@@ -59,5 +67,16 @@ class LittleBigStepsApplication : Application() {
 
     val souvenirPhotoStore: SouvenirPhotoStore by lazy {
         InternalSouvenirPhotoStore(this)
+    }
+
+    val billingRepository: BillingRepository by lazy {
+        PlayBillingRepository(this, userPreferencesRepository, progressRepository, applicationScope)
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        // Connexion démarrée tôt pour restaurer un abonnement existant (réinstallation,
+        // nouvel appareil) avant même que l'utilisateur ouvre l'écran Premium.
+        billingRepository.startConnection()
     }
 }

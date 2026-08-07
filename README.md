@@ -46,6 +46,20 @@ permission `CAMERA` requise) ou `PickVisualMedia` (sélecteur photo système,
 aucune permission de stockage requise). Un fichier orphelin (photo prise/choisie
 puis abandonnée sans compléter le défi) est nettoyé automatiquement.
 
+## Premium (Google Play Billing)
+
+`BillingRepository` (implémenté par `PlayBillingRepository`) gère l'abonnement
+premium via la Play Billing Library directement — un seul store à gérer
+(CLAUDE.md §7, §10). La connexion démarre dès `Application.onCreate()` pour
+restaurer un abonnement existant avant même que l'utilisateur ouvre l'écran
+Premium. Un achat confirmé débloque tous les médiums
+(`ProgressRepository.ensureMediumRowsExist`) ; l'absence d'abonnement actif
+reverrouille sur le seul médium gratuit choisi à l'onboarding.
+
+⚠️ L'ID de produit (`premium_subscription` dans `PlayBillingRepository.kt`) est
+un placeholder : il doit correspondre à un abonnement réellement créé dans
+Play Console pour que `queryPremiumProductDetails()` renvoie une offre.
+
 ## Export
 
 `ProgressExportGenerator` dessine le résumé de progression (streak, niveaux,

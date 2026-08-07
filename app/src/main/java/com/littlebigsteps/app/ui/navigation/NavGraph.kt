@@ -24,6 +24,8 @@ import com.littlebigsteps.app.ui.onboarding.OnboardingScreen
 import com.littlebigsteps.app.ui.onboarding.OnboardingViewModelFactory
 import com.littlebigsteps.app.ui.portfolio.PortfolioScreen
 import com.littlebigsteps.app.ui.portfolio.PortfolioViewModelFactory
+import com.littlebigsteps.app.ui.premium.PremiumScreen
+import com.littlebigsteps.app.ui.premium.PremiumViewModelFactory
 import com.littlebigsteps.app.ui.progress.ProgressScreen
 import com.littlebigsteps.app.ui.progress.ProgressViewModelFactory
 
@@ -32,6 +34,7 @@ private object Routes {
     const val HOME = "home"
     const val PORTFOLIO = "portfolio"
     const val PROGRESS = "progress"
+    const val PREMIUM = "premium"
 }
 
 private data class BottomDestination(val route: String, val label: String, val icon: ImageVector)
@@ -54,6 +57,7 @@ fun LittleBigStepsNavGraph(
     challengeSelectionViewModelFactory: ChallengeSelectionViewModelFactory,
     portfolioViewModelFactory: PortfolioViewModelFactory,
     progressViewModelFactory: ProgressViewModelFactory,
+    premiumViewModelFactory: PremiumViewModelFactory,
     onOnboardingComplete: () -> Unit = {}
 ) {
     val navController = rememberNavController()
@@ -106,7 +110,16 @@ fun LittleBigStepsNavGraph(
                 PortfolioScreen(factory = portfolioViewModelFactory)
             }
             composable(Routes.PROGRESS) {
-                ProgressScreen(factory = progressViewModelFactory)
+                ProgressScreen(
+                    factory = progressViewModelFactory,
+                    onNavigateToPremium = { navController.navigate(Routes.PREMIUM) }
+                )
+            }
+            composable(Routes.PREMIUM) {
+                PremiumScreen(
+                    factory = premiumViewModelFactory,
+                    onBack = { navController.popBackStack() }
+                )
             }
         }
     }
