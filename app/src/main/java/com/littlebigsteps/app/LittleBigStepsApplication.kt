@@ -12,6 +12,8 @@ import com.littlebigsteps.app.data.repository.ProgressRepository
 import com.littlebigsteps.app.data.repository.ProgressRepositoryImpl
 import com.littlebigsteps.app.data.repository.UserPreferencesRepository
 import com.littlebigsteps.app.data.repository.UserPreferencesRepositoryImpl
+import com.littlebigsteps.app.export.CanvasProgressExportGenerator
+import com.littlebigsteps.app.export.ProgressExportGenerator
 import com.littlebigsteps.app.notification.NotificationScheduler
 import com.littlebigsteps.app.notification.WorkManagerNotificationScheduler
 
@@ -47,5 +49,9 @@ class LittleBigStepsApplication : Application() {
 
     val notificationScheduler: NotificationScheduler by lazy {
         WorkManagerNotificationScheduler(this)
+    }
+
+    val progressExportGenerator: ProgressExportGenerator by lazy {
+        CanvasProgressExportGenerator(this)
     }
 }

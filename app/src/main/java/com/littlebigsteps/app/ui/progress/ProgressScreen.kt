@@ -1,5 +1,8 @@
 package com.littlebigsteps.app.ui.progress
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,23 +15,29 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.LocalFireDepartment
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.littlebigsteps.app.data.local.entity.MediumProgressEntity
 import com.littlebigsteps.app.domain.GamificationRules
+import com.littlebigsteps.app.export.ExportFormat
 import com.littlebigsteps.app.ui.common.label
+import kotlinx.coroutines.launch
 
-/** Streak global + XP/niveau par médium (CLAUDE.md §4). */
+/** Streak global + XP/niveau par médium, avec export du résumé (CLAUDE.md §4, §6). */
 @Composable
 fun ProgressScreen(
     factory: ProgressViewModelFactory,
@@ -36,6 +45,8 @@ fun ProgressScreen(
 ) {
     val viewModel: ProgressViewModel = viewModel(factory = factory)
     val state by viewModel.uiState.collectAsState()
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
 
     if (state.isLoading) return
 
@@ -56,7 +67,38 @@ fun ProgressScreen(
         items(state.mediumProgress, key = { it.mediumType }) { progress ->
             MediumProgressCard(progress)
         }
+        item {
+            ExportSection { format ->
+                coroutineScope.launch {
+                    val uri = viewModel.exportSummary(format)
+                    shareExport(context, uri, format)
+                }
+            }
+        }
     }
+}
+
+@Composable
+private fun ExportSection(onExport: (ExportFormat) -> Unit) {
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text("Exporter ma progression", style = MaterialTheme.typography.titleMedium)
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            OutlinedButton(onClick = { onExport(ExportFormat.IMAGE) }) { Text("Image") }
+            Button(onClick = { onExport(ExportFormat.PDF) }) { Text("PDF") }
+        }
+    }
+}
+
+/** Ouvre le sélecteur de partage natif — pas de feed ni de compte, juste un
+ *  export autonome (CLAUDE.md §6). */
+private fun shareExport(context: Context, uri: Uri, format: ExportFormat) {
+    val mimeType = if (format == ExportFormat.PDF) "application/pdf" else "image/png"
+    val intent = Intent(Intent.ACTION_SEND).apply {
+        type = mimeType
+        putExtra(Intent.EXTRA_STREAM, uri)
+        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+    }
+    context.startActivity(Intent.createChooser(intent, "Partager ma progression"))
 }
 
 @Composable

@@ -37,6 +37,14 @@ juste après l'onboarding, selon la fréquence et l'heure choisies. La permissio
 `POST_NOTIFICATIONS` (API 33+) est demandée à ce moment-là ; un refus reste
 silencieux, sans blocage ni message culpabilisant.
 
+## Export
+
+`ProgressExportGenerator` dessine le résumé de progression (streak, niveaux,
+derniers souvenirs) sur un Canvas natif partagé entre image PNG et PDF
+(`ExportRenderer`), écrit dans le cache de l'app, puis le partage via
+`FileProvider` + l'Intent système (`ACTION_SEND`) — pas de feed, pas de compte,
+juste un export autonome (CLAUDE.md §6). Boutons sur l'écran Progression.
+
 ## Notes sur la couche repository
 
 - Toutes les écritures multi-tables (compléter un défi, mettre à jour le streak)

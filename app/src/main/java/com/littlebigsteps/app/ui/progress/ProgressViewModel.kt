@@ -1,21 +1,27 @@
 package com.littlebigsteps.app.ui.progress
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.littlebigsteps.app.data.repository.ChallengeRepository
 import com.littlebigsteps.app.data.repository.ProgressRepository
+import com.littlebigsteps.app.export.ExportFormat
+import com.littlebigsteps.app.export.ProgressExportGenerator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 /**
  * Streak global + XP/niveau par médium (CLAUDE.md §4), simple lecture réactive
- * de ProgressRepository : aucune logique de calcul ici, c'est déjà fait côté
- * repository/GamificationRules au moment de la complétion.
+ * de ProgressRepository. Gère aussi l'export image/PDF de ce même résumé (§4, §6).
  */
 class ProgressViewModel(
-    progressRepository: ProgressRepository
+    private val progressRepository: ProgressRepository,
+    private val challengeRepository: ChallengeRepository,
+    private val exportGenerator: ProgressExportGenerator
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ProgressUiState())
@@ -35,6 +41,21 @@ class ProgressViewModel(
                     isLoading = false
                 )
             }.collect { _uiState.value = it }
+        }
+    }
+
+    /** Régénère le résumé (streak, niveaux, derniers souvenirs) et renvoie un
+     *  URI content:// prêt à être partagé (voir ProgressScreen). */
+    suspend fun exportSummary(format: ExportFormat): Uri {
+        val global = progressRepository.observeGlobalProgress().first()
+        val mediums = progressRepository.observeAllMediumProgress().first()
+        val souvenirs = challengeRepository.observePortfolio().first()
+            .filter { it.completion.souvenirNote != null }
+            .take(5)
+
+        return when (format) {
+            ExportFormat.IMAGE -> exportGenerator.exportAsImage(global, mediums, souvenirs)
+            ExportFormat.PDF -> exportGenerator.exportAsPdf(global, mediums, souvenirs)
         }
     }
 }

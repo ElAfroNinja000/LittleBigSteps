@@ -42,7 +42,9 @@ class MainActivity : ComponentActivity() {
             challengeRepository = app.challengeRepository
         )
         val progressViewModelFactory = ProgressViewModelFactory(
-            progressRepository = app.progressRepository
+            progressRepository = app.progressRepository,
+            challengeRepository = app.challengeRepository,
+            exportGenerator = app.progressExportGenerator
         )
 
         setContent {
