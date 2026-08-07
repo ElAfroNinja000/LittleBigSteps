@@ -2,6 +2,8 @@ package com.littlebigsteps.app
 
 import android.app.Application
 import com.littlebigsteps.app.data.local.AppDatabase
+import com.littlebigsteps.app.data.media.InternalSouvenirPhotoStore
+import com.littlebigsteps.app.data.media.SouvenirPhotoStore
 import com.littlebigsteps.app.data.remote.ContentApiService
 import com.littlebigsteps.app.data.remote.NetworkConfig
 import com.littlebigsteps.app.data.repository.ChallengeRepository
@@ -53,5 +55,9 @@ class LittleBigStepsApplication : Application() {
 
     val progressExportGenerator: ProgressExportGenerator by lazy {
         CanvasProgressExportGenerator(this)
+    }
+
+    val souvenirPhotoStore: SouvenirPhotoStore by lazy {
+        InternalSouvenirPhotoStore(this)
     }
 }

@@ -1,4 +1,6 @@
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Correspond à context.cacheDir/exports utilisé par CanvasProgressExportGenerator -->
     <cache-path name="exports" path="exports/" />
+    <!-- Correspond à context.filesDir/souvenirs utilisé par InternalSouvenirPhotoStore -->
+    <files-path name="souvenirs" path="souvenirs/" />
 </paths>

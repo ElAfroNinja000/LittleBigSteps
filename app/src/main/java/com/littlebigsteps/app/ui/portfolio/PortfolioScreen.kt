@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.littlebigsteps.app.data.local.entity.PortfolioEntryEntity
+import com.littlebigsteps.app.ui.common.LocalPhotoThumbnail
 import com.littlebigsteps.app.ui.common.label
 import com.littlebigsteps.app.ui.common.toDisplayString
 import com.littlebigsteps.app.ui.common.toLocalDate
@@ -109,6 +110,9 @@ private fun PortfolioEntryCard(entry: PortfolioEntryEntity) {
                     "+${entry.completion.xpEarned} XP",
                 style = MaterialTheme.typography.bodyLarge
             )
+            entry.completion.souvenirPhotoPath?.let { path ->
+                LocalPhotoThumbnail(path = path)
+            }
             entry.completion.souvenirNote?.let { note ->
                 Text("« $note »", style = MaterialTheme.typography.bodyLarge)
             }

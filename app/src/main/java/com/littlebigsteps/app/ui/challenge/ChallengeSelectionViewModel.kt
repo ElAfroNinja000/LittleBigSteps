@@ -1,8 +1,10 @@
 package com.littlebigsteps.app.ui.challenge
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.littlebigsteps.app.data.local.entity.ChallengeEntity
+import com.littlebigsteps.app.data.media.SouvenirPhotoStore
 import com.littlebigsteps.app.data.repository.ChallengeRepository
 import com.littlebigsteps.app.data.repository.ProgressRepository
 import com.littlebigsteps.app.domain.model.MediumType
@@ -15,11 +17,13 @@ import kotlinx.coroutines.launch
 /**
  * Étapes "Découverte du défi" et "Réalisation & complétion" du parcours
  * (CLAUDE.md §3.2-3.3) : propose toujours 2-3 défis, laisse en choisir un,
- * puis le marquer terminé avec un souvenir optionnel et non vérifié.
+ * puis le marquer terminé avec un souvenir optionnel et non vérifié (texte
+ * et/ou photo, stockée en local via SouvenirPhotoStore).
  */
 class ChallengeSelectionViewModel(
     private val challengeRepository: ChallengeRepository,
-    private val progressRepository: ProgressRepository
+    private val progressRepository: ProgressRepository,
+    private val souvenirPhotoStore: SouvenirPhotoStore
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ChallengeSelectionUiState())
@@ -39,7 +43,13 @@ class ChallengeSelectionViewModel(
     }
 
     fun selectMedium(medium: MediumType) {
-        _uiState.value = _uiState.value.copy(mediumType = medium, selectedChallenge = null, souvenirNote = "")
+        discardPendingSouvenirPhoto()
+        _uiState.value = _uiState.value.copy(
+            mediumType = medium,
+            selectedChallenge = null,
+            souvenirNote = "",
+            souvenirPhotoPath = null
+        )
         loadOptions(medium)
     }
 
@@ -49,15 +59,58 @@ class ChallengeSelectionViewModel(
     }
 
     fun selectChallenge(challenge: ChallengeEntity) {
-        _uiState.value = _uiState.value.copy(selectedChallenge = challenge, souvenirNote = "")
+        _uiState.value = _uiState.value.copy(
+            selectedChallenge = challenge,
+            souvenirNote = "",
+            souvenirPhotoPath = null
+        )
     }
 
     fun clearSelection() {
-        _uiState.value = _uiState.value.copy(selectedChallenge = null, souvenirNote = "")
+        discardPendingSouvenirPhoto()
+        _uiState.value = _uiState.value.copy(
+            selectedChallenge = null,
+            souvenirNote = "",
+            souvenirPhotoPath = null
+        )
     }
 
     fun updateSouvenirNote(note: String) {
         _uiState.value = _uiState.value.copy(souvenirNote = note)
+    }
+
+    /** Crée le fichier cible pour l'app caméra et renvoie son URI à passer à l'Intent. */
+    fun prepareCameraCapture(): Uri {
+        discardPendingSouvenirPhoto() // une seule photo à la fois
+        val target = souvenirPhotoStore.createCaptureTarget()
+        _uiState.value = _uiState.value.copy(pendingCameraTarget = target)
+        return target.uri
+    }
+
+    /** À appeler avec le résultat de l'Intent caméra (voir ChallengeSelectionScreen). */
+    fun onCameraResult(success: Boolean) {
+        val target = _uiState.value.pendingCameraTarget ?: return
+        _uiState.value = if (success) {
+            _uiState.value.copy(souvenirPhotoPath = target.file.absolutePath, pendingCameraTarget = null)
+        } else {
+            souvenirPhotoStore.deleteIfExists(target.file.absolutePath)
+            _uiState.value.copy(pendingCameraTarget = null)
+        }
+    }
+
+    /** À appeler avec le résultat du sélecteur de galerie. */
+    fun onGalleryImageSelected(sourceUri: Uri?) {
+        if (sourceUri == null) return
+        viewModelScope.launch {
+            val file = souvenirPhotoStore.importFromUri(sourceUri) ?: return@launch
+            removeCurrentSouvenirPhotoFile() // remplace une éventuelle photo déjà choisie
+            _uiState.value = _uiState.value.copy(souvenirPhotoPath = file.absolutePath)
+        }
+    }
+
+    fun removeSouvenirPhoto() {
+        removeCurrentSouvenirPhotoFile()
+        _uiState.value = _uiState.value.copy(souvenirPhotoPath = null)
     }
 
     fun completeSelectedChallenge() {
@@ -67,19 +120,19 @@ class ChallengeSelectionViewModel(
 
         _uiState.value = state.copy(isCompleting = true)
         viewModelScope.launch {
-            // souvenirPhotoPath reste null pour l'instant : la capture photo
-            // (permissions caméra/galerie, écriture en stockage interne) n'est
-            // pas encore branchée.
             val completion = challengeRepository.completeChallenge(
                 challengeId = challenge.id,
                 mediumType = medium,
+                souvenirPhotoPath = state.souvenirPhotoPath,
                 souvenirNote = state.souvenirNote.ifBlank { null }
             )
             _uiState.value = _uiState.value.copy(
                 isCompleting = false,
                 lastCompletion = completion,
                 selectedChallenge = null,
-                souvenirNote = ""
+                souvenirNote = "",
+                souvenirPhotoPath = null,
+                pendingCameraTarget = null
             )
         }
     }
@@ -96,5 +149,16 @@ class ChallengeSelectionViewModel(
             val options = challengeRepository.pickDailyOptions(mediumType)
             _uiState.value = _uiState.value.copy(options = options, isLoading = false)
         }
+    }
+
+    private fun removeCurrentSouvenirPhotoFile() {
+        _uiState.value.souvenirPhotoPath?.let { souvenirPhotoStore.deleteIfExists(it) }
+    }
+
+    /** Nettoie tout fichier orphelin (photo déjà choisie ou capture caméra en
+     *  attente) quand on abandonne la sélection sans compléter le défi. */
+    private fun discardPendingSouvenirPhoto() {
+        _uiState.value.pendingCameraTarget?.let { souvenirPhotoStore.deleteIfExists(it.file.absolutePath) }
+        removeCurrentSouvenirPhotoFile()
     }
 }

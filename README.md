@@ -37,6 +37,15 @@ juste après l'onboarding, selon la fréquence et l'heure choisies. La permissio
 `POST_NOTIFICATIONS` (API 33+) est demandée à ce moment-là ; un refus reste
 silencieux, sans blocage ni message culpabilisant.
 
+## Photo de souvenir
+
+`SouvenirPhotoStore` écrit les photos dans le stockage interne de l'app
+(`filesDir/souvenirs`, référencées par chemin — CLAUDE.md §10, aucune synchro
+cloud). Deux sources : `TakePicture` (délègue à l'app caméra externe, aucune
+permission `CAMERA` requise) ou `PickVisualMedia` (sélecteur photo système,
+aucune permission de stockage requise). Un fichier orphelin (photo prise/choisie
+puis abandonnée sans compléter le défi) est nettoyé automatiquement.
+
 ## Export
 
 `ProgressExportGenerator` dessine le résumé de progression (streak, niveaux,

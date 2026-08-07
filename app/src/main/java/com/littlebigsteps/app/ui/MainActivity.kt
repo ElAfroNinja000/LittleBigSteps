@@ -36,7 +36,8 @@ class MainActivity : ComponentActivity() {
         )
         val challengeSelectionViewModelFactory = ChallengeSelectionViewModelFactory(
             challengeRepository = app.challengeRepository,
-            progressRepository = app.progressRepository
+            progressRepository = app.progressRepository,
+            souvenirPhotoStore = app.souvenirPhotoStore
         )
         val portfolioViewModelFactory = PortfolioViewModelFactory(
             challengeRepository = app.challengeRepository

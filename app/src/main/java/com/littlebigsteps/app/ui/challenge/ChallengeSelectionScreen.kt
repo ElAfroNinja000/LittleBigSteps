@@ -1,5 +1,9 @@
 package com.littlebigsteps.app.ui.challenge
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,11 +24,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.littlebigsteps.app.data.local.entity.ChallengeEntity
 import com.littlebigsteps.app.domain.model.MediumType
+import com.littlebigsteps.app.ui.common.LocalPhotoThumbnail
 import com.littlebigsteps.app.ui.common.label
 
 /**
@@ -58,8 +64,13 @@ fun ChallengeSelectionScreen(
             selected != null -> ChallengeDetail(
                 challenge = selected,
                 note = state.souvenirNote,
+                photoPath = state.souvenirPhotoPath,
                 isCompleting = state.isCompleting,
                 onNoteChange = viewModel::updateSouvenirNote,
+                onPrepareCameraCapture = viewModel::prepareCameraCapture,
+                onCameraResult = viewModel::onCameraResult,
+                onGallerySelected = viewModel::onGalleryImageSelected,
+                onRemovePhoto = viewModel::removeSouvenirPhoto,
                 onComplete = viewModel::completeSelectedChallenge,
                 onBack = viewModel::clearSelection
             )
@@ -128,11 +139,26 @@ private fun ChallengeOptionCard(challenge: ChallengeEntity, onClick: () -> Unit)
 private fun ChallengeDetail(
     challenge: ChallengeEntity,
     note: String,
+    photoPath: String?,
     isCompleting: Boolean,
     onNoteChange: (String) -> Unit,
+    onPrepareCameraCapture: () -> Uri,
+    onCameraResult: (Boolean) -> Unit,
+    onGallerySelected: (Uri?) -> Unit,
+    onRemovePhoto: () -> Unit,
     onComplete: () -> Unit,
     onBack: () -> Unit
 ) {
+    // TakePicture délègue à l'app caméra externe (pas de permission CAMERA requise
+    // côté app) ; PickVisualMedia utilise le sélecteur photo système (aucune
+    // permission de stockage requise non plus).
+    val cameraLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.TakePicture()
+    ) { success -> onCameraResult(success) }
+    val galleryLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.PickVisualMedia()
+    ) { uri -> onGallerySelected(uri) }
+
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         Text(challenge.title, style = MaterialTheme.typography.titleMedium)
         Text(challenge.description, style = MaterialTheme.typography.bodyLarge)
@@ -144,9 +170,33 @@ private fun ChallengeDetail(
             label = { Text("Souvenir (optionnel)") },
             modifier = Modifier.fillMaxWidth()
         )
-        // Capture photo pas encore branchée (permissions caméra/galerie + écriture
-        // en stockage interne) : souvenirPhotoPath reste null pour l'instant,
-        // voir ChallengeSelectionViewModel.completeSelectedChallenge.
+
+        if (photoPath != null) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                LocalPhotoThumbnail(path = photoPath)
+                OutlinedButton(onClick = onRemovePhoto, enabled = !isCompleting) {
+                    Text("Retirer la photo")
+                }
+            }
+        } else {
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedButton(
+                    onClick = { cameraLauncher.launch(onPrepareCameraCapture()) },
+                    enabled = !isCompleting
+                ) { Text("Prendre une photo") }
+                OutlinedButton(
+                    onClick = {
+                        galleryLauncher.launch(
+                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                        )
+                    },
+                    enabled = !isCompleting
+                ) { Text("Choisir une photo") }
+            }
+        }
 
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedButton(onClick = onBack, enabled = !isCompleting) { Text("Changer de défi") }
