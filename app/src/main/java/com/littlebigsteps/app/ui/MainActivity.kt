@@ -56,6 +56,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             LittleBigStepsTheme {
                 LittleBigStepsNavGraph(
+                    userPreferencesRepository = app.userPreferencesRepository,
                     onboardingViewModelFactory = onboardingViewModelFactory,
                     challengeSelectionViewModelFactory = challengeSelectionViewModelFactory,
                     portfolioViewModelFactory = portfolioViewModelFactory,

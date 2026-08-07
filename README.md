@@ -74,9 +74,13 @@ juste un export autonome (CLAUDE.md §6). Boutons sur l'écran Progression.
 
 - Toutes les écritures multi-tables (compléter un défi, mettre à jour le streak)
   passent par `AppDatabase.withTransaction` pour rester atomiques.
-- `NetworkConfig.CONTENT_BASE_URL` est un placeholder — à remplacer par l'URL
-  CDN réelle une fois le contenu déployé.
-- Pas encore branché à l'UI : les ViewModels restent à écrire.
+
+## Relancement de l'app
+
+`LittleBigStepsNavGraph` vérifie `UserPreferencesRepository` avant de créer le
+`NavHost` : si l'onboarding a déjà été complété (`onboardingCompletedAt`
+non-null), l'app démarre directement sur l'écran de sélection de défi au lieu
+de repasser par l'onboarding.
 
 ## Ouvrir le projet
 
