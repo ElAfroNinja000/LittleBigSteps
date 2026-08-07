@@ -53,7 +53,8 @@ fun LittleBigStepsNavGraph(
     onboardingViewModelFactory: OnboardingViewModelFactory,
     challengeSelectionViewModelFactory: ChallengeSelectionViewModelFactory,
     portfolioViewModelFactory: PortfolioViewModelFactory,
-    progressViewModelFactory: ProgressViewModelFactory
+    progressViewModelFactory: ProgressViewModelFactory,
+    onOnboardingComplete: () -> Unit = {}
 ) {
     val navController = rememberNavController()
     val backStackEntry by navController.currentBackStackEntryAsState()
@@ -94,6 +95,7 @@ fun LittleBigStepsNavGraph(
                         navController.navigate(Routes.HOME) {
                             popUpTo(Routes.ONBOARDING) { inclusive = true }
                         }
+                        onOnboardingComplete()
                     }
                 )
             }

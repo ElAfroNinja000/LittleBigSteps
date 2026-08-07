@@ -6,6 +6,7 @@ import com.littlebigsteps.app.data.repository.ProgressRepository
 import com.littlebigsteps.app.data.repository.UserPreferencesRepository
 import com.littlebigsteps.app.domain.model.Frequency
 import com.littlebigsteps.app.domain.model.MediumType
+import com.littlebigsteps.app.notification.NotificationScheduler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,7 +20,8 @@ import kotlinx.datetime.LocalTime
  */
 class OnboardingViewModel(
     private val userPreferencesRepository: UserPreferencesRepository,
-    private val progressRepository: ProgressRepository
+    private val progressRepository: ProgressRepository,
+    private val notificationScheduler: NotificationScheduler
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(OnboardingUiState())
@@ -122,6 +124,7 @@ class OnboardingViewModel(
             // Seul freeMedium démarre débloqué ; les autres médiums sélectionnés
             // restent visibles mais verrouillés tant qu'il n'y a pas de premium.
             progressRepository.ensureMediumRowsExist(unlockedMediums = setOf(freeMedium))
+            notificationScheduler.scheduleReminders(frequency, reminderTime)
             _uiState.value = _uiState.value.copy(isSaving = false, isComplete = true)
         }
     }

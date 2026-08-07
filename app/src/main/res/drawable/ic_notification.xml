@@ -1,0 +1,11 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Icône de notification (silhouette, la couleur est ignorée par le système) -->
+    <path android:fillColor="#FFFFFFFF" android:pathData="M11,4L13,4L13,15L11,15Z" />
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M12,17 C8,17 5,14 5,10.5 C5,13 8,15 12,12.5 C16,15 19,13 19,10.5 C19,14 16,17 12,17 Z" />
+</vector>

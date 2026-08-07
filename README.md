@@ -30,6 +30,13 @@ content/                  # exemples de fichiers JSON statiques (manifest + par 
 docs/data-model.md         # référence du schéma de données
 ```
 
+## Notifications
+
+`NotificationScheduler` (WorkManager, pas de FCM) programme un rappel périodique
+juste après l'onboarding, selon la fréquence et l'heure choisies. La permission
+`POST_NOTIFICATIONS` (API 33+) est demandée à ce moment-là ; un refus reste
+silencieux, sans blocage ni message culpabilisant.
+
 ## Notes sur la couche repository
 
 - Toutes les écritures multi-tables (compléter un défi, mettre à jour le streak)
