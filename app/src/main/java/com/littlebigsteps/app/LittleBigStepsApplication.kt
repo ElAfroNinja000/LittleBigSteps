@@ -53,7 +53,7 @@ class LittleBigStepsApplication : Application() {
     }
 
     val challengeRepository: ChallengeRepository by lazy {
-        ChallengeRepositoryImpl(database, progressRepository)
+        ChallengeRepositoryImpl(database, progressRepository, userPreferencesRepository)
     }
 
     val contentSyncRepository: ContentSyncRepository by lazy {

@@ -46,11 +46,22 @@ class CoreLoopE2ETest {
         tags = null
     )
 
+    private val premiumOnlyChallenge = ChallengeEntity(
+        id = "test_drawing_premium_001",
+        mediumType = MediumType.DRAWING,
+        title = "Défi thématique exclusif",
+        description = "Un défi premium de test.",
+        estimatedMinutes = 15,
+        level = ChallengeLevel.BEGINNER,
+        isPremiumOnly = true,
+        tags = null
+    )
+
     @Before
     fun setUp() {
         graph = TestAppGraph(composeTestRule.activity)
         runBlocking {
-            graph.database.challengeDao().upsertAll(listOf(seededChallenge))
+            graph.database.challengeDao().upsertAll(listOf(seededChallenge, premiumOnlyChallenge))
         }
     }
 
@@ -118,6 +129,25 @@ class CoreLoopE2ETest {
         // --- Les événements attendus ont bien été suivis (CLAUDE.md §8) ---
         assert("onboarding_completed" in graph.analyticsTracker.events)
         assert("challenge_completed" in graph.analyticsTracker.events)
+    }
+
+    @Test
+    fun premiumOnlyChallengesAreHiddenFromFreeUsers() {
+        setNavGraphContent()
+
+        composeTestRule.onNodeWithText("Un seul médium").performClick()
+        composeTestRule.onNodeWithText("Suivant").performClick()
+        composeTestRule.onNodeWithText("Dessin").performClick()
+        composeTestRule.onNodeWithText("Suivant").performClick()
+        composeTestRule.onNodeWithText("Tous les jours").performClick()
+        composeTestRule.onNodeWithText("Suivant").performClick()
+        composeTestRule.onNodeWithText("Matin (9h)").performClick()
+        composeTestRule.onNodeWithText("Terminer").performClick()
+
+        // Utilisateur gratuit par défaut : le défi isPremiumOnly ne doit jamais
+        // apparaître dans les propositions (voir ChallengeRepositoryImpl.pickDailyOptions).
+        waitUntilExists(seededChallenge.title)
+        composeTestRule.onNodeWithText(premiumOnlyChallenge.title).assertDoesNotExist()
     }
 
     @Test

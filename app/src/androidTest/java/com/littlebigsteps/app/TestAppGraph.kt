@@ -30,7 +30,7 @@ class TestAppGraph(context: Context) {
 
     val userPreferencesRepository = UserPreferencesRepositoryImpl(database.userPreferencesDao())
     val progressRepository = ProgressRepositoryImpl(database)
-    val challengeRepository = ChallengeRepositoryImpl(database, progressRepository)
+    val challengeRepository = ChallengeRepositoryImpl(database, progressRepository, userPreferencesRepository)
     val souvenirPhotoStore = InternalSouvenirPhotoStore(context)
     val exportGenerator = CanvasProgressExportGenerator(context)
 

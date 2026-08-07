@@ -7,6 +7,7 @@ import com.littlebigsteps.app.data.local.entity.CompletedChallengeEntity
 import com.littlebigsteps.app.data.local.entity.PortfolioEntryEntity
 import com.littlebigsteps.app.domain.model.MediumType
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.datetime.Clock
 
 /**
@@ -19,7 +20,9 @@ interface ChallengeRepository {
 
     fun observeChallenges(mediumType: MediumType): Flow<List<ChallengeEntity>>
 
-    /** Tire `count` défis au hasard dans le médium (2-3 par défaut, CLAUDE.md §3). */
+    /** Tire `count` défis au hasard dans le médium (2-3 par défaut, CLAUDE.md §3).
+     *  Exclut les défis isPremiumOnly tant que l'utilisateur n'est pas premium
+     *  (CLAUDE.md §7 : packs thématiques/saisonniers réservés au premium). */
     suspend fun pickDailyOptions(mediumType: MediumType, count: Int = 3): List<ChallengeEntity>
 
     /** Vue chronologique pour le portfolio, titre du défi inclus (CLAUDE.md §4). */
@@ -40,7 +43,8 @@ interface ChallengeRepository {
 
 class ChallengeRepositoryImpl(
     private val database: AppDatabase,
-    private val progressRepository: ProgressRepository
+    private val progressRepository: ProgressRepository,
+    private val userPreferencesRepository: UserPreferencesRepository
 ) : ChallengeRepository {
 
     private val challengeDao get() = database.challengeDao()
@@ -49,8 +53,13 @@ class ChallengeRepositoryImpl(
     override fun observeChallenges(mediumType: MediumType): Flow<List<ChallengeEntity>> =
         challengeDao.observeByMedium(mediumType)
 
-    override suspend fun pickDailyOptions(mediumType: MediumType, count: Int): List<ChallengeEntity> =
-        challengeDao.getAllByMedium(mediumType).shuffled().take(count)
+    override suspend fun pickDailyOptions(mediumType: MediumType, count: Int): List<ChallengeEntity> {
+        val isPremium = userPreferencesRepository.observePreferences().first()?.isPremium ?: false
+        return challengeDao.getAllByMedium(mediumType)
+            .filter { !it.isPremiumOnly || isPremium }
+            .shuffled()
+            .take(count)
+    }
 
     override fun observePortfolio(): Flow<List<PortfolioEntryEntity>> =
         completedChallengeDao.observeAll()
