@@ -65,6 +65,7 @@ dependencies {
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.billing.ktx)
+    implementation(libs.posthog.android)
 
     implementation(libs.kotlinx.datetime)
     implementation(libs.kotlinx.serialization.json)

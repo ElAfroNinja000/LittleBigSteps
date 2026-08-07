@@ -1,6 +1,8 @@
 package com.littlebigsteps.app
 
 import android.app.Application
+import com.littlebigsteps.app.analytics.AnalyticsTracker
+import com.littlebigsteps.app.analytics.PostHogAnalyticsTracker
 import com.littlebigsteps.app.billing.BillingRepository
 import com.littlebigsteps.app.billing.PlayBillingRepository
 import com.littlebigsteps.app.data.local.AppDatabase
@@ -69,12 +71,23 @@ class LittleBigStepsApplication : Application() {
         InternalSouvenirPhotoStore(this)
     }
 
+    val analyticsTracker: AnalyticsTracker by lazy {
+        PostHogAnalyticsTracker(this)
+    }
+
     val billingRepository: BillingRepository by lazy {
-        PlayBillingRepository(this, userPreferencesRepository, progressRepository, applicationScope)
+        PlayBillingRepository(
+            this,
+            userPreferencesRepository,
+            progressRepository,
+            analyticsTracker,
+            applicationScope
+        )
     }
 
     override fun onCreate() {
         super.onCreate()
+        analyticsTracker // force l'init du SDK PostHog dès le lancement de l'app
         // Connexion démarrée tôt pour restaurer un abonnement existant (réinstallation,
         // nouvel appareil) avant même que l'utilisateur ouvre l'écran Premium.
         billingRepository.startConnection()

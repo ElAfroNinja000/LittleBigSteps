@@ -70,6 +70,20 @@ derniers souvenirs) sur un Canvas natif partagé entre image PNG et PDF
 `FileProvider` + l'Intent système (`ACTION_SEND`) — pas de feed, pas de compte,
 juste un export autonome (CLAUDE.md §6). Boutons sur l'écran Progression.
 
+## Analytics
+
+`AnalyticsTracker` (implémenté par `PostHogAnalyticsTracker`) suit les métriques
+du §8 sans PII, via l'ID anonyme géré par le SDK PostHog (auto-hébergé
+recommandé) — pas de compte, pas d'identifiant lié à une personne. Événements
+suivis : `onboarding_completed`, `challenge_completed` (avec `has_souvenir` et
+`current_streak`), `premium_purchase_started`, `premium_unlocked` (uniquement
+sur une vraie conversion, pas à chaque restauration d'abonnement au lancement),
+`progress_exported`. Rétention J1/J7/J30 vient des événements de cycle de vie
+automatiques du SDK, pas d'un event dédié.
+
+⚠️ `AnalyticsConfig.API_KEY`/`HOST` sont des placeholders — sans instance
+PostHog déployée, le SDK n'envoie simplement rien (pas de crash).
+
 ## Notes sur la couche repository
 
 - Toutes les écritures multi-tables (compléter un défi, mettre à jour le streak)

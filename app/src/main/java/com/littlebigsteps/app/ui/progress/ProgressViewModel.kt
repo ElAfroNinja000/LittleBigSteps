@@ -3,6 +3,7 @@ package com.littlebigsteps.app.ui.progress
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.littlebigsteps.app.analytics.AnalyticsTracker
 import com.littlebigsteps.app.data.repository.ChallengeRepository
 import com.littlebigsteps.app.data.repository.ProgressRepository
 import com.littlebigsteps.app.export.ExportFormat
@@ -21,7 +22,8 @@ import kotlinx.coroutines.launch
 class ProgressViewModel(
     private val progressRepository: ProgressRepository,
     private val challengeRepository: ChallengeRepository,
-    private val exportGenerator: ProgressExportGenerator
+    private val exportGenerator: ProgressExportGenerator,
+    private val analyticsTracker: AnalyticsTracker
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ProgressUiState())
@@ -53,9 +55,11 @@ class ProgressViewModel(
             .filter { it.completion.souvenirNote != null }
             .take(5)
 
-        return when (format) {
+        val uri = when (format) {
             ExportFormat.IMAGE -> exportGenerator.exportAsImage(global, mediums, souvenirs)
             ExportFormat.PDF -> exportGenerator.exportAsPdf(global, mediums, souvenirs)
         }
+        analyticsTracker.trackExport(format.name)
+        return uri
     }
 }

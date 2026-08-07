@@ -33,12 +33,14 @@ class MainActivity : ComponentActivity() {
         val onboardingViewModelFactory = OnboardingViewModelFactory(
             userPreferencesRepository = app.userPreferencesRepository,
             progressRepository = app.progressRepository,
-            notificationScheduler = app.notificationScheduler
+            notificationScheduler = app.notificationScheduler,
+            analyticsTracker = app.analyticsTracker
         )
         val challengeSelectionViewModelFactory = ChallengeSelectionViewModelFactory(
             challengeRepository = app.challengeRepository,
             progressRepository = app.progressRepository,
-            souvenirPhotoStore = app.souvenirPhotoStore
+            souvenirPhotoStore = app.souvenirPhotoStore,
+            analyticsTracker = app.analyticsTracker
         )
         val portfolioViewModelFactory = PortfolioViewModelFactory(
             challengeRepository = app.challengeRepository
@@ -46,7 +48,8 @@ class MainActivity : ComponentActivity() {
         val progressViewModelFactory = ProgressViewModelFactory(
             progressRepository = app.progressRepository,
             challengeRepository = app.challengeRepository,
-            exportGenerator = app.progressExportGenerator
+            exportGenerator = app.progressExportGenerator,
+            analyticsTracker = app.analyticsTracker
         )
         val premiumViewModelFactory = PremiumViewModelFactory(
             billingRepository = app.billingRepository,

@@ -15,6 +15,7 @@ import com.android.billingclient.api.QueryPurchasesParams
 import com.android.billingclient.api.acknowledgePurchase
 import com.android.billingclient.api.queryProductDetails
 import com.android.billingclient.api.queryPurchasesAsync
+import com.littlebigsteps.app.analytics.AnalyticsTracker
 import com.littlebigsteps.app.data.repository.ProgressRepository
 import com.littlebigsteps.app.data.repository.UserPreferencesRepository
 import com.littlebigsteps.app.domain.model.MediumType
@@ -32,6 +33,7 @@ class PlayBillingRepository(
     context: Context,
     private val userPreferencesRepository: UserPreferencesRepository,
     private val progressRepository: ProgressRepository,
+    private val analyticsTracker: AnalyticsTracker,
     private val externalScope: CoroutineScope
 ) : BillingRepository, PurchasesUpdatedListener {
 
@@ -78,6 +80,7 @@ class PlayBillingRepository(
         val flowParams = BillingFlowParams.newBuilder()
             .setProductDetailsParamsList(listOf(productDetailsParams))
             .build()
+        analyticsTracker.trackPremiumPurchaseStarted()
         billingClient.launchBillingFlow(activity, flowParams)
     }
 
@@ -108,7 +111,14 @@ class PlayBillingRepository(
                 .build()
             billingClient.acknowledgePurchase(ackParams)
         }
+
+        // handlePurchase() est aussi appelé par restorePurchases() à chaque
+        // lancement d'app pour un abonné déjà premium : ne compter la conversion
+        // que si l'app ne le savait pas encore, pour ne pas polluer le funnel
+        // avec un "premium_unlocked" à chaque session (CLAUDE.md §8).
+        val wasAlreadyPremium = userPreferencesRepository.observePreferences().first()?.isPremium == true
         unlockPremium()
+        if (!wasAlreadyPremium) analyticsTracker.trackPremiumUnlocked()
     }
 
     private suspend fun unlockPremium() {

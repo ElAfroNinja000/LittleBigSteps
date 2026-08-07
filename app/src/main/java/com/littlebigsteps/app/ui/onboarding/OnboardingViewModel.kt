@@ -2,6 +2,7 @@ package com.littlebigsteps.app.ui.onboarding
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.littlebigsteps.app.analytics.AnalyticsTracker
 import com.littlebigsteps.app.data.repository.ProgressRepository
 import com.littlebigsteps.app.data.repository.UserPreferencesRepository
 import com.littlebigsteps.app.domain.model.Frequency
@@ -21,7 +22,8 @@ import kotlinx.datetime.LocalTime
 class OnboardingViewModel(
     private val userPreferencesRepository: UserPreferencesRepository,
     private val progressRepository: ProgressRepository,
-    private val notificationScheduler: NotificationScheduler
+    private val notificationScheduler: NotificationScheduler,
+    private val analyticsTracker: AnalyticsTracker
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(OnboardingUiState())
@@ -125,6 +127,11 @@ class OnboardingViewModel(
             // restent visibles mais verrouillés tant qu'il n'y a pas de premium.
             progressRepository.ensureMediumRowsExist(unlockedMediums = setOf(freeMedium))
             notificationScheduler.scheduleReminders(frequency, reminderTime)
+            analyticsTracker.trackOnboardingCompleted(
+                isMultiMedium = state.mode == OnboardingMode.MULTI,
+                mediumCount = state.selectedMediums.size,
+                frequency = frequency
+            )
             _uiState.value = _uiState.value.copy(isSaving = false, isComplete = true)
         }
     }

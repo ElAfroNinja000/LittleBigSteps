@@ -3,6 +3,7 @@ package com.littlebigsteps.app.ui.challenge
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.littlebigsteps.app.analytics.AnalyticsTracker
 import com.littlebigsteps.app.data.local.entity.ChallengeEntity
 import com.littlebigsteps.app.data.media.SouvenirPhotoStore
 import com.littlebigsteps.app.data.repository.ChallengeRepository
@@ -23,7 +24,8 @@ import kotlinx.coroutines.launch
 class ChallengeSelectionViewModel(
     private val challengeRepository: ChallengeRepository,
     private val progressRepository: ProgressRepository,
-    private val souvenirPhotoStore: SouvenirPhotoStore
+    private val souvenirPhotoStore: SouvenirPhotoStore,
+    private val analyticsTracker: AnalyticsTracker
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ChallengeSelectionUiState())
@@ -125,6 +127,12 @@ class ChallengeSelectionViewModel(
                 mediumType = medium,
                 souvenirPhotoPath = state.souvenirPhotoPath,
                 souvenirNote = state.souvenirNote.ifBlank { null }
+            )
+            val currentStreak = progressRepository.observeGlobalProgress().first()?.currentStreak ?: 0
+            analyticsTracker.trackChallengeCompleted(
+                mediumType = medium,
+                hasSouvenir = state.souvenirPhotoPath != null || state.souvenirNote.isNotBlank(),
+                currentStreak = currentStreak
             )
             _uiState.value = _uiState.value.copy(
                 isCompleting = false,
