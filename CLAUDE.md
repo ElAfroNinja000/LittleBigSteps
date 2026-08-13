@@ -207,10 +207,22 @@ depuis un agent seul (comptes/paiement/consoles externes) :
 
 ## 14. Pour reprendre ce projet
 
-- **Jamais buildé/lancé réellement** : pas de JDK 17+/SDK Android/Android
-  Studio disponibles sur la machine où ce projet a été développé jusqu'ici. Le
-  code n'a donc jamais été compilé — traiter tout comme non-vérifié tant qu'un
-  premier build réel n'a pas eu lieu.
+- **Build réel effectué le 2026-08-08** : JDK 17, Android SDK (platform 34,
+  build-tools 34.0.0) et un émulateur (AVD `3dps_test`, API 34 x86_64) sont
+  disponibles sur `D:\Dev\android-sdk`, wrapper Gradle généré et committé. Le
+  code compile (`./gradlew assembleDebug`) et le core loop a été vérifié
+  fonctionnel sur émulateur (voir historique de session pour le détail des
+  bugs trouvés/corrigés à cette occasion).
+- **Ne jamais lancer l'émulateur Android de sa propre initiative** — seulement
+  si l'utilisateur le demande explicitement (build/compilation seuls ne le
+  nécessitent pas). Si un émulateur est déjà démarré par l'utilisateur, on peut
+  s'y connecter, mais ne pas en démarrer un nouveau sans consigne explicite.
+- **Ne jamais exécuter les tests (`connectedAndroidTest`, `am instrument`, ou
+  toute exécution sur émulateur/appareil) de sa propre initiative** — seulement
+  si l'utilisateur le demande clairement. Compiler le code de test
+  (`compileXxxAndroidTestKotlin`, pour vérifier que ça build) reste normal et
+  ne compte pas comme "lancer les tests" — c'est l'exécution réelle sur
+  émulateur/appareil qui nécessite une consigne explicite.
 - **Repo distant** : `https://github.com/ElAfroNinja000/LittleBigSteps`,
   branche `master`. Tout est poussé au fil de l'eau, un commit par
   fonctionnalité (voir `git log` pour l'historique détaillé des décisions).

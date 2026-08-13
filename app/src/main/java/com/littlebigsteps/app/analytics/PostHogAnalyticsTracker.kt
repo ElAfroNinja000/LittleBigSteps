@@ -30,7 +30,7 @@ class PostHogAnalyticsTracker(context: Context) : AnalyticsTracker {
             properties = mapOf(
                 "is_multi_medium" to isMultiMedium,
                 "medium_count" to mediumCount,
-                "reminder_frequency" to frequency.name
+                "reminder_frequency" to frequency.timesPerWeek
             )
         )
     }

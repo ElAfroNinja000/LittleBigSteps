@@ -27,6 +27,23 @@ android {
         }
     }
 
+    // Flavors de test manuel uniquement (pas un vrai modèle de distribution) :
+    // permettent d'installer une variante "premium forcé" à côté de la variante
+    // normale sur le même appareil, sans dépendre de Play Billing (§13 CLAUDE.md).
+    flavorDimensions += "tier"
+    productFlavors {
+        create("free") {
+            dimension = "tier"
+            buildConfigField("boolean", "FORCE_PREMIUM", "false")
+        }
+        create("premium") {
+            dimension = "tier"
+            applicationIdSuffix = ".premiumtest"
+            versionNameSuffix = "-premium-test"
+            buildConfigField("boolean", "FORCE_PREMIUM", "true")
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -38,6 +55,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 

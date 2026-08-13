@@ -3,6 +3,7 @@ package com.littlebigsteps.app.data.local
 import androidx.room.TypeConverter
 import com.littlebigsteps.app.domain.model.Badge
 import com.littlebigsteps.app.domain.model.ChallengeLevel
+import com.littlebigsteps.app.domain.model.ChallengeStatus
 import com.littlebigsteps.app.domain.model.Frequency
 import com.littlebigsteps.app.domain.model.MediumType
 import kotlinx.datetime.Instant
@@ -70,10 +71,17 @@ class Converters {
         value?.let { ChallengeLevel.valueOf(it) }
 
     @TypeConverter
-    fun frequencyToString(value: Frequency?): String? = value?.name
+    fun frequencyToInt(value: Frequency?): Int? = value?.timesPerWeek
 
     @TypeConverter
-    fun stringToFrequency(value: String?): Frequency? = value?.let { Frequency.valueOf(it) }
+    fun intToFrequency(value: Int?): Frequency? = value?.let { Frequency(it) }
+
+    @TypeConverter
+    fun challengeStatusToString(value: ChallengeStatus?): String? = value?.name
+
+    @TypeConverter
+    fun stringToChallengeStatus(value: String?): ChallengeStatus? =
+        value?.let { ChallengeStatus.valueOf(it) }
 
     @TypeConverter
     fun badgeToString(value: Badge?): String? = value?.name

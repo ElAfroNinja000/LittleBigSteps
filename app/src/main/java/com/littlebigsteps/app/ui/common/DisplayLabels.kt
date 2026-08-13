@@ -1,6 +1,7 @@
 package com.littlebigsteps.app.ui.common
 
 import com.littlebigsteps.app.domain.model.Badge
+import com.littlebigsteps.app.domain.model.ChallengeStatus
 import com.littlebigsteps.app.domain.model.Frequency
 import com.littlebigsteps.app.domain.model.MediumType
 
@@ -12,10 +13,16 @@ fun MediumType.label(): String = when (this) {
     MediumType.CRAFT -> "Artisanat"
 }
 
-fun Frequency.label(): String = when (this) {
-    Frequency.DAILY -> "Tous les jours"
-    Frequency.FEW_TIMES_WEEK -> "Quelques fois par semaine"
-    Frequency.WEEKLY -> "Une fois par semaine"
+fun Frequency.label(): String = when (timesPerWeek) {
+    7 -> "Tous les jours"
+    1 -> "1 fois par semaine"
+    else -> "$timesPerWeek fois par semaine"
+}
+
+fun ChallengeStatus.label(): String = when (this) {
+    ChallengeStatus.DRAFT -> "Brouillon"
+    ChallengeStatus.IN_PROGRESS -> "En cours"
+    ChallengeStatus.DONE -> "Terminé"
 }
 
 fun Badge.label(): String = when (this) {

@@ -24,6 +24,8 @@ import com.littlebigsteps.app.notification.NotificationScheduler
 import com.littlebigsteps.app.notification.WorkManagerNotificationScheduler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 /**
@@ -96,5 +98,15 @@ class LittleBigStepsApplication : Application() {
         // lancement + périodiquement"). Échec silencieux : le cache local existant
         // (s'il y en a un) reste utilisable hors-ligne.
         applicationScope.launch { runCatching { contentSyncRepository.syncIfNeeded() } }
+
+        // Flavor de test manuel uniquement (voir app/build.gradle.kts) : simule un
+        // achat déjà effectué dès la fin de l'onboarding, sans passer par Play
+        // Billing. N'existe pas dans le flavor "free" (FORCE_PREMIUM = false).
+        if (BuildConfig.FORCE_PREMIUM) {
+            applicationScope.launch {
+                userPreferencesRepository.observePreferences().filterNotNull().first()
+                userPreferencesRepository.setPremium(true)
+            }
+        }
     }
 }

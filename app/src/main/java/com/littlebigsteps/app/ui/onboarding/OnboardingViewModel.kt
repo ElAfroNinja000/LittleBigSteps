@@ -2,6 +2,7 @@ package com.littlebigsteps.app.ui.onboarding
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.littlebigsteps.app.BuildConfig
 import com.littlebigsteps.app.analytics.AnalyticsTracker
 import com.littlebigsteps.app.data.repository.ProgressRepository
 import com.littlebigsteps.app.data.repository.UserPreferencesRepository
@@ -29,28 +30,23 @@ class OnboardingViewModel(
     private val _uiState = MutableStateFlow(OnboardingUiState())
     val uiState: StateFlow<OnboardingUiState> = _uiState.asStateFlow()
 
-    fun selectMode(mode: OnboardingMode) {
-        val state = _uiState.value
-        _uiState.value = state.copy(
-            mode = mode,
-            // repartir d'une sélection propre si l'utilisateur change d'avis de mode
-            selectedMediums = emptySet(),
-            freeMedium = null
-        )
-    }
-
+    /** Premium : sélection multiple (rien n'empêche d'en cocher plusieurs pour
+     *  les voir apparaître verrouillés). Free : sélection unique — un seul
+     *  médium sera de toute façon débloqué gratuitement (CLAUDE.md §7), inutile
+     *  de faire croire qu'on peut en garder plusieurs. */
     fun toggleMedium(medium: MediumType) {
         val state = _uiState.value
-        val mode = state.mode ?: return
-        val newSelection = when (mode) {
-            OnboardingMode.MONO -> setOf(medium) // un seul choix possible
-            OnboardingMode.MULTI ->
-                if (medium in state.selectedMediums) state.selectedMediums - medium
-                else state.selectedMediums + medium
+        val newSelection = if (BuildConfig.FORCE_PREMIUM) {
+            if (medium in state.selectedMediums) state.selectedMediums - medium
+            else state.selectedMediums + medium
+        } else {
+            setOf(medium)
         }
         _uiState.value = state.copy(
             selectedMediums = newSelection,
-            freeMedium = if (mode == OnboardingMode.MONO) newSelection.firstOrNull() else state.freeMedium
+            // Un seul médium sélectionné : forcément celui-là le médium gratuit.
+            // Plusieurs : on laisse FREE_MEDIUM_CHOICE trancher.
+            freeMedium = if (newSelection.size == 1) newSelection.first() else state.freeMedium
         )
     }
 
@@ -58,8 +54,8 @@ class OnboardingViewModel(
         _uiState.value = _uiState.value.copy(freeMedium = medium)
     }
 
-    fun selectFrequency(frequency: Frequency) {
-        _uiState.value = _uiState.value.copy(frequency = frequency)
+    fun selectFrequency(timesPerWeek: Int) {
+        _uiState.value = _uiState.value.copy(frequency = Frequency(timesPerWeek))
     }
 
     fun selectReminderTime(time: LocalTime) {
@@ -82,38 +78,40 @@ class OnboardingViewModel(
     /** Saute FREE_MEDIUM_CHOICE si un seul médium a été sélectionné : il est
      *  alors forcément le médium gratuit, pas besoin de le redemander. */
     private fun nextStepFor(state: OnboardingUiState): OnboardingStep = when (state.step) {
-        OnboardingStep.MODE_CHOICE -> OnboardingStep.MEDIUM_CHOICE
+        OnboardingStep.WELCOME -> OnboardingStep.MEDIUM_CHOICE
         OnboardingStep.MEDIUM_CHOICE ->
-            if (state.mode == OnboardingMode.MULTI && state.selectedMediums.size > 1) {
+            if (state.selectedMediums.size > 1) {
                 OnboardingStep.FREE_MEDIUM_CHOICE
             } else {
                 OnboardingStep.FREQUENCY_CHOICE
             }
         OnboardingStep.FREE_MEDIUM_CHOICE -> OnboardingStep.FREQUENCY_CHOICE
-        OnboardingStep.FREQUENCY_CHOICE -> OnboardingStep.REMINDER_TIME_CHOICE
-        OnboardingStep.REMINDER_TIME_CHOICE -> OnboardingStep.DONE
+        OnboardingStep.FREQUENCY_CHOICE -> OnboardingStep.REMINDER_HOUR_CHOICE
+        OnboardingStep.REMINDER_HOUR_CHOICE -> OnboardingStep.REMINDER_MINUTE_CHOICE
+        OnboardingStep.REMINDER_MINUTE_CHOICE -> OnboardingStep.DONE
         OnboardingStep.DONE -> OnboardingStep.DONE
     }
 
     private fun previousStepFor(state: OnboardingUiState): OnboardingStep = when (state.step) {
-        OnboardingStep.MODE_CHOICE -> OnboardingStep.MODE_CHOICE
-        OnboardingStep.MEDIUM_CHOICE -> OnboardingStep.MODE_CHOICE
+        OnboardingStep.WELCOME -> OnboardingStep.WELCOME
+        OnboardingStep.MEDIUM_CHOICE -> OnboardingStep.MEDIUM_CHOICE
         OnboardingStep.FREE_MEDIUM_CHOICE -> OnboardingStep.MEDIUM_CHOICE
         OnboardingStep.FREQUENCY_CHOICE ->
-            if (state.mode == OnboardingMode.MULTI && state.selectedMediums.size > 1) {
+            if (state.selectedMediums.size > 1) {
                 OnboardingStep.FREE_MEDIUM_CHOICE
             } else {
                 OnboardingStep.MEDIUM_CHOICE
             }
-        OnboardingStep.REMINDER_TIME_CHOICE -> OnboardingStep.FREQUENCY_CHOICE
-        OnboardingStep.DONE -> OnboardingStep.REMINDER_TIME_CHOICE
+        OnboardingStep.REMINDER_HOUR_CHOICE -> OnboardingStep.FREQUENCY_CHOICE
+        OnboardingStep.REMINDER_MINUTE_CHOICE -> OnboardingStep.REMINDER_HOUR_CHOICE
+        OnboardingStep.DONE -> OnboardingStep.REMINDER_MINUTE_CHOICE
     }
 
     private fun submit() {
         val state = _uiState.value
         val freeMedium = state.freeMedium ?: state.selectedMediums.firstOrNull() ?: return
-        val frequency = state.frequency ?: return
-        val reminderTime = state.reminderTime ?: return
+        val frequency = state.frequency
+        val reminderTime = state.reminderTime
 
         _uiState.value = state.copy(isSaving = true)
         viewModelScope.launch {
@@ -128,7 +126,7 @@ class OnboardingViewModel(
             progressRepository.ensureMediumRowsExist(unlockedMediums = setOf(freeMedium))
             notificationScheduler.scheduleReminders(frequency, reminderTime)
             analyticsTracker.trackOnboardingCompleted(
-                isMultiMedium = state.mode == OnboardingMode.MULTI,
+                isMultiMedium = state.selectedMediums.size > 1,
                 mediumCount = state.selectedMediums.size,
                 frequency = frequency
             )

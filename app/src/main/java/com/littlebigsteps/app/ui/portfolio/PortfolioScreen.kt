@@ -5,13 +5,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.spacedBy
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Card
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -24,6 +23,7 @@ import com.littlebigsteps.app.ui.common.LocalPhotoThumbnail
 import com.littlebigsteps.app.ui.common.label
 import com.littlebigsteps.app.ui.common.toDisplayString
 import com.littlebigsteps.app.ui.common.toLocalDate
+import com.littlebigsteps.app.ui.theme.mediumColors
 
 /** Vue chronologique des défis complétés, filtrable par médium et par date (CLAUDE.md §4). */
 @Composable
@@ -40,7 +40,7 @@ fun PortfolioScreen(
             .padding(24.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text("Portfolio", style = MaterialTheme.typography.titleMedium)
+        Text("Portfolio", style = MaterialTheme.typography.headlineSmall)
 
         if (state.availableMediums.size > 1) {
             LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -84,7 +84,7 @@ fun PortfolioScreen(
         when {
             state.isLoading -> Text("Chargement…", style = MaterialTheme.typography.bodyLarge)
             filtered.isEmpty() -> Text(
-                "Aucun défi complété pour l'instant — ton portfolio se remplira au fil des défis.",
+                "Aucune activité complétée pour l'instant — ton portfolio se remplira au fil de tes créations.",
                 style = MaterialTheme.typography.bodyLarge
             )
             else -> LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -96,19 +96,27 @@ fun PortfolioScreen(
     }
 }
 
+/** Même code couleur que la liste d'activités : le portfolio se parcourt à
+ *  l'œil, on retrouve ses médiums sans lire les libellés. */
 @Composable
 private fun PortfolioEntryCard(entry: PortfolioEntryEntity) {
-    Card(modifier = Modifier.fillMaxWidth()) {
-        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+    val colors = mediumColors(entry.completion.mediumType)
+    Surface(
+        shape = MaterialTheme.shapes.medium,
+        color = colors.container,
+        contentColor = colors.onContainer,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
             Text(
-                entry.challengeTitle ?: "Défi retiré du catalogue",
+                entry.challengeTitle ?: "Activité retirée du catalogue",
                 style = MaterialTheme.typography.titleMedium
             )
             Text(
                 "${entry.completion.mediumType.label()} · " +
                     "${entry.completion.completedAt.toLocalDate().toDisplayString()} · " +
                     "+${entry.completion.xpEarned} XP",
-                style = MaterialTheme.typography.bodyLarge
+                style = MaterialTheme.typography.bodyMedium
             )
             entry.completion.souvenirPhotoPath?.let { path ->
                 LocalPhotoThumbnail(path = path)

@@ -9,8 +9,10 @@ import androidx.compose.material.icons.filled.Collections
 import androidx.compose.material.icons.filled.Insights
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -47,7 +49,7 @@ private object Routes {
 private data class BottomDestination(val route: String, val label: String, val icon: ImageVector)
 
 private val bottomDestinations = listOf(
-    BottomDestination(Routes.HOME, "Défis", Icons.Filled.AutoAwesome),
+    BottomDestination(Routes.HOME, "Activités", Icons.Filled.AutoAwesome),
     BottomDestination(Routes.PORTFOLIO, "Portfolio", Icons.Filled.Collections),
     BottomDestination(Routes.PROGRESS, "Progression", Icons.Filled.Insights)
 )
@@ -88,7 +90,9 @@ fun LittleBigStepsNavGraph(
     Scaffold(
         bottomBar = {
             if (showBottomBar) {
-                NavigationBar {
+                // Barre posée à plat sur le fond de page (pas de teinte propre) :
+                // seule la pastille mint de l'onglet actif marque la sélection.
+                NavigationBar(containerColor = MaterialTheme.colorScheme.background) {
                     bottomDestinations.forEach { destination ->
                         NavigationBarItem(
                             selected = currentRoute == destination.route,
@@ -100,7 +104,14 @@ fun LittleBigStepsNavGraph(
                                 }
                             },
                             icon = { Icon(destination.icon, contentDescription = destination.label) },
-                            label = { Text(destination.label) }
+                            label = { Text(destination.label) },
+                            colors = NavigationBarItemDefaults.colors(
+                                indicatorColor = MaterialTheme.colorScheme.primary,
+                                selectedIconColor = MaterialTheme.colorScheme.onPrimary,
+                                selectedTextColor = MaterialTheme.colorScheme.onBackground,
+                                unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
                         )
                     }
                 }

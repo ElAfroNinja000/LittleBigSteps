@@ -6,15 +6,19 @@ statique). Voir aussi [CLAUDE.md](../CLAUDE.md) pour le contexte produit complet
 Décisions actées :
 - Un défi peut être refait plusieurs fois (pas de contrainte d'unicité sur les complétions).
 - Le souvenir d'une complétion peut combiner photo **et** note texte librement (deux champs nullable indépendants).
-- Fréquence de rappel : trois presets à l'onboarding — quotidien, quelques fois par semaine, hebdomadaire.
+- Fréquence de rappel : nombre de fois par semaine (1 à 7), choisi via une roue de sélection numérique à l'onboarding — pas de presets.
+- Une activité passe par un statut auto-déclaré (Brouillon/En cours/Terminé, jauge tappable) entre le choix et la finalisation — aucune vérification (CLAUDE.md §9).
 
 ## Enums
 
 - **MediumType** : `PHOTO`, `DRAWING`, `WRITING`, `CRAFT`
 - **ChallengeLevel** : `BEGINNER` (seul niveau au lancement), `INTERMEDIATE`, `ADVANCED` (réservés au futur)
-- **Frequency** : `DAILY`, `FEW_TIMES_WEEK`, `WEEKLY`
+- **ChallengeStatus** : `DRAFT`, `IN_PROGRESS`, `DONE` — statut d'une activité "En cours" (voir ChallengeProgressEntity)
 - **Badge** : `STREAK_7`, `STREAK_30`, `TEN_COMPLETIONS`, `FIFTY_COMPLETIONS`, `LEVEL_5_ANY_MEDIUM`
   — cosmétiques exclusifs premium (CLAUDE.md §7), voir `domain/BadgeEvaluator.kt`
+
+**Frequency** n'est plus un enum mais une classe (`timesPerWeek: Int`, 1 à 7),
+stockée telle quelle (Int) en base.
 
 ## Entités Room (données locales utilisateur)
 
@@ -88,6 +92,21 @@ Un défi peut être refait : pas de contrainte d'unicité sur `challengeId`.
 | souvenirPhotoPath | String? | chemin stockage interne |
 | souvenirNote | String? | photo et note coexistent librement |
 | xpEarned | Int | snapshot au moment du complete (robuste si les règles XP changent) |
+
+### ChallengeProgressEntity — une activité "En cours" (PK = challengeId)
+Au plus une ligne par défi : on ne peut pas démarrer deux fois la même
+activité sans d'abord la finaliser.
+| champ | type | note |
+|---|---|---|
+| challengeId | String (PK, FK → ChallengeEntity.id, `CASCADE` on delete) | |
+| mediumType | MediumType | dénormalisé, pour filtrer sans jointure |
+| status | ChallengeStatus | Brouillon/En cours/Terminé, avancé par tap direct sur la jauge |
+| startedAt | Instant | fixé au `startChallenge`, jamais modifié par un changement de statut |
+
+Créée par `ChallengeRepositoryImpl.startChallenge` ("Choisir" sur une nouvelle
+activité), supprimée par `completeChallenge` (finalisation, même transaction
+que l'enregistrement dans `CompletedChallengeEntity`). Exclut le défi des
+prochains tirages `pickDailyOptions` tant qu'elle existe.
 
 ### ContentManifestEntity — singleton
 Suit la version synchronisée de `packs.json` (contenu additionnel, pas lié à
@@ -163,6 +182,10 @@ optionnel (son absence ne fait pas échouer la synchro du catalogue de base) :
 
 ### PortfolioEntryEntity — projection de requête (pas une table)
 Jointure `completed_challenges` + `challenges` (titre), utilisée par le portfolio.
+
+### InProgressChallengeEntity — projection de requête (pas une table)
+Jointure `challenge_progress` + `challenges` (défi complet), utilisée par la
+section "En cours" de l'écran Mes activités.
 `challengeTitle` est `null` si le défi a depuis disparu du catalogue.
 
 ### MediumContentVersionEntity — une ligne par médium

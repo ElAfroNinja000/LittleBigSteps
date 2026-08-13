@@ -8,6 +8,7 @@ import androidx.room.TypeConverters
 import com.littlebigsteps.app.data.local.dao.BadgeDao
 import com.littlebigsteps.app.data.local.dao.ChallengeDao
 import com.littlebigsteps.app.data.local.dao.ChallengePackDao
+import com.littlebigsteps.app.data.local.dao.ChallengeProgressDao
 import com.littlebigsteps.app.data.local.dao.CompletedChallengeDao
 import com.littlebigsteps.app.data.local.dao.ContentManifestDao
 import com.littlebigsteps.app.data.local.dao.GlobalProgressDao
@@ -16,6 +17,7 @@ import com.littlebigsteps.app.data.local.dao.MediumProgressDao
 import com.littlebigsteps.app.data.local.dao.UserPreferencesDao
 import com.littlebigsteps.app.data.local.entity.ChallengeEntity
 import com.littlebigsteps.app.data.local.entity.ChallengePackEntity
+import com.littlebigsteps.app.data.local.entity.ChallengeProgressEntity
 import com.littlebigsteps.app.data.local.entity.CompletedChallengeEntity
 import com.littlebigsteps.app.data.local.entity.ContentManifestEntity
 import com.littlebigsteps.app.data.local.entity.GlobalProgressEntity
@@ -40,9 +42,10 @@ import com.littlebigsteps.app.data.local.entity.UserPreferencesEntity
         ContentManifestEntity::class,
         MediumContentVersionEntity::class,
         ChallengePackEntity::class,
-        UnlockedBadgeEntity::class
+        UnlockedBadgeEntity::class,
+        ChallengeProgressEntity::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = true
 )
 @TypeConverters(Converters::class)
@@ -57,6 +60,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun mediumContentVersionDao(): MediumContentVersionDao
     abstract fun challengePackDao(): ChallengePackDao
     abstract fun badgeDao(): BadgeDao
+    abstract fun challengeProgressDao(): ChallengeProgressDao
 
     companion object {
         private const val DATABASE_NAME = "little_big_steps.db"
@@ -70,7 +74,13 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     DATABASE_NAME
-                ).build().also { instance = it }
+                )
+                    // Pas encore publiée (CLAUDE.md §14) : pas de vraie donnée
+                    // utilisateur à préserver entre changements de schéma pour
+                    // l'instant, une vraie migration viendra avant la sortie.
+                    .fallbackToDestructiveMigration()
+                    .build()
+                    .also { instance = it }
             }
     }
 }

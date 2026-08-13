@@ -17,7 +17,7 @@ data class UserPreferencesEntity(
     @PrimaryKey val id: Int = SINGLETON_ID,
     val selectedMediums: List<MediumType> = emptyList(),
     val freeMedium: MediumType,
-    val reminderFrequency: Frequency = Frequency.DAILY,
+    val reminderFrequency: Frequency = Frequency(7),
     val reminderTime: LocalTime,
     val isPremium: Boolean = false,
     val onboardingCompletedAt: Instant? = null

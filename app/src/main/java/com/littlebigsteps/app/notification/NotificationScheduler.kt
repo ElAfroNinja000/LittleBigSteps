@@ -29,7 +29,7 @@ class WorkManagerNotificationScheduler(
         NotificationHelper.ensureChannel(context)
 
         val request = PeriodicWorkRequestBuilder<ReminderWorker>(
-            frequency.toRepeatIntervalDays(), TimeUnit.DAYS
+            frequency.repeatIntervalDays.toLong(), TimeUnit.DAYS
         )
             .setInitialDelay(calculateInitialDelayMillis(reminderTime), TimeUnit.MILLISECONDS)
             .build()
@@ -47,16 +47,11 @@ class WorkManagerNotificationScheduler(
         WorkManager.getInstance(context).cancelUniqueWork(WORK_NAME)
     }
 
-    /** ~3-4 rappels par semaine pour FEW_TIMES_WEEK. WorkManager rejoue toutes les
-     *  `repeatInterval` depuis l'enqueue sans recaler l'heure exacte à chaque
-     *  répétition : un décalage progressif est possible, acceptable pour un
-     *  rappel motivant plutôt qu'une alarme critique. */
-    private fun Frequency.toRepeatIntervalDays(): Long = when (this) {
-        Frequency.DAILY -> 1L
-        Frequency.FEW_TIMES_WEEK -> 2L
-        Frequency.WEEKLY -> 7L
-    }
-
+    // Intervalle dérivé de Frequency.repeatIntervalDays (voir ce fichier pour
+    // le détail de l'arrondi). WorkManager rejoue toutes les `repeatInterval`
+    // depuis l'enqueue sans recaler l'heure exacte à chaque répétition : un
+    // décalage progressif est possible, acceptable pour un rappel motivant
+    // plutôt qu'une alarme critique.
     private fun calculateInitialDelayMillis(reminderTime: LocalTime): Long {
         val timeZone = TimeZone.currentSystemDefault()
         val now = Clock.System.now()

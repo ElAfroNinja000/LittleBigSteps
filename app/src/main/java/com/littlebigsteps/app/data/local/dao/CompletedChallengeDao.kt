@@ -7,6 +7,7 @@ import com.littlebigsteps.app.data.local.entity.CompletedChallengeEntity
 import com.littlebigsteps.app.data.local.entity.PortfolioEntryEntity
 import com.littlebigsteps.app.domain.model.MediumType
 import kotlinx.coroutines.flow.Flow
+import kotlinx.datetime.Instant
 
 @Dao
 interface CompletedChallengeDao {
@@ -37,4 +38,10 @@ interface CompletedChallengeDao {
             "ORDER BY completedAt DESC"
     )
     fun observeWithSouvenirs(): Flow<List<CompletedChallengeEntity>>
+
+    /** Dernière complétion pour ce médium, null si aucune — utilisée pour
+     *  retarder la proposition de nouvelles activités selon la fréquence
+     *  choisie (voir ChallengeRepositoryImpl.pickDailyOptions). */
+    @Query("SELECT MAX(completedAt) FROM completed_challenges WHERE mediumType = :mediumType")
+    suspend fun lastCompletedAt(mediumType: MediumType): Instant?
 }

@@ -1,8 +1,6 @@
 package com.littlebigsteps.app
 
 import androidx.activity.ComponentActivity
-import androidx.compose.ui.test.assertDoesNotExist
-import androidx.compose.ui.test.assertExists
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithText
@@ -104,28 +102,37 @@ class CoreLoopE2ETest {
     fun completingOnboardingAndAChallengeUpdatesPortfolioAndProgress() {
         setNavGraphContent()
 
-        // --- Onboarding : mono-médium Dessin, rappel quotidien le matin ---
-        composeTestRule.onNodeWithText("Un seul médium").performClick()
-        composeTestRule.onNodeWithText("Suivant").performClick()
-
+        // --- Onboarding : écran d'accueil, puis médium Dessin, rappel quotidien le matin ---
+        composeTestRule.onNodeWithText("C'est parti !").performClick()
         composeTestRule.onNodeWithText("Dessin").performClick()
         composeTestRule.onNodeWithText("Suivant").performClick()
 
-        composeTestRule.onNodeWithText("Tous les jours").performClick()
+        composeTestRule.onNodeWithText("7").performClick()
         composeTestRule.onNodeWithText("Suivant").performClick()
 
-        composeTestRule.onNodeWithText("Matin (9h)").performClick()
+        composeTestRule.onNodeWithText("9").performClick()
+        composeTestRule.onNodeWithText("Suivant").performClick()
+        composeTestRule.onNodeWithText("00").performClick()
         composeTestRule.onNodeWithText("Terminer").performClick()
 
         waitUntilExists(seededChallenge.title)
 
-        // --- Sélection puis complétion du défi avec un souvenir texte ---
+        // --- Choix de l'activité : passe "En cours" (popup nouvelle activité) ---
         composeTestRule.onNodeWithText(seededChallenge.title).performClick()
-        composeTestRule.onNodeWithText("Souvenir (optionnel)").performTextInput("Premier essai !")
-        composeTestRule.onNodeWithText("Marquer terminé").performClick()
+        composeTestRule.onNodeWithText("Choisir").performClick()
 
+        // --- Jauge : Brouillon -> Terminé, puis finalisation avec un souvenir texte ---
+        waitUntilExists("En cours")
+        composeTestRule.onNodeWithText(seededChallenge.title).performClick()
+        composeTestRule.onNodeWithText("Terminé").performClick()
+        composeTestRule.onNodeWithText("Finaliser").performClick()
+
+        composeTestRule.onNodeWithText("Légende (optionnelle)").performTextInput("Premier essai !")
+        composeTestRule.onNodeWithText("Finaliser").performClick()
+
+        // Notification "+XX XP" transitoire (plus d'écran dédié à fermer) —
+        // la liste "Mes activités" est déjà revenue et rafraîchie dessous.
         waitUntilExists("+20 XP")
-        composeTestRule.onNodeWithText("Continuer").performClick()
 
         // --- Portfolio : le défi complété apparaît avec son souvenir ---
         composeTestRule.onNodeWithText("Portfolio").performClick()
@@ -145,13 +152,14 @@ class CoreLoopE2ETest {
     fun premiumOnlyChallengesAreHiddenFromFreeUsers() {
         setNavGraphContent()
 
-        composeTestRule.onNodeWithText("Un seul médium").performClick()
-        composeTestRule.onNodeWithText("Suivant").performClick()
+        composeTestRule.onNodeWithText("C'est parti !").performClick()
         composeTestRule.onNodeWithText("Dessin").performClick()
         composeTestRule.onNodeWithText("Suivant").performClick()
-        composeTestRule.onNodeWithText("Tous les jours").performClick()
+        composeTestRule.onNodeWithText("7").performClick()
         composeTestRule.onNodeWithText("Suivant").performClick()
-        composeTestRule.onNodeWithText("Matin (9h)").performClick()
+        composeTestRule.onNodeWithText("9").performClick()
+        composeTestRule.onNodeWithText("Suivant").performClick()
+        composeTestRule.onNodeWithText("00").performClick()
         composeTestRule.onNodeWithText("Terminer").performClick()
 
         // Utilisateur gratuit par défaut : le défi isPremiumOnly ne doit jamais
@@ -164,13 +172,14 @@ class CoreLoopE2ETest {
     fun tappingLockedPackNavigatesToPremium() {
         setNavGraphContent()
 
-        composeTestRule.onNodeWithText("Un seul médium").performClick()
-        composeTestRule.onNodeWithText("Suivant").performClick()
+        composeTestRule.onNodeWithText("C'est parti !").performClick()
         composeTestRule.onNodeWithText("Dessin").performClick()
         composeTestRule.onNodeWithText("Suivant").performClick()
-        composeTestRule.onNodeWithText("Tous les jours").performClick()
+        composeTestRule.onNodeWithText("7").performClick()
         composeTestRule.onNodeWithText("Suivant").performClick()
-        composeTestRule.onNodeWithText("Matin (9h)").performClick()
+        composeTestRule.onNodeWithText("9").performClick()
+        composeTestRule.onNodeWithText("Suivant").performClick()
+        composeTestRule.onNodeWithText("00").performClick()
         composeTestRule.onNodeWithText("Terminer").performClick()
 
         waitUntilExists(lockedPack.title)
@@ -187,7 +196,7 @@ class CoreLoopE2ETest {
             graph.userPreferencesRepository.completeOnboarding(
                 selectedMediums = listOf(MediumType.DRAWING),
                 freeMedium = MediumType.DRAWING,
-                reminderFrequency = Frequency.DAILY,
+                reminderFrequency = Frequency(7),
                 reminderTime = LocalTime(9, 0)
             )
             graph.progressRepository.ensureMediumRowsExist(unlockedMediums = setOf(MediumType.DRAWING))
@@ -195,7 +204,7 @@ class CoreLoopE2ETest {
 
         setNavGraphContent()
 
-        waitUntilExists("Choisis ton défi")
+        waitUntilExists("Mes activités")
         composeTestRule.onNodeWithText("Comment veux-tu pratiquer ?").assertDoesNotExist()
     }
 }
