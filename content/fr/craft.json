@@ -8,7 +8,15 @@
       "estimatedMinutes": 15,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["origami", "recyclage"]
+      "tags": [
+        "origami",
+        "recyclage"
+      ],
+      "tips": [
+        "Marque bien chaque pli avec l'ongle, la forme tiendra mieux.",
+        "Un papier bien carré au départ évite la moitié des problèmes.",
+        "Le bateau et l'avion sont les plus simples pour commencer."
+      ]
     },
     {
       "id": "craft_002",
@@ -17,7 +25,15 @@
       "estimatedMinutes": 15,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["recyclage", "utile"]
+      "tags": [
+        "recyclage",
+        "utile"
+      ],
+      "tips": [
+        "Une bande d'environ 5 cm sur 15 cm est la taille idéale.",
+        "Colle deux couches ensemble, il durera bien plus longtemps.",
+        "Arrondis les coins, ils s'abîment moins vite dans un livre."
+      ]
     },
     {
       "id": "craft_003",
@@ -26,7 +42,15 @@
       "estimatedMinutes": 20,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["recyclage", "décoration"]
+      "tags": [
+        "recyclage",
+        "décoration"
+      ],
+      "tips": [
+        "Regarde d'abord ta poubelle ou ton bac de tri, l'idée viendra de là.",
+        "Un objet transformé n'a pas besoin d'être utile, juste d'être joli.",
+        "Bocaux, boîtes de conserve et bouchons sont les plus faciles à détourner."
+      ]
     },
     {
       "id": "craft_004",
@@ -35,7 +59,14 @@
       "estimatedMinutes": 15,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["collage"]
+      "tags": [
+        "collage"
+      ],
+      "tips": [
+        "Découpe une bonne dizaine de morceaux avant de commencer à coller.",
+        "Dispose tout sans colle d'abord, déplace, puis fixe.",
+        "Un format carte postale suffit, inutile de voir grand."
+      ]
     },
     {
       "id": "craft_005",
@@ -44,7 +75,14 @@
       "estimatedMinutes": 20,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["origami"]
+      "tags": [
+        "origami"
+      ],
+      "tips": [
+        "Prends un carré parfait, la grue ne pardonne pas un papier de travers.",
+        "La base oiseau est l'étape difficile, refais-la deux fois si besoin.",
+        "Une première grue ratée est un passage obligé, la deuxième ira mieux."
+      ]
     },
     {
       "id": "craft_006",
@@ -53,7 +91,15 @@
       "estimatedMinutes": 15,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["carte", "cadeau"]
+      "tags": [
+        "carte",
+        "cadeau"
+      ],
+      "tips": [
+        "Plie ta feuille en deux : la carte existe déjà, il ne reste qu'à décorer.",
+        "Écris le texte avant de décorer, tu géreras mieux la place.",
+        "Un motif simple répété vaut mieux qu'un grand dessin raté."
+      ]
     },
     {
       "id": "craft_007",
@@ -62,7 +108,15 @@
       "estimatedMinutes": 15,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["nature", "herbier"]
+      "tags": [
+        "nature",
+        "herbier"
+      ],
+      "tips": [
+        "Choisis des feuilles plates, elles sèchent bien mieux.",
+        "Glisse-les entre deux feuilles de papier dans un gros livre.",
+        "Note la date et le lieu, c'est ce qui fait le charme d'un herbier."
+      ]
     },
     {
       "id": "craft_008",
@@ -71,7 +125,15 @@
       "estimatedMinutes": 20,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["recyclage", "décoration"]
+      "tags": [
+        "recyclage",
+        "décoration"
+      ],
+      "tips": [
+        "Nettoie et sèche bien la surface, sinon rien ne tient.",
+        "Le papier collé couvre plus vite et plus proprement que la peinture.",
+        "Une seule couleur dominante donne un résultat plus net."
+      ]
     },
     {
       "id": "craft_009",
@@ -80,7 +142,15 @@
       "estimatedMinutes": 15,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["bijou", "improvisation"]
+      "tags": [
+        "bijou",
+        "improvisation"
+      ],
+      "tips": [
+        "Mesure ton poignet avec une ficelle avant de couper.",
+        "Trois brins tressés suffisent pour un résultat solide.",
+        "Fil, lacet, ruban, vieux t-shirt découpé : tout fonctionne."
+      ]
     },
     {
       "id": "craft_010",
@@ -89,7 +159,15 @@
       "estimatedMinutes": 15,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["papier", "décoration"]
+      "tags": [
+        "papier",
+        "décoration"
+      ],
+      "tips": [
+        "Plie ta feuille en accordéon avant de découper, c'est tout le secret.",
+        "Ne découpe jamais les deux plis extérieurs, sinon tout se détache.",
+        "Des formes simples se répètent mieux que des motifs compliqués."
+      ]
     }
   ]
 }

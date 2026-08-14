@@ -8,7 +8,15 @@
       "estimatedMinutes": 10,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["lumière", "quotidien"]
+      "tags": [
+        "lumière",
+        "quotidien"
+      ],
+      "tips": [
+        "Les ombres sont plus longues et plus graphiques en début et en fin de journée.",
+        "Cadre sur l'ombre elle-même, pas sur l'objet qui la projette.",
+        "Photographie le sol à la verticale pour un rendu plus abstrait."
+      ]
     },
     {
       "id": "photo_002",
@@ -17,7 +25,15 @@
       "estimatedMinutes": 10,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["observation", "détail"]
+      "tags": [
+        "observation",
+        "détail"
+      ],
+      "tips": [
+        "Choisis une pièce que tu traverses tous les jours sans la regarder.",
+        "Baisse-toi ou lève la tête : ce qu'on oublie est rarement à hauteur d'yeux.",
+        "Poignées, interrupteurs, angles de mur : le banal fait de bonnes photos."
+      ]
     },
     {
       "id": "photo_003",
@@ -26,7 +42,15 @@
       "estimatedMinutes": 10,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["macro", "texture"]
+      "tags": [
+        "macro",
+        "texture"
+      ],
+      "tips": [
+        "Approche-toi jusqu'à ce que la mise au point décroche, puis recule un peu.",
+        "Une lumière rasante fait ressortir le relief bien mieux qu'une lumière de face.",
+        "Remplis tout le cadre, sans laisser d'arrière-plan visible."
+      ]
     },
     {
       "id": "photo_004",
@@ -35,7 +59,14 @@
       "estimatedMinutes": 10,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["couleur"]
+      "tags": [
+        "couleur"
+      ],
+      "tips": [
+        "Un rouge ressort davantage sur un fond neutre ou sombre.",
+        "Ne cherche pas un gros objet, un détail rouge suffit.",
+        "Si tu n'en trouves pas, sors marcher cinq minutes, tu en verras partout."
+      ]
     },
     {
       "id": "photo_005",
@@ -44,7 +75,15 @@
       "estimatedMinutes": 10,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["reflet", "jeu"]
+      "tags": [
+        "reflet",
+        "jeu"
+      ],
+      "tips": [
+        "Les flaques après la pluie donnent les reflets les plus surprenants.",
+        "Tu n'as pas besoin d'être net ni reconnaissable dans le reflet.",
+        "Cherche des surfaces courbes, elles déforment et rendent l'image intrigante."
+      ]
     },
     {
       "id": "photo_006",
@@ -53,7 +92,14 @@
       "estimatedMinutes": 10,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["perspective"]
+      "tags": [
+        "perspective"
+      ],
+      "tips": [
+        "Pose l'objet au sol et photographie-le de tout en haut.",
+        "Ou l'inverse : téléphone au ras du sol, en contre-plongée.",
+        "Fais trois essais d'angles différents avant de choisir."
+      ]
     },
     {
       "id": "photo_007",
@@ -62,7 +108,14 @@
       "estimatedMinutes": 5,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["lumière"]
+      "tags": [
+        "lumière"
+      ],
+      "tips": [
+        "Photographie la lumière, pas ce qu'elle éclaire : cherche une tache, un rai.",
+        "Ne corrige pas la luminosité, garde l'ambiance telle qu'elle est.",
+        "Une fenêtre, un rideau ou un mur suffisent comme sujet."
+      ]
     },
     {
       "id": "photo_008",
@@ -71,7 +124,15 @@
       "estimatedMinutes": 10,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["mouvement", "expérimentation"]
+      "tags": [
+        "mouvement",
+        "expérimentation"
+      ],
+      "tips": [
+        "Bouge légèrement le téléphone pendant le déclenchement.",
+        "Un sujet qui passe devant un fond fixe donne le plus bel effet.",
+        "Prends-en plusieurs, un flou réussi tient en partie au hasard."
+      ]
     },
     {
       "id": "photo_009",
@@ -80,7 +141,15 @@
       "estimatedMinutes": 10,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["motif", "composition"]
+      "tags": [
+        "motif",
+        "composition"
+      ],
+      "tips": [
+        "Cadre bien parallèle au motif pour renforcer la répétition.",
+        "Coupe le motif au bord du cadre, ça suggère qu'il continue.",
+        "Escaliers, grilles, façades et rayonnages sont des valeurs sûres."
+      ]
     },
     {
       "id": "photo_010",
@@ -89,7 +158,15 @@
       "estimatedMinutes": 5,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["quotidien", "émotion"]
+      "tags": [
+        "quotidien",
+        "émotion"
+      ],
+      "tips": [
+        "Ne réfléchis pas, la première chose qui te fait sourire est la bonne.",
+        "Ça peut être minuscule ou banal, personne ne juge.",
+        "Photographie-la tout de suite, avant que l'instant passe."
+      ]
     }
   ]
 }

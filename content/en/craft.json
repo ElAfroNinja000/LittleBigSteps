@@ -8,7 +8,15 @@
       "estimatedMinutes": 15,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["origami", "recycling"]
+      "tags": [
+        "origami",
+        "recycling"
+      ],
+      "tips": [
+        "Press each fold hard with your nail, the shape will hold much better.",
+        "Starting from a properly square sheet avoids half the problems.",
+        "The boat and the plane are the easiest ones to start with."
+      ]
     },
     {
       "id": "craft_002",
@@ -17,7 +25,15 @@
       "estimatedMinutes": 15,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["recycling", "useful"]
+      "tags": [
+        "recycling",
+        "useful"
+      ],
+      "tips": [
+        "A strip of roughly 5 by 15 cm is the ideal size.",
+        "Glue two layers together and it will last far longer.",
+        "Round off the corners, they survive much better inside a book."
+      ]
     },
     {
       "id": "craft_003",
@@ -26,7 +42,15 @@
       "estimatedMinutes": 20,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["recycling", "decoration"]
+      "tags": [
+        "recycling",
+        "decoration"
+      ],
+      "tips": [
+        "Look in your bin or recycling first, the idea will come from there.",
+        "A repurposed object doesn't need to be useful, just nice to look at.",
+        "Jars, tins and corks are the easiest things to repurpose."
+      ]
     },
     {
       "id": "craft_004",
@@ -35,7 +59,14 @@
       "estimatedMinutes": 15,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["collage"]
+      "tags": [
+        "collage"
+      ],
+      "tips": [
+        "Cut out a good ten pieces before you start gluing anything.",
+        "Lay it all out unglued first, move things around, then fix them.",
+        "Postcard size is plenty, no need to go big."
+      ]
     },
     {
       "id": "craft_005",
@@ -44,7 +75,14 @@
       "estimatedMinutes": 20,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["origami"]
+      "tags": [
+        "origami"
+      ],
+      "tips": [
+        "Use a perfect square, the crane doesn't forgive a crooked sheet.",
+        "The bird base is the hard step, do it twice if you need to.",
+        "A failed first crane is a rite of passage, the second one goes better."
+      ]
     },
     {
       "id": "craft_006",
@@ -53,7 +91,15 @@
       "estimatedMinutes": 15,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["card", "gift"]
+      "tags": [
+        "card",
+        "gift"
+      ],
+      "tips": [
+        "Fold your sheet in half: the card already exists, now just decorate it.",
+        "Write the message before decorating, you'll manage the space better.",
+        "A simple repeated pattern beats one big failed drawing."
+      ]
     },
     {
       "id": "craft_007",
@@ -62,7 +108,15 @@
       "estimatedMinutes": 15,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["nature", "herbarium"]
+      "tags": [
+        "nature",
+        "herbarium"
+      ],
+      "tips": [
+        "Pick flat leaves, they dry far better.",
+        "Slide them between two sheets of paper inside a heavy book.",
+        "Note the date and place, that's what gives a herbarium its charm."
+      ]
     },
     {
       "id": "craft_008",
@@ -71,7 +125,15 @@
       "estimatedMinutes": 20,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["recycling", "decoration"]
+      "tags": [
+        "recycling",
+        "decoration"
+      ],
+      "tips": [
+        "Clean and dry the surface properly, otherwise nothing sticks.",
+        "Glued paper covers faster and more cleanly than paint.",
+        "One dominant colour gives a much tidier result."
+      ]
     },
     {
       "id": "craft_009",
@@ -80,7 +142,15 @@
       "estimatedMinutes": 15,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["jewelry", "improvisation"]
+      "tags": [
+        "jewelry",
+        "improvisation"
+      ],
+      "tips": [
+        "Measure your wrist with a piece of string before cutting.",
+        "Three braided strands are enough for something sturdy.",
+        "Thread, shoelace, ribbon, an old cut-up t-shirt: anything works."
+      ]
     },
     {
       "id": "craft_010",
@@ -89,7 +159,15 @@
       "estimatedMinutes": 15,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["paper", "decoration"]
+      "tags": [
+        "paper",
+        "decoration"
+      ],
+      "tips": [
+        "Fold your sheet accordion-style before cutting, that's the whole trick.",
+        "Never cut through the two outer folds or everything falls apart.",
+        "Simple shapes repeat much better than complicated ones."
+      ]
     }
   ]
 }

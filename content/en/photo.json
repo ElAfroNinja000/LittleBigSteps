@@ -8,7 +8,15 @@
       "estimatedMinutes": 10,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["light", "everyday"]
+      "tags": [
+        "light",
+        "everyday"
+      ],
+      "tips": [
+        "Shadows are longest and most graphic early and late in the day.",
+        "Frame the shadow itself, not the object casting it.",
+        "Shoot straight down at the ground for a more abstract result."
+      ]
     },
     {
       "id": "photo_002",
@@ -17,7 +25,15 @@
       "estimatedMinutes": 10,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["observation", "detail"]
+      "tags": [
+        "observation",
+        "detail"
+      ],
+      "tips": [
+        "Pick a room you walk through every day without ever looking at it.",
+        "Crouch down or look up: overlooked things are rarely at eye level.",
+        "Handles, switches, wall corners: the mundane makes good photos."
+      ]
     },
     {
       "id": "photo_003",
@@ -26,7 +42,15 @@
       "estimatedMinutes": 10,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["macro", "texture"]
+      "tags": [
+        "macro",
+        "texture"
+      ],
+      "tips": [
+        "Move in until the focus gives up, then back off slightly.",
+        "Raking light brings out texture far better than light from the front.",
+        "Fill the whole frame, leave no background visible."
+      ]
     },
     {
       "id": "photo_004",
@@ -35,7 +59,14 @@
       "estimatedMinutes": 10,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["color"]
+      "tags": [
+        "color"
+      ],
+      "tips": [
+        "Red pops much harder against a neutral or dark background.",
+        "Don't hunt for a big object, a red detail is enough.",
+        "If you can't find any, walk outside for five minutes, you'll see it everywhere."
+      ]
     },
     {
       "id": "photo_005",
@@ -44,7 +75,15 @@
       "estimatedMinutes": 10,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["reflection", "playful"]
+      "tags": [
+        "reflection",
+        "playful"
+      ],
+      "tips": [
+        "Puddles after rain give the most surprising reflections.",
+        "You don't need to be sharp or recognisable in the reflection.",
+        "Look for curved surfaces, they distort and make the image intriguing."
+      ]
     },
     {
       "id": "photo_006",
@@ -53,7 +92,14 @@
       "estimatedMinutes": 10,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["perspective"]
+      "tags": [
+        "perspective"
+      ],
+      "tips": [
+        "Put the object on the floor and shoot it from directly above.",
+        "Or the opposite: phone flat on the ground, shooting upward.",
+        "Try three different angles before you pick one."
+      ]
     },
     {
       "id": "photo_007",
@@ -62,7 +108,14 @@
       "estimatedMinutes": 5,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["light"]
+      "tags": [
+        "light"
+      ],
+      "tips": [
+        "Photograph the light, not what it lights: look for a patch, a shaft.",
+        "Don't correct the exposure, keep the mood exactly as it is.",
+        "A window, a curtain or a wall is subject enough."
+      ]
     },
     {
       "id": "photo_008",
@@ -71,7 +124,15 @@
       "estimatedMinutes": 10,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["motion", "experiment"]
+      "tags": [
+        "motion",
+        "experiment"
+      ],
+      "tips": [
+        "Move the phone slightly as the shutter fires.",
+        "A subject passing in front of a still background gives the nicest effect.",
+        "Take several, a good blur is partly down to luck."
+      ]
     },
     {
       "id": "photo_009",
@@ -80,7 +141,15 @@
       "estimatedMinutes": 10,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["pattern", "composition"]
+      "tags": [
+        "pattern",
+        "composition"
+      ],
+      "tips": [
+        "Keep the frame parallel to the pattern to strengthen the repetition.",
+        "Cut the pattern at the edge of the frame, it suggests it carries on.",
+        "Stairs, railings, facades and shelves are reliable bets."
+      ]
     },
     {
       "id": "photo_010",
@@ -89,7 +158,15 @@
       "estimatedMinutes": 5,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["everyday", "emotion"]
+      "tags": [
+        "everyday",
+        "emotion"
+      ],
+      "tips": [
+        "Don't overthink it, the first thing that makes you smile is the right one.",
+        "It can be tiny or ordinary, nobody's judging.",
+        "Shoot it right away, before the moment passes."
+      ]
     }
   ]
 }

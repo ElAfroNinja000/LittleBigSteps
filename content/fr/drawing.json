@@ -8,7 +8,15 @@
       "estimatedMinutes": 10,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["nature-morte", "observation"]
+      "tags": [
+        "nature-morte",
+        "observation"
+      ],
+      "tips": [
+        "Commence par les grandes formes : un rectangle, un cercle, avant les détails.",
+        "Regarde l'objet plus souvent que ta feuille, c'est là que se joue la ressemblance.",
+        "Les irrégularités du trait font le charme du croquis, ne les gomme pas."
+      ]
     },
     {
       "id": "drawing_002",
@@ -17,7 +25,14 @@
       "estimatedMinutes": 15,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["portrait"]
+      "tags": [
+        "portrait"
+      ],
+      "tips": [
+        "Concentre-toi sur la silhouette : épaules, nuque et cheveux suffisent à te reconnaître.",
+        "De dos, aucun visage à réussir, c'est ce qui rend l'exercice accessible.",
+        "Une photo prise par-dessus l'épaule peut servir de repère si la mémoire coince."
+      ]
     },
     {
       "id": "drawing_003",
@@ -26,7 +41,15 @@
       "estimatedMinutes": 15,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["observation", "anatomie"]
+      "tags": [
+        "observation",
+        "anatomie"
+      ],
+      "tips": [
+        "Pose ta main quelques secondes et observe-la avant de tracer quoi que ce soit.",
+        "Dessine d'abord l'objet, puis les doigts autour : c'est plus simple dans cet ordre.",
+        "Si la main entière t'intimide, cadre serré sur deux ou trois doigts."
+      ]
     },
     {
       "id": "drawing_004",
@@ -35,7 +58,15 @@
       "estimatedMinutes": 5,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["croquis-rapide", "paysage"]
+      "tags": [
+        "croquis-rapide",
+        "paysage"
+      ],
+      "tips": [
+        "Cinq minutes, c'est court : vise l'impression générale, pas l'exactitude.",
+        "Pose d'abord la ligne d'horizon ou le bord d'un bâtiment, tout se place ensuite.",
+        "Laisse tomber les détails lointains, quelques traits suffisent à les suggérer."
+      ]
     },
     {
       "id": "drawing_005",
@@ -44,7 +75,15 @@
       "estimatedMinutes": 10,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["nature-morte", "quotidien"]
+      "tags": [
+        "nature-morte",
+        "quotidien"
+      ],
+      "tips": [
+        "Croque vite, avant que ça refroidisse, ça fait partie du jeu.",
+        "Les assiettes et les verres sont des ellipses, jamais des cercles parfaits.",
+        "Un simple contour suffit, tu peux ignorer les couleurs."
+      ]
     },
     {
       "id": "drawing_006",
@@ -53,7 +92,15 @@
       "estimatedMinutes": 15,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["texture", "observation"]
+      "tags": [
+        "texture",
+        "observation"
+      ],
+      "tips": [
+        "Choisis un petit carré de la surface plutôt que toute la texture.",
+        "Varie la pression du crayon pour suggérer le relief.",
+        "Répète le motif sans chercher la régularité parfaite, l'œil complète tout seul."
+      ]
     },
     {
       "id": "drawing_007",
@@ -62,7 +109,15 @@
       "estimatedMinutes": 10,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["mémoire", "imagination"]
+      "tags": [
+        "mémoire",
+        "imagination"
+      ],
+      "tips": [
+        "Commence par la forme générale du corps, puis ajoute tête et pattes.",
+        "L'animal ne sera pas ressemblant, et c'est exactement le but de l'exercice.",
+        "Choisis un animal que tu aimes, tu auras plus d'images en tête."
+      ]
     },
     {
       "id": "drawing_008",
@@ -71,7 +126,15 @@
       "estimatedMinutes": 10,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["lumière", "forme"]
+      "tags": [
+        "lumière",
+        "forme"
+      ],
+      "tips": [
+        "Dessine seulement le contour de l'ombre, comme une flaque sombre.",
+        "Une ombre bouge avec la lumière : prends une photo si tu veux prendre ton temps.",
+        "Remplis l'intérieur d'un aplat uniforme, sans dégradé."
+      ]
     },
     {
       "id": "drawing_009",
@@ -80,7 +143,15 @@
       "estimatedMinutes": 15,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["nature", "observation"]
+      "tags": [
+        "nature",
+        "observation"
+      ],
+      "tips": [
+        "Commence par la tige, les feuilles s'y accrochent ensuite naturellement.",
+        "Pas besoin de dessiner toutes les feuilles, trois ou quatre suffisent.",
+        "Observe comment les feuilles se chevauchent, c'est ce qui donne le volume."
+      ]
     },
     {
       "id": "drawing_010",
@@ -89,7 +160,15 @@
       "estimatedMinutes": 10,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["contrainte", "intérieur"]
+      "tags": [
+        "contrainte",
+        "intérieur"
+      ],
+      "tips": [
+        "Compte tes traits à voix haute, ça force à choisir l'essentiel.",
+        "Un trait peut être long et courbe, une ligne n'est pas forcément un petit tiret.",
+        "Commence par les lignes qui structurent : sol, murs, plafond."
+      ]
     },
     {
       "id": "drawing_pack_rentree_001",
@@ -98,8 +177,16 @@
       "estimatedMinutes": 15,
       "level": "beginner",
       "isPremiumOnly": true,
-      "tags": ["rentree", "intérieur"],
-      "packId": "pack_rentree_creative"
+      "tags": [
+        "rentree",
+        "intérieur"
+      ],
+      "packId": "pack_rentree_creative",
+      "tips": [
+        "Le désordre raconte quelque chose, ne range surtout pas avant.",
+        "Place d'abord le rectangle du bureau, puis les objets dessus.",
+        "Tu peux t'arrêter à trois ou quatre objets, inutile de tout dessiner."
+      ]
     },
     {
       "id": "drawing_pack_rentree_002",
@@ -108,8 +195,16 @@
       "estimatedMinutes": 20,
       "level": "beginner",
       "isPremiumOnly": true,
-      "tags": ["rentree", "routine"],
-      "packId": "pack_rentree_creative"
+      "tags": [
+        "rentree",
+        "routine"
+      ],
+      "packId": "pack_rentree_creative",
+      "tips": [
+        "Trace tes trois cadres avant de dessiner, ça cadre l'exercice.",
+        "Un seul geste par vignette : la main sur le réveil, la tasse, la porte.",
+        "Des bonshommes bâtons font parfaitement l'affaire."
+      ]
     },
     {
       "id": "drawing_pack_rentree_003",
@@ -118,8 +213,16 @@
       "estimatedMinutes": 20,
       "level": "beginner",
       "isPremiumOnly": true,
-      "tags": ["rentree", "imagination"],
-      "packId": "pack_rentree_creative"
+      "tags": [
+        "rentree",
+        "imagination"
+      ],
+      "packId": "pack_rentree_creative",
+      "tips": [
+        "Pense titre plus une image simple, comme une vraie couverture.",
+        "Le lettrage compte autant que le dessin, garde-lui de la place.",
+        "Ce mois n'a pas encore eu lieu : invente, tu ne peux pas te tromper."
+      ]
     }
   ]
 }

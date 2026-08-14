@@ -8,7 +8,15 @@
       "estimatedMinutes": 10,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["still-life", "observation"]
+      "tags": [
+        "still-life",
+        "observation"
+      ],
+      "tips": [
+        "Start with the big shapes: a rectangle, a circle, before any detail.",
+        "Look at the object more often than at your paper, that's where the likeness happens.",
+        "Wobbly lines are what give a sketch its charm, don't erase them."
+      ]
     },
     {
       "id": "drawing_002",
@@ -17,7 +25,14 @@
       "estimatedMinutes": 15,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["portrait"]
+      "tags": [
+        "portrait"
+      ],
+      "tips": [
+        "Focus on the silhouette: shoulders, neck and hair are enough to recognise you.",
+        "From behind there's no face to get right, which is what makes this one approachable.",
+        "A photo taken over your shoulder works as a reference if memory fails you."
+      ]
     },
     {
       "id": "drawing_003",
@@ -26,7 +41,15 @@
       "estimatedMinutes": 15,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["observation", "anatomy"]
+      "tags": [
+        "observation",
+        "anatomy"
+      ],
+      "tips": [
+        "Hold your hand still for a few seconds and study it before drawing anything.",
+        "Draw the object first, then the fingers around it, it's easier in that order.",
+        "If a whole hand feels daunting, crop in tight on two or three fingers."
+      ]
     },
     {
       "id": "drawing_004",
@@ -35,7 +58,15 @@
       "estimatedMinutes": 5,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["quick-sketch", "landscape"]
+      "tags": [
+        "quick-sketch",
+        "landscape"
+      ],
+      "tips": [
+        "Five minutes is short: aim for the overall impression, not accuracy.",
+        "Lay down the horizon or a building edge first, everything else falls into place.",
+        "Skip distant details, a few strokes are enough to suggest them."
+      ]
     },
     {
       "id": "drawing_005",
@@ -44,7 +75,15 @@
       "estimatedMinutes": 10,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["still-life", "everyday"]
+      "tags": [
+        "still-life",
+        "everyday"
+      ],
+      "tips": [
+        "Sketch fast, before it gets cold, that's part of the game.",
+        "Plates and glasses are ellipses, never perfect circles.",
+        "A simple outline is enough, you can ignore colour entirely."
+      ]
     },
     {
       "id": "drawing_006",
@@ -53,7 +92,15 @@
       "estimatedMinutes": 15,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["texture", "observation"]
+      "tags": [
+        "texture",
+        "observation"
+      ],
+      "tips": [
+        "Pick a small square of the surface rather than the whole texture.",
+        "Vary your pencil pressure to suggest depth.",
+        "Repeat the pattern without chasing perfect regularity, the eye fills in the rest."
+      ]
     },
     {
       "id": "drawing_007",
@@ -62,7 +109,15 @@
       "estimatedMinutes": 10,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["memory", "imagination"]
+      "tags": [
+        "memory",
+        "imagination"
+      ],
+      "tips": [
+        "Start with the overall body shape, then add the head and legs.",
+        "It won't look much like the animal, and that's exactly the point.",
+        "Pick an animal you like, you'll have more images in your head."
+      ]
     },
     {
       "id": "drawing_008",
@@ -71,7 +126,15 @@
       "estimatedMinutes": 10,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["light", "shape"]
+      "tags": [
+        "light",
+        "shape"
+      ],
+      "tips": [
+        "Draw only the outline of the shadow, like a dark puddle.",
+        "Shadows move with the light: take a photo if you want to take your time.",
+        "Fill the inside with one flat tone, no gradient."
+      ]
     },
     {
       "id": "drawing_009",
@@ -80,7 +143,15 @@
       "estimatedMinutes": 15,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["nature", "observation"]
+      "tags": [
+        "nature",
+        "observation"
+      ],
+      "tips": [
+        "Start with the stem, the leaves attach to it naturally afterwards.",
+        "No need to draw every leaf, three or four will do.",
+        "Notice how the leaves overlap, that's what creates depth."
+      ]
     },
     {
       "id": "drawing_010",
@@ -89,7 +160,15 @@
       "estimatedMinutes": 10,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["constraint", "indoors"]
+      "tags": [
+        "constraint",
+        "indoors"
+      ],
+      "tips": [
+        "Count your strokes out loud, it forces you to pick what matters.",
+        "A stroke can be long and curved, a line doesn't have to be a short dash.",
+        "Start with the structural lines: floor, walls, ceiling."
+      ]
     },
     {
       "id": "drawing_pack_rentree_001",
@@ -98,8 +177,16 @@
       "estimatedMinutes": 15,
       "level": "beginner",
       "isPremiumOnly": true,
-      "tags": ["fresh-start", "indoors"],
-      "packId": "pack_rentree_creative"
+      "tags": [
+        "fresh-start",
+        "indoors"
+      ],
+      "packId": "pack_rentree_creative",
+      "tips": [
+        "The mess says something, whatever you do don't tidy up first.",
+        "Place the rectangle of the desk first, then the objects on it.",
+        "Three or four objects is plenty, you don't have to draw everything."
+      ]
     },
     {
       "id": "drawing_pack_rentree_002",
@@ -108,8 +195,16 @@
       "estimatedMinutes": 20,
       "level": "beginner",
       "isPremiumOnly": true,
-      "tags": ["fresh-start", "routine"],
-      "packId": "pack_rentree_creative"
+      "tags": [
+        "fresh-start",
+        "routine"
+      ],
+      "packId": "pack_rentree_creative",
+      "tips": [
+        "Draw your three frames before anything else, it sets the exercise up.",
+        "One gesture per panel: the hand on the alarm, the mug, the door.",
+        "Stick figures do the job perfectly here."
+      ]
     },
     {
       "id": "drawing_pack_rentree_003",
@@ -118,8 +213,16 @@
       "estimatedMinutes": 20,
       "level": "beginner",
       "isPremiumOnly": true,
-      "tags": ["fresh-start", "imagination"],
-      "packId": "pack_rentree_creative"
+      "tags": [
+        "fresh-start",
+        "imagination"
+      ],
+      "packId": "pack_rentree_creative",
+      "tips": [
+        "Think title plus one simple image, like a real cover.",
+        "The lettering matters as much as the drawing, leave room for it.",
+        "This month hasn't happened yet: make it up, you can't get it wrong."
+      ]
     }
   ]
 }

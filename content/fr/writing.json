@@ -8,7 +8,14 @@
       "estimatedMinutes": 10,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["micro-fiction"]
+      "tags": [
+        "micro-fiction"
+      ],
+      "tips": [
+        "Compte tes mots à la fin, pas pendant : écris d'abord.",
+        "Une histoire en six mots suggère plus qu'elle ne raconte.",
+        "Vise un début et une fin implicites, laisse le milieu au lecteur."
+      ]
     },
     {
       "id": "writing_002",
@@ -17,7 +24,15 @@
       "estimatedMinutes": 15,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["lettre", "introspection"]
+      "tags": [
+        "lettre",
+        "introspection"
+      ],
+      "tips": [
+        "Commence par un simple bonjour, comme à un ami, ça débloque tout de suite.",
+        "Parle du présent, c'est ce qui aura le plus de valeur dans dix ans.",
+        "Personne ne lira ce texte, tu peux être totalement sincère."
+      ]
     },
     {
       "id": "writing_003",
@@ -26,7 +41,15 @@
       "estimatedMinutes": 10,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["contrainte", "description"]
+      "tags": [
+        "contrainte",
+        "description"
+      ],
+      "tips": [
+        "Passe par les sensations : température, goût, matière, son.",
+        "Cite des objets qui ont cette couleur sans jamais la nommer.",
+        "Relis-toi pour traquer le mot interdit qui a pu se glisser."
+      ]
     },
     {
       "id": "writing_004",
@@ -35,7 +58,15 @@
       "estimatedMinutes": 15,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["dialogue", "fiction"]
+      "tags": [
+        "dialogue",
+        "fiction"
+      ],
+      "tips": [
+        "Écris uniquement les répliques, sans décrire les personnages.",
+        "Commence au milieu de la conversation, jamais par un bonjour.",
+        "Les vraies conversations sont pleines d'hésitations et de phrases coupées."
+      ]
     },
     {
       "id": "writing_005",
@@ -44,7 +75,15 @@
       "estimatedMinutes": 15,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["micro-fiction", "amorce"]
+      "tags": [
+        "micro-fiction",
+        "amorce"
+      ],
+      "tips": [
+        "Ne réfléchis pas au sens : écris la phrase suivante, puis la suivante.",
+        "Choisis vite qui découvre la porte, tout le reste en découle.",
+        "Tu peux t'arrêter en plein suspense, ce n'est qu'un début d'histoire."
+      ]
     },
     {
       "id": "writing_006",
@@ -53,7 +92,15 @@
       "estimatedMinutes": 10,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["journaling", "observation"]
+      "tags": [
+        "journaling",
+        "observation"
+      ],
+      "tips": [
+        "Vise le concret : une lumière, un son, le geste de quelqu'un.",
+        "Une phrase, un point : résiste à l'envie de développer.",
+        "Les choses les plus ordinaires font les meilleures notes."
+      ]
     },
     {
       "id": "writing_007",
@@ -62,7 +109,15 @@
       "estimatedMinutes": 10,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["poésie", "haïku"]
+      "tags": [
+        "poésie",
+        "haïku"
+      ],
+      "tips": [
+        "Compte les syllabes sur tes doigts, ligne par ligne : 5, 7, 5.",
+        "Un haïku parle souvent d'une saison ou d'un instant précis.",
+        "Si une syllabe dépasse, change le mot plutôt que la structure."
+      ]
     },
     {
       "id": "writing_008",
@@ -71,7 +126,15 @@
       "estimatedMinutes": 5,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["liste", "jeu-de-mots"]
+      "tags": [
+        "liste",
+        "jeu-de-mots"
+      ],
+      "tips": [
+        "Écris-les au fil de la tête, sans ordre ni logique.",
+        "Le son d'un mot suffit à le choisir, il n'a pas besoin d'être beau.",
+        "Si tu bloques à sept, regarde autour de toi et vole trois mots."
+      ]
     },
     {
       "id": "writing_009",
@@ -80,7 +143,15 @@
       "estimatedMinutes": 15,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["souvenir", "sensoriel"]
+      "tags": [
+        "souvenir",
+        "sensoriel"
+      ],
+      "tips": [
+        "Pars de l'odeur elle-même avant d'arriver au souvenir.",
+        "Le lieu et les gens viennent presque toujours avec l'odeur.",
+        "Pas besoin d'un grand souvenir, une odeur de cuisine suffit."
+      ]
     },
     {
       "id": "writing_010",
@@ -89,7 +160,15 @@
       "estimatedMinutes": 10,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["lettre", "quotidien"]
+      "tags": [
+        "lettre",
+        "quotidien"
+      ],
+      "tips": [
+        "L'espace est limité : va droit au but dès la première ligne.",
+        "Raconte une seule chose, pas tout ce que tu as fait.",
+        "Tu n'es pas obligé de l'envoyer, écris-la d'abord pour toi."
+      ]
     }
   ]
 }

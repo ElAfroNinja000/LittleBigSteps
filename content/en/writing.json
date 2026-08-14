@@ -8,7 +8,14 @@
       "estimatedMinutes": 10,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["micro-fiction"]
+      "tags": [
+        "micro-fiction"
+      ],
+      "tips": [
+        "Count your words at the end, not while writing: write first.",
+        "A six-word story suggests far more than it tells.",
+        "Aim for an implied beginning and end, leave the middle to the reader."
+      ]
     },
     {
       "id": "writing_002",
@@ -17,7 +24,15 @@
       "estimatedMinutes": 15,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["letter", "introspection"]
+      "tags": [
+        "letter",
+        "introspection"
+      ],
+      "tips": [
+        "Open with a simple hello, like writing to a friend, it unblocks you instantly.",
+        "Write about the present, that's what will matter most in ten years.",
+        "Nobody will read this, you can be completely honest."
+      ]
     },
     {
       "id": "writing_003",
@@ -26,7 +41,15 @@
       "estimatedMinutes": 10,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["constraint", "description"]
+      "tags": [
+        "constraint",
+        "description"
+      ],
+      "tips": [
+        "Go through the senses: temperature, taste, texture, sound.",
+        "Name objects that have the colour without ever naming the colour.",
+        "Reread to catch the forbidden word if it slipped in."
+      ]
     },
     {
       "id": "writing_004",
@@ -35,7 +58,15 @@
       "estimatedMinutes": 15,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["dialogue", "fiction"]
+      "tags": [
+        "dialogue",
+        "fiction"
+      ],
+      "tips": [
+        "Write only the lines, don't describe the characters.",
+        "Start in the middle of the conversation, never with a greeting.",
+        "Real conversations are full of hesitations and unfinished sentences."
+      ]
     },
     {
       "id": "writing_005",
@@ -44,7 +75,15 @@
       "estimatedMinutes": 15,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["micro-fiction", "opening-line"]
+      "tags": [
+        "micro-fiction",
+        "opening-line"
+      ],
+      "tips": [
+        "Don't worry about meaning: write the next sentence, then the next.",
+        "Decide quickly who finds the door, everything else follows from that.",
+        "You can stop mid-suspense, this is only a beginning."
+      ]
     },
     {
       "id": "writing_006",
@@ -53,7 +92,15 @@
       "estimatedMinutes": 10,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["journaling", "observation"]
+      "tags": [
+        "journaling",
+        "observation"
+      ],
+      "tips": [
+        "Go concrete: a light, a sound, someone's gesture.",
+        "One sentence, full stop: resist the urge to elaborate.",
+        "The most ordinary things make the best notes."
+      ]
     },
     {
       "id": "writing_007",
@@ -62,7 +109,15 @@
       "estimatedMinutes": 10,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["poetry", "haiku"]
+      "tags": [
+        "poetry",
+        "haiku"
+      ],
+      "tips": [
+        "Count syllables on your fingers, line by line: 5, 7, 5.",
+        "A haiku usually speaks of a season or one precise moment.",
+        "If a syllable spills over, change the word rather than the structure."
+      ]
     },
     {
       "id": "writing_008",
@@ -71,7 +126,15 @@
       "estimatedMinutes": 5,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["list", "wordplay"]
+      "tags": [
+        "list",
+        "wordplay"
+      ],
+      "tips": [
+        "Write them as they come, no order, no logic.",
+        "The sound of a word is reason enough, it doesn't have to be beautiful.",
+        "If you stall at seven, look around you and steal three more."
+      ]
     },
     {
       "id": "writing_009",
@@ -80,7 +143,15 @@
       "estimatedMinutes": 15,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["memory", "sensory"]
+      "tags": [
+        "memory",
+        "sensory"
+      ],
+      "tips": [
+        "Start from the smell itself before getting to the memory.",
+        "The place and the people almost always come with the smell.",
+        "It doesn't need to be a big memory, a kitchen smell is enough."
+      ]
     },
     {
       "id": "writing_010",
@@ -89,7 +160,15 @@
       "estimatedMinutes": 10,
       "level": "beginner",
       "isPremiumOnly": false,
-      "tags": ["letter", "everyday"]
+      "tags": [
+        "letter",
+        "everyday"
+      ],
+      "tips": [
+        "Space is limited: get to the point in the first line.",
+        "Tell one thing, not everything you've been doing.",
+        "You don't have to send it, write it for yourself first."
+      ]
     }
   ]
 }
