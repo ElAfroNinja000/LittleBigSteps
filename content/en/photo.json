@@ -1,0 +1,95 @@
+{
+  "mediumId": "photo",
+  "challenges": [
+    {
+      "id": "photo_001",
+      "title": "An interesting shadow",
+      "description": "Find and photograph a shadow you like, wherever you are.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["light", "everyday"]
+    },
+    {
+      "id": "photo_002",
+      "title": "An overlooked detail",
+      "description": "Photograph a detail you never usually notice, somewhere familiar.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["observation", "detail"]
+    },
+    {
+      "id": "photo_003",
+      "title": "A close-up texture",
+      "description": "Get as close as you can to a surface that intrigues you and capture its texture.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["macro", "texture"]
+    },
+    {
+      "id": "photo_004",
+      "title": "Something red",
+      "description": "Go on the hunt for something red and photograph it.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["color"]
+    },
+    {
+      "id": "photo_005",
+      "title": "An unexpected reflection",
+      "description": "Find an unusual reflective surface (shop window, spoon, puddle) and photograph your reflection.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["reflection", "playful"]
+    },
+    {
+      "id": "photo_006",
+      "title": "An unusual angle",
+      "description": "Pick an everyday object and photograph it from an angle you never use.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["perspective"]
+    },
+    {
+      "id": "photo_007",
+      "title": "The light right now",
+      "description": "Photograph the light exactly as it is right now, indoors or outside.",
+      "estimatedMinutes": 5,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["light"]
+    },
+    {
+      "id": "photo_008",
+      "title": "Intentional blur",
+      "description": "Photograph a moving scene, letting the blur happen on purpose.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["motion", "experiment"]
+    },
+    {
+      "id": "photo_009",
+      "title": "A repeating pattern",
+      "description": "Spot a pattern or repetition (tiles, windows, leaves) and photograph it.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["pattern", "composition"]
+    },
+    {
+      "id": "photo_010",
+      "title": "Whatever makes you smile",
+      "description": "Photograph the first thing that makes you smile today.",
+      "estimatedMinutes": 5,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["everyday", "emotion"]
+    }
+  ]
+}

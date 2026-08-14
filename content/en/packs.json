@@ -1,0 +1,12 @@
+{
+  "version": "1",
+  "packs": [
+    {
+      "id": "pack_rentree_creative",
+      "mediumId": "drawing",
+      "title": "Fresh Start Pack",
+      "description": "A selection of challenges to get back into the habit of drawing regularly.",
+      "isPremiumOnly": true
+    }
+  ]
+}

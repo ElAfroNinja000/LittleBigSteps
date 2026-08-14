@@ -1,0 +1,95 @@
+{
+  "mediumId": "craft",
+  "challenges": [
+    {
+      "id": "craft_001",
+      "title": "Simple origami",
+      "description": "Fold a sheet of paper (or a receipt, a flyer) into a simple shape: boat, crane, plane.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["origami", "recycling"]
+    },
+    {
+      "id": "craft_002",
+      "title": "Recycled bookmark",
+      "description": "Make a bookmark out of paper or cardboard you were about to throw away.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["recycling", "useful"]
+    },
+    {
+      "id": "craft_003",
+      "title": "A second life",
+      "description": "Turn something headed for the trash into a small decoration.",
+      "estimatedMinutes": 20,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["recycling", "decoration"]
+    },
+    {
+      "id": "craft_004",
+      "title": "Mini collage",
+      "description": "Make a small collage from paper scraps or old magazines.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["collage"]
+    },
+    {
+      "id": "craft_005",
+      "title": "Origami crane",
+      "description": "Fold a paper crane, the classic origami symbol — a tutorial is fine if you need one.",
+      "estimatedMinutes": 20,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["origami"]
+    },
+    {
+      "id": "craft_006",
+      "title": "Improvised card",
+      "description": "Make a spur-of-the-moment greeting card for someone, using whatever's on hand.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["card", "gift"]
+    },
+    {
+      "id": "craft_007",
+      "title": "Mini herbarium",
+      "description": "Pick up a leaf or flower outside and start a mini herbarium.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["nature", "herbarium"]
+    },
+    {
+      "id": "craft_008",
+      "title": "Box makeover",
+      "description": "Decorate a box, jar, or pot you were about to throw away.",
+      "estimatedMinutes": 20,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["recycling", "decoration"]
+    },
+    {
+      "id": "craft_009",
+      "title": "Improvised bracelet",
+      "description": "Make a bracelet or keychain with whatever's on hand.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["jewelry", "improvisation"]
+    },
+    {
+      "id": "craft_010",
+      "title": "Paper garland",
+      "description": "Fold and cut out a simple paper garland.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["paper", "decoration"]
+    }
+  ]
+}

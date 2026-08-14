@@ -1,0 +1,95 @@
+{
+  "mediumId": "writing",
+  "challenges": [
+    {
+      "id": "writing_001",
+      "title": "Six words",
+      "description": "Write a complete micro-story in exactly six words.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["micro-fiction"]
+    },
+    {
+      "id": "writing_002",
+      "title": "A letter to your future self",
+      "description": "Write a few lines to the person you'll be in ten years.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["letter", "introspection"]
+    },
+    {
+      "id": "writing_003",
+      "title": "A color without naming it",
+      "description": "Describe a color of your choice without ever naming it.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["constraint", "description"]
+    },
+    {
+      "id": "writing_004",
+      "title": "Overheard at a café",
+      "description": "Imagine a conversation between two strangers you might have overheard at a café.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["dialogue", "fiction"]
+    },
+    {
+      "id": "writing_005",
+      "title": "The door had been left open...",
+      "description": "Write the opening of a story that begins with: \"The door had been left open...\"",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["micro-fiction", "opening-line"]
+    },
+    {
+      "id": "writing_006",
+      "title": "Three things you noticed today",
+      "description": "Write down three things you noticed today, each in a single sentence.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["journaling", "observation"]
+    },
+    {
+      "id": "writing_007",
+      "title": "Haiku for right now",
+      "description": "Write a haiku (5-7-5 syllables) about your mood right now.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["poetry", "haiku"]
+    },
+    {
+      "id": "writing_008",
+      "title": "Ten words you love",
+      "description": "List ten words you love, no explanation needed.",
+      "estimatedMinutes": 5,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["list", "wordplay"]
+    },
+    {
+      "id": "writing_009",
+      "title": "A memory tied to a smell",
+      "description": "Describe a memory tied to a specific smell.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["memory", "sensory"]
+    },
+    {
+      "id": "writing_010",
+      "title": "Postcard",
+      "description": "Write a postcard to someone you haven't seen in a long time.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["letter", "everyday"]
+    }
+  ]
+}

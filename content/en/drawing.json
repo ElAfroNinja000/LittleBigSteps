@@ -1,0 +1,125 @@
+{
+  "mediumId": "drawing",
+  "challenges": [
+    {
+      "id": "drawing_001",
+      "title": "Draw the closest object to you",
+      "description": "Look at the closest object within reach, and draw it exactly as it is in 10 minutes.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["still-life", "observation"]
+    },
+    {
+      "id": "drawing_002",
+      "title": "Self-portrait from behind",
+      "description": "Draw yourself from behind, or from memory, without looking in a mirror.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["portrait"]
+    },
+    {
+      "id": "drawing_003",
+      "title": "Your hand holding an object",
+      "description": "Pick an everyday object, hold it, and draw your hand holding it.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["observation", "anatomy"]
+    },
+    {
+      "id": "drawing_004",
+      "title": "One-minute sketch through the window",
+      "description": "Look through the nearest window and sketch what you see in 5 minutes flat.",
+      "estimatedMinutes": 5,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["quick-sketch", "landscape"]
+    },
+    {
+      "id": "drawing_005",
+      "title": "Your meal before you eat it",
+      "description": "Before your next meal or snack, take two minutes to sketch it.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["still-life", "everyday"]
+    },
+    {
+      "id": "drawing_006",
+      "title": "A texture around you",
+      "description": "Find an interesting texture nearby (fabric, wood, wall) and draw it in detail.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["texture", "observation"]
+    },
+    {
+      "id": "drawing_007",
+      "title": "An animal from memory",
+      "description": "Draw an animal of your choice purely from memory, without looking at a reference.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["memory", "imagination"]
+    },
+    {
+      "id": "drawing_008",
+      "title": "A shadow",
+      "description": "Spot a cast shadow (yours or an object's) and draw its shape.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["light", "shape"]
+    },
+    {
+      "id": "drawing_009",
+      "title": "A plant you saw today",
+      "description": "Draw a plant or flower you come across today, in person or in a photo.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["nature", "observation"]
+    },
+    {
+      "id": "drawing_010",
+      "title": "A room in 10 lines",
+      "description": "Draw a room in your home using no more than 10 lines.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": ["constraint", "indoors"]
+    },
+    {
+      "id": "drawing_pack_rentree_001",
+      "title": "Your back-to-routine desk",
+      "description": "Draw your workspace exactly as it is right now, without tidying it up first.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": true,
+      "tags": ["fresh-start", "indoors"],
+      "packId": "pack_rentree_creative"
+    },
+    {
+      "id": "drawing_pack_rentree_002",
+      "title": "A morning routine",
+      "description": "Draw the first three things you do each morning, in three panels.",
+      "estimatedMinutes": 20,
+      "level": "beginner",
+      "isPremiumOnly": true,
+      "tags": ["fresh-start", "routine"],
+      "packId": "pack_rentree_creative"
+    },
+    {
+      "id": "drawing_pack_rentree_003",
+      "title": "Your notebook for the month",
+      "description": "Draw the imaginary cover of a notebook that would tell the story of your month ahead.",
+      "estimatedMinutes": 20,
+      "level": "beginner",
+      "isPremiumOnly": true,
+      "tags": ["fresh-start", "imagination"],
+      "packId": "pack_rentree_creative"
+    }
+  ]
+}
