@@ -215,6 +215,7 @@ seule source de vérité, pas de copie à synchroniser.
 | **Opt-out analytics retiré de l'UI** | Colonne `analyticsEnabled` conservée en base mais non pilotable. Voir risque §6.5. |
 | **Restauration d'achats automatique** | Au lancement via `startConnection()`, plus de bouton dédié. |
 | **Catalogue rédigé par l'IA, relu avant validation** | Étend l'exception `tips` (§3). L'agent produit fr + en ; l'utilisateur relit avant commit. |
+| **Process outillé en skills** (`.claude/skills/`) | `defi` : règles éditoriales + format + publication du catalogue (§3). `frontiere` : étape 3 du §0 bis. `checklist` : étape 7 du §0 bis. Le §0 bis reste la référence ; les skills en sont la version exécutable. |
 | **Garde-fous outillés** (`.claude/hooks/`, câblés par `.claude/settings.json`) | `content-version-guard.ps1` : après écriture dans `/content`, alerte si la version n'a pas été incrémentée ou si fr et en divergent. `build-gate.ps1` : toute commande `gradlew` / émulateur passe par une demande de confirmation. Chemins **absolus** dans `settings.json` — à corriger si le dépôt est déplacé. |
 
 ---
