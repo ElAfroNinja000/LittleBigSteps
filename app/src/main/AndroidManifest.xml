@@ -6,9 +6,11 @@
     <!-- Rappels programmés (WorkManager / notifications locales) -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
+    <!-- allowBackup=false : sans ça, les souvenirs (photos/notes) sont
+         extractibles via `adb backup` sans root (revue de sécurité). -->
     <application
         android:name=".LittleBigStepsApplication"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
@@ -24,6 +26,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Persistance du choix de langue (Paramètres) sous Android 13 : en
+             dessous d'API 33 le système ne stocke pas les locales par app, c'est
+             AppCompat qui s'en charge, et uniquement si cette déclaration est
+             présente. Sans elle, la langue choisie est perdue au relancement.
+             Service jamais démarré (enabled=false) : il ne sert qu'à porter la
+             méta-donnée autoStoreLocales. -->
+        <service
+            android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
+            android:enabled="false"
+            android:exported="false">
+            <meta-data
+                android:name="autoStoreLocales"
+                android:value="true" />
+        </service>
 
         <!-- Partage des exports (image/PDF de progression, voir CanvasProgressExportGenerator) -->
         <provider

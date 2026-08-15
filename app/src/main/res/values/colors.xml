@@ -1,3 +1,5 @@
 <resources>
-    <color name="ic_launcher_background">#FFFBFE</color>
+    <!-- Blanc chaud de l'app (WarmBackground, ui/theme/Color.kt) — fond de
+         l'adaptive icon, cohérent avec le fond utilisé partout ailleurs. -->
+    <color name="ic_launcher_background">#FBF9F6</color>
 </resources>

@@ -30,13 +30,24 @@ class OnboardingViewModel(
     private val _uiState = MutableStateFlow(OnboardingUiState())
     val uiState: StateFlow<OnboardingUiState> = _uiState.asStateFlow()
 
-    /** Premium : sélection multiple (rien n'empêche d'en cocher plusieurs pour
-     *  les voir apparaître verrouillés). Free : sélection unique — un seul
-     *  médium sera de toute façon débloqué gratuitement (CLAUDE.md §7), inutile
-     *  de faire croire qu'on peut en garder plusieurs. */
+    init {
+        // Un abonnement peut déjà être actif pendant l'onboarding (réinstallation :
+        // PlayBillingRepository restaure l'achat au lancement). Observé plutôt que lu
+        // une fois, la restauration pouvant aboutir en cours de parcours.
+        viewModelScope.launch {
+            userPreferencesRepository.observePreferences().collect { prefs ->
+                val isPremium = BuildConfig.FORCE_PREMIUM || prefs?.isPremium == true
+                _uiState.value = _uiState.value.copy(isPremium = isPremium)
+            }
+        }
+    }
+
+    /** Premium : sélection multiple, tous les médiums étant accessibles (CLAUDE.md §7).
+     *  Sinon : sélection unique — un seul médium sera de toute façon débloqué
+     *  gratuitement, inutile de faire croire qu'on peut en garder plusieurs. */
     fun toggleMedium(medium: MediumType) {
         val state = _uiState.value
-        val newSelection = if (BuildConfig.FORCE_PREMIUM) {
+        val newSelection = if (state.isPremium) {
             if (medium in state.selectedMediums) state.selectedMediums - medium
             else state.selectedMediums + medium
         } else {
@@ -44,14 +55,11 @@ class OnboardingViewModel(
         }
         _uiState.value = state.copy(
             selectedMediums = newSelection,
-            // Un seul médium sélectionné : forcément celui-là le médium gratuit.
-            // Plusieurs : on laisse FREE_MEDIUM_CHOICE trancher.
+            // Hors premium la sélection est unique, donc ce médium est le médium
+            // gratuit. En premium, freeMedium ne sert que de repli (voir
+            // OnboardingUiState) : submit() prend le premier sélectionné.
             freeMedium = if (newSelection.size == 1) newSelection.first() else state.freeMedium
         )
-    }
-
-    fun selectFreeMedium(medium: MediumType) {
-        _uiState.value = _uiState.value.copy(freeMedium = medium)
     }
 
     fun selectFrequency(timesPerWeek: Int) {
@@ -75,36 +83,20 @@ class OnboardingViewModel(
         if (next == OnboardingStep.DONE) submit()
     }
 
-    /** Saute FREE_MEDIUM_CHOICE si un seul médium a été sélectionné : il est
-     *  alors forcément le médium gratuit, pas besoin de le redemander. */
     private fun nextStepFor(state: OnboardingUiState): OnboardingStep = when (state.step) {
         OnboardingStep.WELCOME -> OnboardingStep.MEDIUM_CHOICE
-        OnboardingStep.MEDIUM_CHOICE ->
-            if (state.selectedMediums.size > 1) {
-                OnboardingStep.FREE_MEDIUM_CHOICE
-            } else {
-                OnboardingStep.FREQUENCY_CHOICE
-            }
-        OnboardingStep.FREE_MEDIUM_CHOICE -> OnboardingStep.FREQUENCY_CHOICE
-        OnboardingStep.FREQUENCY_CHOICE -> OnboardingStep.REMINDER_HOUR_CHOICE
-        OnboardingStep.REMINDER_HOUR_CHOICE -> OnboardingStep.REMINDER_MINUTE_CHOICE
-        OnboardingStep.REMINDER_MINUTE_CHOICE -> OnboardingStep.DONE
+        OnboardingStep.MEDIUM_CHOICE -> OnboardingStep.FREQUENCY_CHOICE
+        OnboardingStep.FREQUENCY_CHOICE -> OnboardingStep.REMINDER_TIME_CHOICE
+        OnboardingStep.REMINDER_TIME_CHOICE -> OnboardingStep.DONE
         OnboardingStep.DONE -> OnboardingStep.DONE
     }
 
     private fun previousStepFor(state: OnboardingUiState): OnboardingStep = when (state.step) {
         OnboardingStep.WELCOME -> OnboardingStep.WELCOME
         OnboardingStep.MEDIUM_CHOICE -> OnboardingStep.MEDIUM_CHOICE
-        OnboardingStep.FREE_MEDIUM_CHOICE -> OnboardingStep.MEDIUM_CHOICE
-        OnboardingStep.FREQUENCY_CHOICE ->
-            if (state.selectedMediums.size > 1) {
-                OnboardingStep.FREE_MEDIUM_CHOICE
-            } else {
-                OnboardingStep.MEDIUM_CHOICE
-            }
-        OnboardingStep.REMINDER_HOUR_CHOICE -> OnboardingStep.FREQUENCY_CHOICE
-        OnboardingStep.REMINDER_MINUTE_CHOICE -> OnboardingStep.REMINDER_HOUR_CHOICE
-        OnboardingStep.DONE -> OnboardingStep.REMINDER_MINUTE_CHOICE
+        OnboardingStep.FREQUENCY_CHOICE -> OnboardingStep.MEDIUM_CHOICE
+        OnboardingStep.REMINDER_TIME_CHOICE -> OnboardingStep.FREQUENCY_CHOICE
+        OnboardingStep.DONE -> OnboardingStep.REMINDER_TIME_CHOICE
     }
 
     private fun submit() {
@@ -121,9 +113,14 @@ class OnboardingViewModel(
                 reminderFrequency = frequency,
                 reminderTime = reminderTime
             )
-            // Seul freeMedium démarre débloqué ; les autres médiums sélectionnés
-            // restent visibles mais verrouillés tant qu'il n'y a pas de premium.
-            progressRepository.ensureMediumRowsExist(unlockedMediums = setOf(freeMedium))
+            // Premium : tous les médiums sont débloqués, comme le fait
+            // PlayBillingRepository.unlockPremium — ne pas s'aligner ici
+            // reverrouillerait ce qu'un abonnement restauré vient d'ouvrir
+            // (ensureMediumRowsExist verrouille aussi ce qui n'est pas listé).
+            // Sinon, seul freeMedium démarre débloqué ; les autres médiums
+            // sélectionnés restent visibles mais verrouillés (CLAUDE.md §7).
+            val unlocked = if (state.isPremium) MediumType.entries.toSet() else setOf(freeMedium)
+            progressRepository.ensureMediumRowsExist(unlockedMediums = unlocked)
             notificationScheduler.scheduleReminders(frequency, reminderTime)
             analyticsTracker.trackOnboardingCompleted(
                 isMultiMedium = state.selectedMediums.size > 1,

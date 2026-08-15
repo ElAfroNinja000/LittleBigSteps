@@ -57,4 +57,8 @@ class PostHogAnalyticsTracker(context: Context) : AnalyticsTracker {
     override fun trackExport(format: String) {
         PostHog.capture(event = "progress_exported", properties = mapOf("format" to format))
     }
+
+    override fun setEnabled(enabled: Boolean) {
+        if (enabled) PostHog.optIn() else PostHog.optOut()
+    }
 }

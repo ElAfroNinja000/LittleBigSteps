@@ -20,4 +20,8 @@ interface AnalyticsTracker {
     fun trackPremiumPurchaseStarted()
     fun trackPremiumUnlocked()
     fun trackExport(format: String)
+
+    /** Opt-out réglable depuis les Paramètres — appelé aussi au lancement de
+     *  l'app pour appliquer la préférence persistée (voir LittleBigStepsApplication). */
+    fun setEnabled(enabled: Boolean)
 }

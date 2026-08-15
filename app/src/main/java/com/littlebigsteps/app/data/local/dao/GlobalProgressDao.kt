@@ -18,4 +18,8 @@ interface GlobalProgressDao {
     /** Lecture ponctuelle utilisée par ProgressRepositoryImpl pour calculer le streak. */
     @Query("SELECT * FROM global_progress WHERE id = ${GlobalProgressEntity.SINGLETON_ID}")
     suspend fun getOnce(): GlobalProgressEntity?
+
+    /** Réinitialisation manuelle depuis les Paramètres (voir ProgressRepositoryImpl.resetProgress). */
+    @Query("DELETE FROM global_progress")
+    suspend fun deleteAll()
 }

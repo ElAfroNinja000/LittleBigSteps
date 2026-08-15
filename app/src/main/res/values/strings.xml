@@ -1,3 +1,120 @@
 <resources>
     <string name="app_name">LittleBigSteps</string>
+
+    <!-- Commun -->
+    <string name="action_back">Retour</string>
+    <string name="action_close">Fermer</string>
+    <string name="locked_premium_description">Verrouillé (premium)</string>
+    <string name="loading">Chargement…</string>
+
+    <!-- Libellés (DisplayLabels.kt) -->
+    <string name="medium_photo">Photographie</string>
+    <string name="medium_drawing">Dessin</string>
+    <string name="medium_writing">Écriture</string>
+    <string name="medium_craft">Artisanat</string>
+    <string name="frequency_daily">Tous les jours</string>
+    <string name="frequency_weekly_once">1 fois par semaine</string>
+    <string name="frequency_weekly_n">%1$d fois par semaine</string>
+    <string name="status_draft">Brouillon</string>
+    <string name="status_in_progress">En cours</string>
+    <string name="status_done">Terminé</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_next">Suivant</string>
+    <string name="onboarding_finish">Terminer</string>
+    <string name="onboarding_welcome_title">Bienvenue sur LittleBigSteps !</string>
+    <string name="onboarding_welcome_body">Chaque jour, on te propose une ou plusieurs petites activités créatives : dessin, photo, écriture et bricolage, à faire à ton rythme, sans pression ni compte à créer. Complète-les au fur et à mesure pour voir ton portfolio grandir au fil de tes créations !</string>
+    <string name="onboarding_welcome_cta">C\'est parti !</string>
+    <string name="onboarding_medium_choice_title">Qu\'est-ce qui t\'intéresse ?</string>
+    <string name="onboarding_frequency_title">Combien de fois par semaine ?</string>
+    <string name="onboarding_time_title">À quelle heure de la journée ?</string>
+    <string name="am_label">AM</string>
+    <string name="pm_label">PM</string>
+
+    <!-- Mes activités -->
+    <string name="my_activities_title">Mes activités</string>
+    <string name="no_medium_unlocked">Aucun médium débloqué pour l\'instant — termine l\'onboarding pour commencer.</string>
+    <string name="packs_thematic_title">Packs thématiques</string>
+    <string name="pack_empty">Aucune activité dans ce pack.</string>
+    <string name="no_activity_available">Aucune activité disponible pour ce médium pour l\'instant.</string>
+    <string name="section_new_activities">Nouvelles activités</string>
+    <string name="choose_button">Choisir</string>
+    <string name="finalize_button">Finaliser</string>
+    <string name="comment_label">Un petit commentaire ?</string>
+    <string name="souvenir_char_count">%1$d/%2$d</string>
+    <string name="take_photo_description">Prendre une photo</string>
+    <string name="remove_photo_button">Retirer la photo</string>
+    <string name="well_done_title">Bien joué !</string>
+    <string name="well_done_body">Un souvenir de cette activité, si tu veux le garder.</string>
+    <string name="activity_completed_xp">Activité terminée ! +%1$d XP</string>
+    <string name="level_up_title">Bravo, tu progresses !</string>
+    <string name="level_up_message_with_medium">Niveau %1$d atteint en %2$s ! Ta régularité paie.</string>
+    <string name="level_up_message">Niveau %1$d atteint ! Ta régularité paie.</string>
+    <string name="see_progress_button">Voir ma progression</string>
+    <string name="surprise_badge">Surprise</string>
+    <string name="surprise_xp_bonus">+%1$d XP au lieu de +%2$d</string>
+    <string name="pass_to_premium">Passer au mode premium</string>
+    <string name="tips_button_description">Conseils</string>
+    <string name="tips_title">Conseils</string>
+
+    <!-- Portfolio -->
+    <string name="portfolio_title">Portfolio</string>
+    <string name="filter_all">Tous</string>
+    <string name="filter_all_dates">Toutes les dates</string>
+    <string name="portfolio_empty">Aucune activité complétée pour l\'instant — ton portfolio se remplira au fil de tes créations.</string>
+    <string name="challenge_removed_from_catalog">Activité retirée du catalogue</string>
+
+    <!-- Progression -->
+    <string name="progress_title">Progression</string>
+    <string name="stat_activities_this_month">activité(s) ce mois-ci</string>
+    <string name="stat_total_xp">XP au total</string>
+    <string name="level_label">Niveau %1$d</string>
+    <string name="medium_xp_summary">%1$d XP · %2$d activité(s) complétée(s)</string>
+    <string name="medium_locked_body">À débloquer avec premium</string>
+
+    <!-- Premium -->
+    <string name="premium_title">Premium</string>
+    <string name="premium_already">Tu es déjà premium — tous les médiums sont débloqués.</string>
+    <string name="premium_loading">Chargement de l\'offre…</string>
+    <string name="premium_unavailable">L\'offre premium n\'est pas disponible pour l\'instant.</string>
+    <string name="premium_pitch">Débloque tous les médiums, les packs thématiques/saisonniers et les formats d\'export enrichis.</string>
+    <string name="premium_subscribe">S\'abonner</string>
+
+    <!-- Navigation basse -->
+    <string name="nav_activities">Activités</string>
+
+    <!-- Paramètres -->
+    <string name="settings_title">Paramètres</string>
+    <string name="settings_frequency_label">Fréquence</string>
+    <string name="settings_reminder_time_label">Heure du rappel</string>
+    <string name="settings_notifications_label">Rappels activés</string>
+    <string name="settings_language_label">Langue</string>
+    <string name="settings_language_system">Système</string>
+    <string name="settings_language_fr">Français</string>
+    <string name="settings_language_en">English</string>
+    <string name="settings_manage_subscription">Gérer mon abonnement</string>
+    <string name="settings_reset_progress">Réinitialiser ma progression</string>
+    <string name="settings_reset_confirm_title">Réinitialiser ta progression ?</string>
+    <string name="settings_reset_confirm_body">XP, niveaux, streak et portfolio seront définitivement effacés. Cette action est irréversible.</string>
+    <string name="settings_reset_confirm_button">Réinitialiser</string>
+    <string name="settings_cancel">Annuler</string>
+    <string name="settings_version_label">Version</string>
+
+    <!-- Notifications -->
+    <string name="notification_channel_name">Rappel de défi</string>
+    <string name="notification_channel_description">Rappel périodique pour proposer le défi créatif du moment.</string>
+    <string name="reminder_message_with_medium">Envie d\'un peu de %1$s aujourd\'hui ? Ton défi t\'attend.</string>
+    <string name="reminder_message_generic">Un petit défi créatif t\'attend dans LittleBigSteps.</string>
+
+    <!-- Export (dessiné sur Canvas, résolu via Context.getString()) -->
+    <string name="export_recap_title">Récap de progression</string>
+    <string name="export_premium_badge">★ PREMIUM</string>
+    <string name="export_streak_title">Streak</string>
+    <string name="export_streak_days">%1$d jour(s) de suite</string>
+    <string name="export_streak_record">Record : %1$d jour(s)</string>
+    <string name="export_total_completed">%1$d défis complétés au total</string>
+    <string name="export_progress_by_medium">Progression par médium</string>
+    <string name="export_medium_status_unlocked">Niveau %1$d · %2$d XP · %3$d défi(s)</string>
+    <string name="export_recent_souvenirs">Derniers souvenirs</string>
+    <string name="export_untitled_challenge">Défi</string>
 </resources>

@@ -20,7 +20,12 @@ data class UserPreferencesEntity(
     val reminderFrequency: Frequency = Frequency(7),
     val reminderTime: LocalTime,
     val isPremium: Boolean = false,
-    val onboardingCompletedAt: Instant? = null
+    val onboardingCompletedAt: Instant? = null,
+    /** Réglable depuis les Paramètres, indépendamment de fréquence/heure —
+     *  coupe les rappels sans changer les préférences de planning. */
+    val notificationsEnabled: Boolean = true,
+    /** Opt-out analytics anonymes (CLAUDE.md §10) — réglable depuis les Paramètres. */
+    val analyticsEnabled: Boolean = true
 ) {
     companion object {
         const val SINGLETON_ID = 0

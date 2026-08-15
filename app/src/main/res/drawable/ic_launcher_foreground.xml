@@ -3,11 +3,53 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <!-- Placeholder : une petite pousse, à remplacer par l'icône finale de l'app. -->
-    <path
-        android:fillColor="#6650A4"
-        android:pathData="M54,74 L54,40" />
-    <path
-        android:fillColor="#6650A4"
-        android:pathData="M54,74 C40,74 30,64 30,50 C30,60 40,66 54,58 C68,66 78,60 78,50 C78,64 68,74 54,74 Z" />
+    <!-- Logo LittleBigSteps : "rosace" de 4 tuiles arrondies (une par médium,
+         teintes vives dérivées de mediumColors() dans ui/theme/MediumColors.kt
+         mais saturées pour rester lisibles en icône) disposées en rosace
+         organique autour du centre — direction validée en maquette, portfolio
+         multi-médium qui s'assemble plutôt qu'une grille rigide. Chaque tuile
+         est un carré arrondi tourné autour de son propre centre (pivot 12,12
+         en coordonnées locales 0-24) puis translaté à sa position, pour
+         reproduire fidèlement la maquette. Composition centrée dans la zone
+         garantie non rognée (cercle de sécurité 66dp au centre des 108dp). -->
+    <group
+        android:pivotX="12"
+        android:pivotY="12"
+        android:rotation="245"
+        android:translateX="27"
+        android:translateY="37">
+        <path
+            android:fillColor="#4A90D9"
+            android:pathData="M6,0 H18 A6,6 0 0 1 24,6 V18 A6,6 0 0 1 18,24 H6 A6,6 0 0 1 0,18 V6 A6,6 0 0 1 6,0 Z" />
+    </group>
+    <group
+        android:pivotX="12"
+        android:pivotY="12"
+        android:rotation="335"
+        android:translateX="47"
+        android:translateY="27">
+        <path
+            android:fillColor="#8B6FEA"
+            android:pathData="M6,0 H18 A6,6 0 0 1 24,6 V18 A6,6 0 0 1 18,24 H6 A6,6 0 0 1 0,18 V6 A6,6 0 0 1 6,0 Z" />
+    </group>
+    <group
+        android:pivotX="12"
+        android:pivotY="12"
+        android:rotation="65"
+        android:translateX="57"
+        android:translateY="47">
+        <path
+            android:fillColor="#F0637A"
+            android:pathData="M6,0 H18 A6,6 0 0 1 24,6 V18 A6,6 0 0 1 18,24 H6 A6,6 0 0 1 0,18 V6 A6,6 0 0 1 6,0 Z" />
+    </group>
+    <group
+        android:pivotX="12"
+        android:pivotY="12"
+        android:rotation="155"
+        android:translateX="37"
+        android:translateY="57">
+        <path
+            android:fillColor="#F5A83C"
+            android:pathData="M6,0 H18 A6,6 0 0 1 24,6 V18 A6,6 0 0 1 18,24 H6 A6,6 0 0 1 0,18 V6 A6,6 0 0 1 6,0 Z" />
+    </group>
 </vector>
