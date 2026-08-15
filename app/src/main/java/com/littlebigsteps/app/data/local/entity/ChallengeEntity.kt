@@ -20,6 +20,11 @@ data class ChallengeEntity(
     val level: ChallengeLevel,
     val isPremiumOnly: Boolean,
     val tags: List<String>? = null,
+    /** 3 conseils facultatifs pour aider à démarrer ce défi précis, éditoriaux
+     *  comme le reste du catalogue (voir CLAUDE.md §5). Null/vide tant que non
+     *  rédigés : le bouton "Conseils" (popup activité en cours) reste alors
+     *  masqué plutôt que d'afficher une popup vide. */
+    val tips: List<String>? = null,
     /** Null si le défi appartient au catalogue de base plutôt qu'à un pack
      *  thématique/saisonnier (voir ChallengePackEntity, CLAUDE.md §7). */
     val packId: String? = null
