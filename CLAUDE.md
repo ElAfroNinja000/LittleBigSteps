@@ -120,7 +120,10 @@ Champs d'un défi : `id`, `title`, `description`, `estimatedMinutes`, `level`,
 
 > **Piège** : après toute modification de `/content`, **incrémenter la version
 > du médium dans `manifest.json`**, sinon la synchro conclut « déjà à jour » et
-> ne retélécharge rien.
+> ne retélécharge rien. `packs.json` fait exception : il porte son **propre**
+> champ `version`, lu directement (le manifeste ne le référence pas). Le champ
+> `version` racine de `manifest.json` n'est lu par personne — seul
+> `mediums[].version` compte. Un hook alerte désormais en cas d'oubli (§8).
 
 ---
 
@@ -212,6 +215,7 @@ seule source de vérité, pas de copie à synchroniser.
 | **Opt-out analytics retiré de l'UI** | Colonne `analyticsEnabled` conservée en base mais non pilotable. Voir risque §6.5. |
 | **Restauration d'achats automatique** | Au lancement via `startConnection()`, plus de bouton dédié. |
 | **Catalogue rédigé par l'IA, relu avant validation** | Étend l'exception `tips` (§3). L'agent produit fr + en ; l'utilisateur relit avant commit. |
+| **Garde-fous outillés** (`.claude/hooks/`, câblés par `.claude/settings.json`) | `content-version-guard.ps1` : après écriture dans `/content`, alerte si la version n'a pas été incrémentée ou si fr et en divergent. `build-gate.ps1` : toute commande `gradlew` / émulateur passe par une demande de confirmation. Chemins **absolus** dans `settings.json` — à corriger si le dépôt est déplacé. |
 
 ---
 

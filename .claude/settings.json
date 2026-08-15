@@ -1,0 +1,28 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "timeout": 15,
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"D:\\Dev\\LittleBigSteps\\.claude\\hooks\\content-version-guard.ps1\""
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "timeout": 15,
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"D:\\Dev\\LittleBigSteps\\.claude\\hooks\\build-gate.ps1\""
+          }
+        ]
+      }
+    ]
+  }
+}
