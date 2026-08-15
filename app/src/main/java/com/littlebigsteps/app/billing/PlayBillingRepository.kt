@@ -15,6 +15,7 @@ import com.android.billingclient.api.QueryPurchasesParams
 import com.android.billingclient.api.acknowledgePurchase
 import com.android.billingclient.api.queryProductDetails
 import com.android.billingclient.api.queryPurchasesAsync
+import com.littlebigsteps.app.BuildConfig
 import com.littlebigsteps.app.analytics.AnalyticsTracker
 import com.littlebigsteps.app.data.repository.ProgressRepository
 import com.littlebigsteps.app.data.repository.UserPreferencesRepository
@@ -94,6 +95,14 @@ class PlayBillingRepository(
             .setProductType(BillingClient.ProductType.SUBS)
             .build()
         val result = billingClient.queryPurchasesAsync(params)
+
+        // Une requête en échec renvoie une liste vide, exactement comme un
+        // utilisateur sans abonnement : sans cette vérification, une simple
+        // indisponibilité du Play Store (réseau, service arrêté, compte en cours
+        // de synchro) rétrograderait un abonné payant en gratuit. En cas
+        // d'échec, on ne touche à rien — la prochaine tentative tranchera.
+        if (result.billingResult.responseCode != BillingClient.BillingResponseCode.OK) return
+
         val hasActivePremium = result.purchasesList.any {
             it.purchaseState == Purchase.PurchaseState.PURCHASED && PREMIUM_SUBSCRIPTION_ID in it.products
         }
@@ -129,6 +138,13 @@ class PlayBillingRepository(
     /** Reverrouille sur le seul médium gratuit choisi à l'onboarding — appelé
      *  quand aucun abonnement actif n'est trouvé (jamais acheté, ou expiré). */
     private suspend fun relockToFreeMediumOnly() {
+        // Le flavor de test premium simule un achat sans passer par Play Billing
+        // (voir LittleBigStepsApplication) : sans cette garde, la réponse "aucun
+        // abonnement" de Play — inévitable tant que le produit n'existe pas en
+        // Play Console, §13 — reverrouillait l'app en gratuit dès le second
+        // lancement, en écrasant le premium simulé.
+        if (BuildConfig.FORCE_PREMIUM) return
+
         userPreferencesRepository.setPremium(false)
         val freeMedium = userPreferencesRepository.observePreferences().first()?.freeMedium ?: return
         progressRepository.ensureMediumRowsExist(unlockedMediums = setOf(freeMedium))
