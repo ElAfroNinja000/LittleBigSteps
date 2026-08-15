@@ -21,7 +21,7 @@ import kotlinx.coroutines.withContext
  * simple, volontairement minimal.
  */
 @Composable
-fun LocalPhotoThumbnail(path: String, modifier: Modifier = Modifier) {
+fun LocalPhotoThumbnail(path: String, modifier: Modifier = Modifier.size(96.dp)) {
     val bitmap by produceState<Bitmap?>(initialValue = null, key1 = path) {
         value = withContext(Dispatchers.IO) { decodeSampledBitmap(path, reqSize = 200) }
     }
@@ -30,7 +30,7 @@ fun LocalPhotoThumbnail(path: String, modifier: Modifier = Modifier) {
         Image(
             bitmap = it.asImageBitmap(),
             contentDescription = null,
-            modifier = modifier.size(96.dp),
+            modifier = modifier,
             contentScale = ContentScale.Crop
         )
     }

@@ -11,5 +11,6 @@ import kotlinx.datetime.Instant
 data class InProgressChallengeEntity(
     @Embedded val challenge: ChallengeEntity,
     val status: ChallengeStatus,
-    val startedAt: Instant
+    val startedAt: Instant,
+    val isSurprise: Boolean
 )

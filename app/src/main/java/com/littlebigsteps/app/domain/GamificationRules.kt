@@ -10,6 +10,10 @@ object GamificationRules {
      *  barème par niveau de difficulté tant qu'un seul niveau (BEGINNER) existe. */
     const val XP_PER_COMPLETION = 20
 
+    /** Bonus XP du défi "surprise" occasionnel (ChallengeProgressEntity.isSurprise) —
+     *  double l'XP de la complétion (voir ChallengeRepositoryImpl.completeChallenge). */
+    const val SURPRISE_XP_BONUS = 20
+
     private const val XP_PER_LEVEL = 100
 
     /** Niveau 1 à 0 xp, +1 niveau tous les XP_PER_LEVEL xp. */

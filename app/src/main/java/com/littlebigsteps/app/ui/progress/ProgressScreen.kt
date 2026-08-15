@@ -1,8 +1,6 @@
 package com.littlebigsteps.app.ui.progress
 
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,37 +10,37 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.EmojiEvents
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.littlebigsteps.app.R
 import com.littlebigsteps.app.data.local.entity.MediumProgressEntity
 import com.littlebigsteps.app.domain.GamificationRules
-import com.littlebigsteps.app.domain.model.Badge
-import com.littlebigsteps.app.export.ExportFormat
 import com.littlebigsteps.app.ui.common.label
-import com.littlebigsteps.app.ui.theme.InkOnDarkSecondary
 import com.littlebigsteps.app.ui.theme.PillShape
 import com.littlebigsteps.app.ui.theme.mediumColors
-import kotlinx.coroutines.launch
 
-/** Streak global + XP/niveau par médium, avec export du résumé (CLAUDE.md §4, §6). */
+/** XP/niveau par médium (CLAUDE.md §4) — export retiré de cette vue (partage
+ *  jugé hors du cœur de la progression, le code reste disponible ailleurs si
+ *  besoin) ; système de badges supprimé entièrement (plus une feature de
+ *  l'app). Pas de compteur de streak affiché :
+ *  le chiffre "N jours de suite" crée une pression de type "ne pas casser la
+ *  chaîne" même sans message culpabilisant explicite, à contre-courant de
+ *  CLAUDE.md §4. Le streak reste suivi en base (currentStreak/longestStreak,
+ *  ProgressRepository) — c'est un signal de rétention interne (§8), pas
+ *  forcément un chiffre à exposer à l'utilisateur. */
 @Composable
 fun ProgressScreen(
     factory: ProgressViewModelFactory,
@@ -51,8 +49,6 @@ fun ProgressScreen(
 ) {
     val viewModel: ProgressViewModel = viewModel(factory = factory)
     val state by viewModel.uiState.collectAsState()
-    val context = LocalContext.current
-    val coroutineScope = rememberCoroutineScope()
 
     if (state.isLoading) return
 
@@ -62,161 +58,70 @@ fun ProgressScreen(
             .padding(24.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        item { Text("Progression", style = MaterialTheme.typography.titleMedium) }
+        item { Text(stringResource(R.string.progress_title), style = MaterialTheme.typography.titleMedium) }
         item {
-            StreakCard(
-                currentStreak = state.currentStreak,
-                longestStreak = state.longestStreak,
-                totalChallengesCompleted = state.totalChallengesCompleted
+            MonthlyStatsRow(
+                activitiesThisMonth = state.activitiesThisMonth,
+                totalXp = state.totalXp
             )
         }
+        // Le médium accessible en free est trié en tête par le ViewModel.
         items(state.mediumProgress, key = { it.mediumType }) { progress ->
             MediumProgressCard(progress)
         }
-        item {
-            BadgesSection(
-                isPremium = state.isPremium,
-                unlockedBadges = state.unlockedBadges,
-                onNavigateToPremium = onNavigateToPremium
-            )
-        }
         if (state.mediumProgress.any { !it.isUnlocked }) {
             item {
-                Button(onClick = onNavigateToPremium) {
-                    Text("Débloquer tous les médiums (Premium)")
+                Button(onClick = onNavigateToPremium, shape = PillShape) {
+                    Text(stringResource(R.string.pass_to_premium))
                 }
             }
         }
-        item {
-            ExportSection(
-                isPremium = state.isPremium,
-                onExport = { format ->
-                    coroutineScope.launch {
-                        val uri = viewModel.exportSummary(format)
-                        shareExport(context, uri, format)
-                    }
-                }
-            )
-        }
     }
 }
 
-/** Image et PDF pour tout le monde ; l'enrichissement (souvenirs illimités,
- *  photos incluses, badges — voir ExportRenderer) est réservé au premium
- *  (CLAUDE.md §7). Format story retiré de cet écran (le format/ExportRenderer
- *  reste dans le code, juste plus proposé ici). */
+/** Deux métriques purement cumulatives — jamais de baisse en cours de mois,
+ *  contrairement au streak retiré de cet écran (voir doc de ProgressScreen). */
 @Composable
-private fun ExportSection(
-    isPremium: Boolean,
-    onExport: (ExportFormat) -> Unit
-) {
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text("Exporter ma progression", style = MaterialTheme.typography.titleMedium)
-        if (isPremium) {
-            Text(
-                "Version enrichie : plus de souvenirs, photos incluses, badges.",
-                style = MaterialTheme.typography.bodyLarge
-            )
-        }
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            OutlinedButton(onClick = { onExport(ExportFormat.IMAGE) }, shape = PillShape) { Text("Image") }
-            Button(onClick = { onExport(ExportFormat.PDF) }, shape = PillShape) { Text("PDF") }
-        }
+private fun MonthlyStatsRow(activitiesThisMonth: Int, totalXp: Int) {
+    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+        StatTile(
+            value = "$activitiesThisMonth",
+            label = stringResource(R.string.stat_activities_this_month),
+            modifier = Modifier.weight(1f)
+        )
+        StatTile(
+            value = "$totalXp",
+            label = stringResource(R.string.stat_total_xp),
+            modifier = Modifier.weight(1f)
+        )
     }
 }
 
-/** Ouvre le sélecteur de partage natif — pas de feed ni de compte, juste un
- *  export autonome (CLAUDE.md §6). */
-private fun shareExport(context: Context, uri: Uri, format: ExportFormat) {
-    val mimeType = if (format == ExportFormat.PDF) "application/pdf" else "image/png"
-    val intent = Intent(Intent.ACTION_SEND).apply {
-        type = mimeType
-        putExtra(Intent.EXTRA_STREAM, uri)
-        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-    }
-    context.startActivity(Intent.createChooser(intent, "Partager ma progression"))
-}
-
-/** Seule carte sur fond navy de l'écran : c'est le chiffre qu'on veut voir en
- *  premier, la DA lui réserve le contraste maximum. */
 @Composable
-private fun StreakCard(currentStreak: Int, longestStreak: Int, totalChallengesCompleted: Int) {
+private fun StatTile(value: String, label: String, modifier: Modifier = Modifier) {
     Surface(
-        shape = MaterialTheme.shapes.large,
-        color = MaterialTheme.colorScheme.secondary,
-        contentColor = MaterialTheme.colorScheme.onSecondary,
-        modifier = Modifier.fillMaxWidth()
+        shape = MaterialTheme.shapes.medium,
+        color = MaterialTheme.colorScheme.background,
+        border = BorderStroke(2.dp, MaterialTheme.colorScheme.primary),
+        modifier = modifier
     ) {
-        Column(modifier = Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                Icon(
-                    Icons.Filled.LocalFireDepartment,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary
-                )
-                Text(
-                    if (currentStreak > 0) "$currentStreak jour(s) de suite" else "Pas de série en cours",
-                    style = MaterialTheme.typography.titleMedium
-                )
-            }
-            // Pas de message culpabilisant en cas de série rompue (CLAUDE.md §4) :
-            // juste le compteur actuel, le record, et le total cumulé.
-            Text(
-                "Record : $longestStreak jour(s) · $totalChallengesCompleted activité(s) au total",
-                style = MaterialTheme.typography.bodyMedium,
-                color = InkOnDarkSecondary
-            )
-        }
-    }
-}
-
-/** Cosmétiques exclusifs premium (CLAUDE.md §7) : aucun badge visible pour un
- *  utilisateur gratuit, juste une invitation à passer premium. */
-@Composable
-private fun BadgesSection(
-    isPremium: Boolean,
-    unlockedBadges: Set<Badge>,
-    onNavigateToPremium: () -> Unit
-) {
-    Card(modifier = Modifier.fillMaxWidth()) {
-        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text("Badges", style = MaterialTheme.typography.titleMedium)
-            if (!isPremium) {
-                Text(
-                    "Cosmétique exclusif premium — débloque-les en passant premium.",
-                    style = MaterialTheme.typography.bodyLarge
-                )
-                OutlinedButton(onClick = onNavigateToPremium) {
-                    Text("Débloquer les badges (Premium)")
-                }
-            } else {
-                Badge.entries.forEach { badge ->
-                    val earned = badge in unlockedBadges
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        Icon(
-                            if (earned) Icons.Filled.EmojiEvents else Icons.Filled.Lock,
-                            contentDescription = null
-                        )
-                        Text(badge.label(), style = MaterialTheme.typography.bodyLarge)
-                    }
-                }
-            }
+        Column(modifier = Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            Text(value, style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.onBackground)
+            Text(label, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }
 
 @Composable
 private fun MediumProgressCard(progress: MediumProgressEntity) {
-    // Verrouillé : surface neutre plutôt que le pastel du médium — la couleur
-    // est une récompense, elle n'apparaît qu'une fois le médium débloqué.
+    // Couleur dédiée du médium même verrouillé — le cadenas reste le seul
+    // indicateur de verrouillage, la couleur sert à reconnaître le médium
+    // d'un coup d'œil avant même de le débloquer.
     val colors = mediumColors(progress.mediumType)
     Surface(
         shape = MaterialTheme.shapes.medium,
-        color = if (progress.isUnlocked) colors.container else MaterialTheme.colorScheme.surfaceVariant,
-        contentColor = if (progress.isUnlocked) colors.onContainer else MaterialTheme.colorScheme.onSurfaceVariant,
+        color = colors.container,
+        contentColor = colors.onContainer,
         modifier = Modifier.fillMaxWidth()
     ) {
         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -227,9 +132,9 @@ private fun MediumProgressCard(progress: MediumProgressEntity) {
             ) {
                 Text(progress.mediumType.label(), style = MaterialTheme.typography.titleMedium)
                 if (progress.isUnlocked) {
-                    Text("Niveau ${progress.level}", style = MaterialTheme.typography.bodyLarge)
+                    Text(stringResource(R.string.level_label, progress.level), style = MaterialTheme.typography.bodyLarge)
                 } else {
-                    Icon(Icons.Filled.Lock, contentDescription = "Verrouillé (premium)")
+                    Icon(Icons.Filled.Lock, contentDescription = stringResource(R.string.locked_premium_description))
                 }
             }
             if (progress.isUnlocked) {
@@ -238,11 +143,11 @@ private fun MediumProgressCard(progress: MediumProgressEntity) {
                     modifier = Modifier.fillMaxWidth()
                 )
                 Text(
-                    "${progress.xp} XP · ${progress.challengesCompletedCount} activité(s) complétée(s)",
+                    stringResource(R.string.medium_xp_summary, progress.xp, progress.challengesCompletedCount),
                     style = MaterialTheme.typography.bodyMedium
                 )
             } else {
-                Text("À débloquer avec premium", style = MaterialTheme.typography.bodyLarge)
+                Text(stringResource(R.string.medium_locked_body), style = MaterialTheme.typography.bodyLarge)
             }
         }
     }

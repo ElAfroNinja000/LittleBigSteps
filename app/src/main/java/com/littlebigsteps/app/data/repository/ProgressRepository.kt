@@ -4,12 +4,9 @@ import androidx.room.withTransaction
 import com.littlebigsteps.app.data.local.AppDatabase
 import com.littlebigsteps.app.data.local.entity.GlobalProgressEntity
 import com.littlebigsteps.app.data.local.entity.MediumProgressEntity
-import com.littlebigsteps.app.data.local.entity.UnlockedBadgeEntity
-import com.littlebigsteps.app.domain.BadgeEvaluator
 import com.littlebigsteps.app.domain.GamificationRules
 import com.littlebigsteps.app.domain.model.MediumType
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.TimeZone
@@ -20,32 +17,43 @@ import kotlinx.datetime.todayIn
  * Streak global + XP/niveau par médium. Les deux évoluent ensemble à chaque
  * complétion ([recordCompletion]) mais restent des concepts distincts : le
  * streak est transversal à tous les médiums, l'XP est propre à chacun (voir
- * CLAUDE.md §4 et docs/data-model.md). Évalue aussi les badges premium (§7)
- * à chaque complétion.
+ * CLAUDE.md §4 et docs/data-model.md).
  */
 interface ProgressRepository {
     fun observeGlobalProgress(): Flow<GlobalProgressEntity?>
     fun observeMediumProgress(mediumType: MediumType): Flow<MediumProgressEntity?>
     fun observeAllMediumProgress(): Flow<List<MediumProgressEntity>>
-    fun observeUnlockedBadges(): Flow<List<UnlockedBadgeEntity>>
 
     /** Crée/actualise les lignes des 4 médiums (idempotent), ex. après l'onboarding
      *  ou un changement de statut premium qui débloque de nouveaux médiums. */
     suspend fun ensureMediumRowsExist(unlockedMediums: Set<MediumType>)
 
     /** Met à jour XP/niveau du médium et le streak global pour une complétion.
-     *  Renvoie l'XP gagné (utile pour l'afficher immédiatement à l'écran). */
-    suspend fun recordCompletion(mediumType: MediumType): Int
+     *  [xpBonus] s'ajoute au barème standard (défi "surprise", voir
+     *  GamificationRules.SURPRISE_XP_BONUS). Renvoie l'XP gagné et si le
+     *  niveau du médium vient de changer (utile pour la popup de montée de
+     *  niveau, voir ChallengeSelectionViewModel). */
+    suspend fun recordCompletion(mediumType: MediumType, xpBonus: Int = 0): CompletionOutcome
+
+    /** Réinitialisation manuelle depuis les Paramètres : remet streak/XP/niveaux
+     *  à zéro sans toucher aux médiums débloqués (statut premium indépendant de
+     *  la progression). Le Portfolio est vidé séparément, voir
+     *  ChallengeRepository.clearHistory — les deux sont appelés ensemble
+     *  depuis SettingsViewModel. */
+    suspend fun resetProgress()
 }
 
+/** [newLevel] est le niveau du médium après la complétion, quel que soit
+ *  [leveledUp] — pratique pour l'afficher même si on ne s'en sert que quand
+ *  [leveledUp] est vrai. */
+data class CompletionOutcome(val xpGained: Int, val newLevel: Int, val leveledUp: Boolean)
+
 class ProgressRepositoryImpl(
-    private val database: AppDatabase,
-    private val userPreferencesRepository: UserPreferencesRepository
+    private val database: AppDatabase
 ) : ProgressRepository {
 
     private val globalProgressDao get() = database.globalProgressDao()
     private val mediumProgressDao get() = database.mediumProgressDao()
-    private val badgeDao get() = database.badgeDao()
 
     override fun observeGlobalProgress(): Flow<GlobalProgressEntity?> = globalProgressDao.observe()
 
@@ -54,8 +62,6 @@ class ProgressRepositoryImpl(
 
     override fun observeAllMediumProgress(): Flow<List<MediumProgressEntity>> =
         mediumProgressDao.observeAll()
-
-    override fun observeUnlockedBadges(): Flow<List<UnlockedBadgeEntity>> = badgeDao.observeAll()
 
     override suspend fun ensureMediumRowsExist(unlockedMediums: Set<MediumType>) {
         MediumType.entries.forEach { medium ->
@@ -67,21 +73,21 @@ class ProgressRepositoryImpl(
         }
     }
 
-    override suspend fun recordCompletion(mediumType: MediumType): Int = database.withTransaction {
-        val xpGained = GamificationRules.XP_PER_COMPLETION
+    override suspend fun recordCompletion(mediumType: MediumType, xpBonus: Int): CompletionOutcome = database.withTransaction {
+        val xpGained = GamificationRules.XP_PER_COMPLETION + xpBonus
         val current = mediumProgressDao.getOnce(mediumType)
             ?: MediumProgressEntity(mediumType = mediumType, isUnlocked = true)
         val newXp = current.xp + xpGained
+        val newLevel = GamificationRules.levelForXp(newXp)
         mediumProgressDao.upsert(
             current.copy(
                 xp = newXp,
-                level = GamificationRules.levelForXp(newXp),
+                level = newLevel,
                 challengesCompletedCount = current.challengesCompletedCount + 1
             )
         )
         updateStreak()
-        maybeUnlockBadges()
-        xpGained
+        CompletionOutcome(xpGained = xpGained, newLevel = newLevel, leveledUp = newLevel > current.level)
     }
 
     /**
@@ -120,18 +126,8 @@ class ProgressRepositoryImpl(
         globalProgressDao.upsert(updated)
     }
 
-    /** Cosmétiques exclusifs premium (CLAUDE.md §7) : rien n'est évalué pour
-     *  un utilisateur gratuit. Un badge déjà débloqué n'est jamais réévalué
-     *  (permanent, voir UnlockedBadgeEntity). */
-    private suspend fun maybeUnlockBadges() {
-        val isPremium = userPreferencesRepository.observePreferences().first()?.isPremium ?: false
-        if (!isPremium) return
-
-        val global = globalProgressDao.getOnce() ?: return
-        val mediums = mediumProgressDao.observeAll().first()
-        val alreadyUnlocked = badgeDao.getUnlockedBadges().toSet()
-        val newlyEarned = BadgeEvaluator.evaluate(global, mediums) - alreadyUnlocked
-        val now = Clock.System.now()
-        newlyEarned.forEach { badge -> badgeDao.upsert(UnlockedBadgeEntity(badge, now)) }
+    override suspend fun resetProgress() = database.withTransaction {
+        globalProgressDao.deleteAll()
+        mediumProgressDao.resetAll()
     }
 }

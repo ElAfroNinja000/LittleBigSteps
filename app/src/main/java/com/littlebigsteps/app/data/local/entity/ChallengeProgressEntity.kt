@@ -32,5 +32,9 @@ data class ChallengeProgressEntity(
     @PrimaryKey val challengeId: String,
     val mediumType: MediumType, // dénormalisé pour filtrer sans jointure
     val status: ChallengeStatus,
-    val startedAt: Instant
+    val startedAt: Instant,
+    /** Défi "surprise" occasionnel de ce tirage (bonus XP à la finalisation,
+     *  voir GamificationRules.SURPRISE_XP_BONUS) — décidé côté ViewModel au
+     *  moment du tirage, persisté ici pour survivre à une reprise d'app. */
+    val isSurprise: Boolean = false
 )

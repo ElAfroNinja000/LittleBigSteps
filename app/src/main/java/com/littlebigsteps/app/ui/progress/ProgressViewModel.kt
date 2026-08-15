@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.littlebigsteps.app.analytics.AnalyticsTracker
+import com.littlebigsteps.app.data.local.entity.MediumProgressEntity
 import com.littlebigsteps.app.data.repository.ChallengeRepository
 import com.littlebigsteps.app.data.repository.ProgressRepository
 import com.littlebigsteps.app.data.repository.UserPreferencesRepository
@@ -18,11 +19,14 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 /**
  * Streak global + XP/niveau par médium (CLAUDE.md §4), simple lecture réactive
  * de ProgressRepository. Gère aussi l'export du résumé — image/PDF pour tous,
- * plus de souvenirs/photos/badges/format story pour le premium (§4, §6, §7).
+ * plus de souvenirs/photos pour le premium (§4, §6, §7).
  */
 class ProgressViewModel(
     private val progressRepository: ProgressRepository,
@@ -40,15 +44,27 @@ class ProgressViewModel(
             combine(
                 progressRepository.observeGlobalProgress(),
                 progressRepository.observeAllMediumProgress(),
-                progressRepository.observeUnlockedBadges(),
+                challengeRepository.observePortfolio(),
                 userPreferencesRepository.observePreferences()
-            ) { global, mediums, badges, prefs ->
+            ) { global, mediums, portfolio, prefs ->
+                // Le médium accessible en free (s'il existe) prime dans l'ordre
+                // d'affichage — c'est le seul que l'utilisateur gratuit pratique.
+                val freeMedium = prefs?.freeMedium
+                val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+                val activitiesThisMonth = portfolio.count { entry ->
+                    val completedAt = entry.completion.completedAt.toLocalDateTime(TimeZone.currentSystemDefault())
+                    completedAt.year == now.year && completedAt.monthNumber == now.monthNumber
+                }
                 ProgressUiState(
                     currentStreak = global?.currentStreak ?: 0,
                     longestStreak = global?.longestStreak ?: 0,
                     totalChallengesCompleted = global?.totalChallengesCompleted ?: 0,
-                    mediumProgress = mediums.sortedBy { it.mediumType.ordinal },
-                    unlockedBadges = badges.map { it.badge }.toSet(),
+                    activitiesThisMonth = activitiesThisMonth,
+                    totalXp = mediums.sumOf { it.xp },
+                    mediumProgress = mediums.sortedWith(
+                        compareByDescending<MediumProgressEntity> { it.mediumType == freeMedium }
+                            .thenBy { it.mediumType.ordinal }
+                    ),
                     isPremium = prefs?.isPremium ?: false,
                     isLoading = false
                 )
@@ -56,16 +72,15 @@ class ProgressViewModel(
         }
     }
 
-    /** Régénère le résumé (streak, niveaux, souvenirs, badges) et renvoie un
-     *  URI content:// prêt à être partagé (voir ProgressScreen). L'enrichissement
-     *  (plus de souvenirs, photos, badges, format story) dépend d'isPremium,
-     *  déterminé ici et non par l'appelant. Décodage bitmap potentiellement
-     *  coûteux (photos premium) : hors du thread principal. */
+    /** Régénère le résumé (streak, niveaux, souvenirs) et renvoie un URI
+     *  content:// prêt à être partagé (voir ProgressScreen). L'enrichissement
+     *  (plus de souvenirs, photos) dépend d'isPremium, déterminé ici et non
+     *  par l'appelant. Décodage bitmap potentiellement coûteux (photos
+     *  premium) : hors du thread principal. */
     suspend fun exportSummary(format: ExportFormat): Uri = withContext(Dispatchers.IO) {
         val global = progressRepository.observeGlobalProgress().first()
         val mediums = progressRepository.observeAllMediumProgress().first()
         val isPremium = userPreferencesRepository.observePreferences().first()?.isPremium ?: false
-        val unlockedBadges = progressRepository.observeUnlockedBadges().first().map { it.badge }.toSet()
         val souvenirs = challengeRepository.observePortfolio().first()
             .filter { it.completion.souvenirNote != null || it.completion.souvenirPhotoPath != null }
             .take(20) // ExportRenderer applique ensuite la limite gratuite/premium
@@ -74,14 +89,12 @@ class ProgressViewModel(
             globalProgress = global,
             mediumProgress = mediums,
             recentSouvenirs = souvenirs,
-            isPremium = isPremium,
-            unlockedBadges = unlockedBadges
+            isPremium = isPremium
         )
 
         val uri = when (format) {
             ExportFormat.IMAGE -> exportGenerator.exportAsImage(data)
             ExportFormat.PDF -> exportGenerator.exportAsPdf(data)
-            ExportFormat.STORY -> exportGenerator.exportAsStory(data)
         }
         analyticsTracker.trackExport(format.name)
         uri

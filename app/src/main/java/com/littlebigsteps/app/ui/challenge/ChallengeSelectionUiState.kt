@@ -18,7 +18,18 @@ sealed interface ChallengeDialog {
 
     /** "Bien joué !" — photo/légende avant de finaliser (jauge à Terminé). */
     data class Finalize(val entry: InProgressChallengeEntity) : ChallengeDialog
+
+    /** Conseils spécifiques au défi, accessibles depuis la popup "En cours"
+     *  (icône ampoule, seulement si challenge.tips n'est pas vide). Fermer
+     *  cette popup revient à InProgress plutôt qu'à null (voir
+     *  ChallengeSelectionViewModel.closeTips) : c'est un niveau de détail
+     *  supplémentaire, pas un nouveau parcours. */
+    data class Tips(val entry: InProgressChallengeEntity) : ChallengeDialog
 }
+
+/** Montée de niveau détectée à la finalisation — popup dédiée (confettis),
+ *  affichée à la place du snackbar "+N XP" habituel pour cette complétion. */
+data class LevelUpEvent(val mediumType: MediumType, val newLevel: Int)
 
 data class ChallengeSelectionUiState(
     /** Médium actif pour cette session de sélection. */
@@ -36,6 +47,9 @@ data class ChallengeSelectionUiState(
     val availablePacks: List<ChallengePackEntity> = emptyList(),
     /** Non-null pendant qu'on parcourt un pack plutôt que les suggestions du jour. */
     val activePack: ChallengePackEntity? = null,
+    /** Id du défi "surprise" occasionnel de ce tirage parmi [newOptions] (bonus
+     *  XP, mise en valeur visuelle) — jamais au sein d'un pack, voir loadOptions. */
+    val surpriseChallengeId: String? = null,
     val dialog: ChallengeDialog? = null,
     val souvenirNote: String = "",
     /** Chemin local (stockage interne) de la photo souvenir une fois confirmée. */
@@ -44,6 +58,10 @@ data class ChallengeSelectionUiState(
     val pendingCameraTarget: SouvenirPhotoTarget? = null,
     val isLoading: Boolean = true,
     val isCompleting: Boolean = false,
-    /** Non-null juste après une finalisation, pour afficher le récap XP avant de continuer. */
-    val lastCompletion: CompletedChallengeEntity? = null
+    /** Non-null juste après une finalisation, pour afficher le récap XP avant
+     *  de continuer — jamais en même temps que [lastLevelUp] (la montée de
+     *  niveau remplace le snackbar XP pour cette complétion, pas de doublon). */
+    val lastCompletion: CompletedChallengeEntity? = null,
+    /** Non-null juste après une finalisation qui fait monter de niveau. */
+    val lastLevelUp: LevelUpEvent? = null
 )

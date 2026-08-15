@@ -8,6 +8,8 @@ import com.littlebigsteps.app.data.local.entity.ChallengeProgressEntity
 import com.littlebigsteps.app.data.local.entity.CompletedChallengeEntity
 import com.littlebigsteps.app.data.local.entity.InProgressChallengeEntity
 import com.littlebigsteps.app.data.local.entity.PortfolioEntryEntity
+import com.littlebigsteps.app.domain.GamificationRules
+import com.littlebigsteps.app.domain.RenewalSchedule
 import com.littlebigsteps.app.domain.model.ChallengeStatus
 import com.littlebigsteps.app.domain.model.MediumType
 import kotlinx.coroutines.flow.Flow
@@ -30,9 +32,13 @@ interface ChallengeRepository {
      *  (voir [packsForMedium]/[challengesInPack] — un pack se parcourt en
      *  entier, il n'est pas mélangé aux suggestions aléatoires du jour).
      *  Renvoie une liste vide (aucune nouvelle activité proposée) tant qu'une
-     *  activité de ce médium est "en cours" (voir [observeInProgress]), ou que
-     *  le délai de répétition dérivé de la fréquence choisie à l'onboarding
-     *  n'est pas écoulé depuis la dernière complétion. */
+     *  activité de ce médium est "en cours" (voir [observeInProgress]), sauf
+     *  si le calendrier de renouvellement (fréquence choisie à l'onboarding,
+     *  voir [com.littlebigsteps.app.domain.RenewalSchedule]) est écoulé
+     *  depuis le démarrage de la dernière activité en cours — c'est la seule
+     *  façon d'accumuler plusieurs activités en cours à la fois. Dès qu'une
+     *  activité en cours est finalisée, 3 nouvelles sont proposées
+     *  immédiatement, sans attendre ce calendrier. */
     suspend fun pickDailyOptions(mediumType: MediumType, count: Int = 3): List<ChallengeEntity>
 
     /** Packs thématiques/saisonniers disponibles pour ce médium (CLAUDE.md §7). */
@@ -45,8 +51,11 @@ interface ChallengeRepository {
     fun observeInProgress(mediumType: MediumType): Flow<List<InProgressChallengeEntity>>
 
     /** Démarre une activité : "Choisir" sur une nouvelle proposition la fait
-     *  passer directement en "En cours", statut [ChallengeStatus.DRAFT]. */
-    suspend fun startChallenge(challengeId: String, mediumType: MediumType)
+     *  passer directement en "En cours", statut [ChallengeStatus.DRAFT].
+     *  [isSurprise] persiste le tirage "surprise" occasionnel décidé côté
+     *  ViewModel (voir ChallengeSelectionViewModel), pour bonus XP à la
+     *  finalisation même si l'app est relancée entre-temps. */
+    suspend fun startChallenge(challengeId: String, mediumType: MediumType, isSurprise: Boolean = false)
 
     /** Avance/recule la jauge d'une activité en cours (auto-déclaré, tap direct
      *  sur la jauge — CLAUDE.md §9, aucune vérification). No-op si l'activité
@@ -67,8 +76,22 @@ interface ChallengeRepository {
         mediumType: MediumType,
         souvenirPhotoPath: String? = null,
         souvenirNote: String? = null
-    ): CompletedChallengeEntity
+    ): ChallengeCompletionResult
+
+    /** Réinitialisation manuelle depuis les Paramètres : vide le Portfolio et
+     *  abandonne les activités en cours. Ne supprime pas les fichiers photo
+     *  eux-mêmes (voir CompletedChallengeDao.deleteAll). Appelé avec
+     *  ProgressRepository.resetProgress depuis SettingsViewModel. */
+    suspend fun clearHistory()
 }
+
+/** [leveledUp]/[newLevel] portent la montée de niveau éventuelle du médium
+ *  concerné (voir CompletionOutcome) — popup dédiée côté ChallengeSelectionViewModel. */
+data class ChallengeCompletionResult(
+    val completion: CompletedChallengeEntity,
+    val newLevel: Int,
+    val leveledUp: Boolean
+)
 
 class ChallengeRepositoryImpl(
     private val database: AppDatabase,
@@ -84,24 +107,19 @@ class ChallengeRepositoryImpl(
         challengeDao.observeByMedium(mediumType)
 
     override suspend fun pickDailyOptions(mediumType: MediumType, count: Int): List<ChallengeEntity> {
-        if (!canProposeNewActivities(mediumType)) return emptyList()
+        val inProgressIds = challengeProgressDao.getInProgressIds(mediumType)
+        if (inProgressIds.isNotEmpty()) {
+            val lastStartedAt = challengeProgressDao.getMostRecentStartedAt(mediumType)
+            val prefs = userPreferencesRepository.observePreferences().first()
+            val renewalDue = lastStartedAt != null &&
+                RenewalSchedule.isRenewalDue(lastStartedAt, prefs?.reminderFrequency?.timesPerWeek ?: 7)
+            if (!renewalDue) return emptyList()
+        }
         val isPremium = userPreferencesRepository.observePreferences().first()?.isPremium ?: false
         return challengeDao.getAllByMedium(mediumType)
-            .filter { (!it.isPremiumOnly || isPremium) && it.packId == null }
+            .filter { (!it.isPremiumOnly || isPremium) && it.packId == null && it.id !in inProgressIds }
             .shuffled()
             .take(count)
-    }
-
-    /** "Nouvelles activités" masquées tant qu'une activité de ce médium est en
-     *  cours (déjà exclue de tout tirage tant qu'elle n'est pas finalisée), ou
-     *  que le délai de répétition (fréquence choisie à l'onboarding) n'est pas
-     *  écoulé depuis la dernière complétion. */
-    private suspend fun canProposeNewActivities(mediumType: MediumType): Boolean {
-        if (challengeProgressDao.getInProgressIds(mediumType).isNotEmpty()) return false
-        val frequency = userPreferencesRepository.observePreferences().first()?.reminderFrequency ?: return true
-        val lastCompletedAt = completedChallengeDao.lastCompletedAt(mediumType) ?: return true
-        val daysSinceCompletion = (Clock.System.now() - lastCompletedAt).inWholeDays
-        return daysSinceCompletion >= frequency.repeatIntervalDays
     }
 
     override suspend fun packsForMedium(mediumType: MediumType): List<ChallengePackEntity> =
@@ -113,13 +131,14 @@ class ChallengeRepositoryImpl(
     override fun observeInProgress(mediumType: MediumType): Flow<List<InProgressChallengeEntity>> =
         challengeProgressDao.observeByMedium(mediumType)
 
-    override suspend fun startChallenge(challengeId: String, mediumType: MediumType) {
+    override suspend fun startChallenge(challengeId: String, mediumType: MediumType, isSurprise: Boolean) {
         challengeProgressDao.upsert(
             ChallengeProgressEntity(
                 challengeId = challengeId,
                 mediumType = mediumType,
                 status = ChallengeStatus.DRAFT,
-                startedAt = Clock.System.now()
+                startedAt = Clock.System.now(),
+                isSurprise = isSurprise
             )
         )
     }
@@ -140,18 +159,30 @@ class ChallengeRepositoryImpl(
         mediumType: MediumType,
         souvenirPhotoPath: String?,
         souvenirNote: String?
-    ): CompletedChallengeEntity = database.withTransaction {
-        val xpGained = progressRepository.recordCompletion(mediumType)
+    ): ChallengeCompletionResult = database.withTransaction {
+        // isSurprise lu avant la suppression de la ligne "en cours" ci-dessous.
+        val isSurprise = challengeProgressDao.getByChallengeId(challengeId)?.isSurprise ?: false
+        val xpBonus = if (isSurprise) GamificationRules.SURPRISE_XP_BONUS else 0
+        val outcome = progressRepository.recordCompletion(mediumType, xpBonus)
         val completion = CompletedChallengeEntity(
             challengeId = challengeId,
             mediumType = mediumType,
             completedAt = Clock.System.now(),
             souvenirPhotoPath = souvenirPhotoPath,
             souvenirNote = souvenirNote,
-            xpEarned = xpGained
+            xpEarned = outcome.xpGained
         )
         val id = completedChallengeDao.insert(completion)
         challengeProgressDao.deleteByChallengeId(challengeId)
-        completion.copy(id = id)
+        ChallengeCompletionResult(
+            completion = completion.copy(id = id),
+            newLevel = outcome.newLevel,
+            leveledUp = outcome.leveledUp
+        )
+    }
+
+    override suspend fun clearHistory() = database.withTransaction {
+        completedChallengeDao.deleteAll()
+        challengeProgressDao.deleteAll()
     }
 }

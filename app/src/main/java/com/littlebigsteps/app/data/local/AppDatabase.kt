@@ -5,7 +5,6 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.littlebigsteps.app.data.local.dao.BadgeDao
 import com.littlebigsteps.app.data.local.dao.ChallengeDao
 import com.littlebigsteps.app.data.local.dao.ChallengePackDao
 import com.littlebigsteps.app.data.local.dao.ChallengeProgressDao
@@ -23,7 +22,6 @@ import com.littlebigsteps.app.data.local.entity.ContentManifestEntity
 import com.littlebigsteps.app.data.local.entity.GlobalProgressEntity
 import com.littlebigsteps.app.data.local.entity.MediumContentVersionEntity
 import com.littlebigsteps.app.data.local.entity.MediumProgressEntity
-import com.littlebigsteps.app.data.local.entity.UnlockedBadgeEntity
 import com.littlebigsteps.app.data.local.entity.UserPreferencesEntity
 
 /**
@@ -42,10 +40,17 @@ import com.littlebigsteps.app.data.local.entity.UserPreferencesEntity
         ContentManifestEntity::class,
         MediumContentVersionEntity::class,
         ChallengePackEntity::class,
-        UnlockedBadgeEntity::class,
         ChallengeProgressEntity::class
     ],
-    version = 2,
+    // v3 : suppression du système de badges (UnlockedBadgeEntity).
+    // v4 : ChallengeProgressEntity.isSurprise (défi surprise occasionnel).
+    // v5 : UserPreferencesEntity.notificationsEnabled/analyticsEnabled (vue Paramètres).
+    // v6 : ChallengeEntity.tips (popup "Conseils" sur une activité en cours).
+    // v7 : syncedLocale sur MediumContentVersionEntity/ContentManifestEntity
+    //      (re-synchroniser le catalogue quand la langue de l'app change).
+    // Voir fallbackToDestructiveMigration ci-dessous, pas de vraie migration
+    // nécessaire tant que l'app n'est pas publiée (CLAUDE.md §14).
+    version = 7,
     exportSchema = true
 )
 @TypeConverters(Converters::class)
@@ -59,7 +64,6 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun contentManifestDao(): ContentManifestDao
     abstract fun mediumContentVersionDao(): MediumContentVersionDao
     abstract fun challengePackDao(): ChallengePackDao
-    abstract fun badgeDao(): BadgeDao
     abstract fun challengeProgressDao(): ChallengeProgressDao
 
     companion object {

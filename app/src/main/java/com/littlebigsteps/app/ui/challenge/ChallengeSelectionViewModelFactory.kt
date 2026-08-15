@@ -14,7 +14,8 @@ class ChallengeSelectionViewModelFactory(
     private val progressRepository: ProgressRepository,
     private val souvenirPhotoStore: SouvenirPhotoStore,
     private val userPreferencesRepository: UserPreferencesRepository,
-    private val analyticsTracker: AnalyticsTracker
+    private val analyticsTracker: AnalyticsTracker,
+    private val surpriseProbability: Float = 0.25f
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
@@ -24,7 +25,8 @@ class ChallengeSelectionViewModelFactory(
             progressRepository,
             souvenirPhotoStore,
             userPreferencesRepository,
-            analyticsTracker
+            analyticsTracker,
+            surpriseProbability
         ) as T
     }
 }
