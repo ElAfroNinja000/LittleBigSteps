@@ -144,7 +144,8 @@ fait ses preuves ici pour ce que ça vaut. Repartir du dernier commit contenant
 Le core loop complet (§3) est implémenté et fonctionnel côté code : onboarding
 → sélection de défi → complétion avec souvenir → portfolio → progression.
 Tout le MVP (§4) et le modèle économique (§7, packs inclus) sont codés.
-**Jamais testé sur émulateur/appareil réel** — voir §14.
+Testé et vérifié fonctionnel sur appareil réel — voir §14 pour l'historique
+des builds et des points spécifiquement revérifiés.
 
 **Refonte UX/DA appliquée le 2026-08-13** (onboarding, Mes activités,
 Portfolio, Progression) : palette mint/blanc cassé cohérente par médium via
@@ -223,16 +224,21 @@ analytics anonymes (`AnalyticsTracker.setEnabled`, `PostHog.optOut()`/
 `ChallengeRepository.clearHistory`, ne touche pas aux préférences
 onboarding), version de l'app. `AppDatabase` passé en version 5
 (`notificationsEnabled`/`analyticsEnabled`). Export/sauvegarde des données
-explicitement exclu de cette vue (demandé par l'utilisateur).
-**Non compilé après ce lot** — voir §14.
+explicitement exclu de cette vue (demandé par l'utilisateur). "Restaurer mes
+achats" et "Statistiques anonymes" retirés de la vue le 2026-08-15 (voir plus
+bas) — la colonne `analyticsEnabled` reste en base mais n'est plus pilotable
+depuis l'UI, plus d'opt-out analytics dans l'app pour l'instant.
 
 **Popup "Conseils" ajoutée le 2026-08-14** (`ChallengeEntity.tips: List<String>?`,
 `ChallengeDto.tips`) : icône ampoule dans la popup "En cours", visible
 seulement si des conseils sont renseignés pour ce défi précis (masquée
 sinon plutôt que d'ouvrir une popup vide), ouvre `TipsDialog` (liste à
-puces façon checklist). Contenu éditorial rédigé par l'utilisateur
-lui-même dans `/content/{fr,en}` — jamais généré automatiquement, gratuit
-pour tous les médiums. `AppDatabase` passé en version 6.
+puces façon checklist). `AppDatabase` passé en version 6. Contenu écrit le
+2026-08-15 : 3 conseils par défi sur les 43 défis fr/en, **générés par
+l'agent puis poussés sur demande explicite de l'utilisateur** — la décision
+initiale de rédaction manuelle (§5, "pas de génération IA") a été revue en
+cours de session pour ce contenu précis ; §5 reste à ajuster formellement si
+cette exception doit valoir au-delà des conseils.
 
 **Logo/icône de l'app finalisés le 2026-08-14** : direction retenue après
 plusieurs maquettes (nom conservé — LittleBigSteps) — une "rosace"
@@ -241,8 +247,9 @@ organique de 4 tuiles arrondies (une par médium) en teintes vives
 disposées autour d'un centre, sur fond blanc chaud identique au reste de
 l'UI (`WarmBackground`). Implémenté comme adaptive icon Android :
 `drawable/ic_launcher_foreground.xml` (vector drawable, 4 groupes tournés
-autour de leur propre pivot), `values/colors.xml` →
-`ic_launcher_background`. Non compilé — voir §14.
+autour de leur propre pivot), `values/colors.xml` → `ic_launcher_background`.
+Repris à l'identique sur l'écran d'accueil de l'onboarding (`Image` sur le
+même drawable plutôt qu'un pictogramme séparé) le 2026-08-15.
 
 **Correctifs du 2026-08-15** :
 
@@ -333,6 +340,16 @@ depuis un agent seul (comptes/paiement/consoles externes) :
 
 ## 14. Pour reprendre ce projet
 
+- **État au 2026-08-15** : code à jour et poussé sur `master` (historique
+  détaillé dans `git log`), compile proprement sur les deux flavors
+  (`assembleFreeDebug`/`assemblePremiumDebug`). Vérifié par l'utilisateur sur
+  appareil réel : l'app démarre sans crash avec `MainActivity: AppCompatActivity`
+  + `Theme.AppCompat` (risque identifié après le passage au sélecteur de
+  langue in-app, §12), et le statut premium survit bien à un relancement de
+  l'app après onboarding (bug corrigé deux fois — course avec la restauration
+  Play Billing, puis `restorePurchases()` qui ignorait l'échec réseau, voir
+  `PlayBillingRepository.kt`). Pas de tests automatisés (§11) : ces deux
+  points, comme tout le reste, ne sont couverts que par test manuel.
 - **Build réel effectué le 2026-08-08** : JDK 17, Android SDK (platform 34,
   build-tools 34.0.0) et un émulateur (AVD `3dps_test`, API 34 x86_64) sont
   disponibles sur `D:\Dev\android-sdk`, wrapper Gradle généré et committé. Le
