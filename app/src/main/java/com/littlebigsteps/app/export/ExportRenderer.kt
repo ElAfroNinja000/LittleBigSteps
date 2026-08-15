@@ -1,51 +1,49 @@
 package com.littlebigsteps.app.export
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import com.littlebigsteps.app.R
 import com.littlebigsteps.app.data.local.entity.GlobalProgressEntity
 import com.littlebigsteps.app.data.local.entity.MediumProgressEntity
 import com.littlebigsteps.app.data.local.entity.PortfolioEntryEntity
-import com.littlebigsteps.app.domain.model.Badge
 import com.littlebigsteps.app.ui.common.label
 
 /**
  * Ce qu'on exporte : streak, niveaux, quelques souvenirs (CLAUDE.md §4).
- * isPremium/unlockedBadges pilotent l'enrichissement du rendu (§7) : plus de
- * souvenirs, photos incluses, badges affichés — réservés au premium.
+ * isPremium pilote l'enrichissement du rendu (§7) : plus de souvenirs, photos
+ * incluses — réservés au premium.
  */
 data class ExportData(
     val globalProgress: GlobalProgressEntity?,
     val mediumProgress: List<MediumProgressEntity>,
     val recentSouvenirs: List<PortfolioEntryEntity>,
-    val isPremium: Boolean = false,
-    val unlockedBadges: Set<Badge> = emptySet()
+    val isPremium: Boolean = false
 )
 
 /**
  * Dessine le résumé de progression sur un Canvas natif. Bitmap et
  * PdfDocument.Page exposent tous les deux un Canvas standard : cette même
  * fonction sert donc aux formats image et PDF (voir ProgressExportGenerator),
- * pas de logique de mise en page dupliquée. [drawStory] est un format visuel
- * distinct, exclusif premium (CLAUDE.md §7).
+ * pas de logique de mise en page dupliquée.
  *
  * Couleurs recopiées de ui/theme/Color.kt : un Canvas natif n'a pas accès au
- * MaterialTheme Compose.
+ * MaterialTheme Compose. [context] sert uniquement à résoudre les chaînes
+ * traduites (res/values{,-en}/strings.xml) — pas de UI ici.
  */
 object ExportRenderer {
     const val WIDTH = 1080
     const val HEIGHT = 1350
-    const val STORY_WIDTH = 1080
-    const val STORY_HEIGHT = 1920
 
     private const val MARGIN = 60f
     private const val THUMB_SIZE = 96
     private const val FREE_SOUVENIR_LIMIT = 5
     private const val PREMIUM_SOUVENIR_LIMIT = 10
 
-    fun draw(canvas: Canvas, data: ExportData) {
+    fun draw(canvas: Canvas, data: ExportData, context: Context) {
         canvas.drawColor(Color.parseColor("#FFFBFE"))
 
         val titlePaint = textPaint(color = "#1C1B1F", size = 56f, bold = true)
@@ -57,60 +55,62 @@ object ExportRenderer {
         var y = 100f
         canvas.drawText("LittleBigSteps", MARGIN, y, titlePaint)
         if (data.isPremium) {
-            canvas.drawText("★ PREMIUM", WIDTH - 300f, y, premiumPaint)
+            canvas.drawText(context.getString(R.string.export_premium_badge), WIDTH - 300f, y, premiumPaint)
         }
         y += 50f
-        canvas.drawText("Récap de progression", MARGIN, y, subtitlePaint)
+        canvas.drawText(context.getString(R.string.export_recap_title), MARGIN, y, subtitlePaint)
         y += 90f
 
-        canvas.drawText("Streak", MARGIN, y, sectionPaint)
+        canvas.drawText(context.getString(R.string.export_streak_title), MARGIN, y, sectionPaint)
         y += 50f
         val global = data.globalProgress
-        canvas.drawText("${global?.currentStreak ?: 0} jour(s) de suite", MARGIN, y, bodyPaint)
-        y += 42f
-        canvas.drawText("Record : ${global?.longestStreak ?: 0} jour(s)", MARGIN, y, bodyPaint)
+        canvas.drawText(
+            context.getString(R.string.export_streak_days, global?.currentStreak ?: 0),
+            MARGIN,
+            y,
+            bodyPaint
+        )
         y += 42f
         canvas.drawText(
-            "${global?.totalChallengesCompleted ?: 0} défis complétés au total",
+            context.getString(R.string.export_streak_record, global?.longestStreak ?: 0),
+            MARGIN,
+            y,
+            bodyPaint
+        )
+        y += 42f
+        canvas.drawText(
+            context.getString(R.string.export_total_completed, global?.totalChallengesCompleted ?: 0),
             MARGIN,
             y,
             bodyPaint
         )
         y += 70f
 
-        canvas.drawText("Progression par médium", MARGIN, y, sectionPaint)
+        canvas.drawText(context.getString(R.string.export_progress_by_medium), MARGIN, y, sectionPaint)
         y += 50f
         data.mediumProgress.forEach { progress ->
             val status = if (progress.isUnlocked) {
-                "Niveau ${progress.level} · ${progress.xp} XP · ${progress.challengesCompletedCount} défi(s)"
+                context.getString(
+                    R.string.export_medium_status_unlocked,
+                    progress.level,
+                    progress.xp,
+                    progress.challengesCompletedCount
+                )
             } else {
-                "Verrouillé (premium)"
+                context.getString(R.string.locked_premium_description)
             }
-            canvas.drawText("${progress.mediumType.label()} — $status", MARGIN, y, bodyPaint)
+            canvas.drawText("${progress.mediumType.label(context)} — $status", MARGIN, y, bodyPaint)
             y += 42f
         }
         y += 30f
 
-        // Badges : section exclusive premium (CLAUDE.md §7), absente pour un
-        // export gratuit même si (en théorie) aucun badge n'existerait de toute
-        // façon puisqu'ils ne sont évalués que pour les utilisateurs premium.
-        if (data.isPremium && data.unlockedBadges.isNotEmpty()) {
-            canvas.drawText("Badges débloqués", MARGIN, y, sectionPaint)
-            y += 50f
-            data.unlockedBadges.forEach { badge ->
-                canvas.drawText("🏅 ${badge.label()}", MARGIN, y, bodyPaint)
-                y += 42f
-            }
-            y += 30f
-        }
-
         if (data.recentSouvenirs.isNotEmpty()) {
-            canvas.drawText("Derniers souvenirs", MARGIN, y, sectionPaint)
+            canvas.drawText(context.getString(R.string.export_recent_souvenirs), MARGIN, y, sectionPaint)
             y += 50f
             val limit = if (data.isPremium) PREMIUM_SOUVENIR_LIMIT else FREE_SOUVENIR_LIMIT
             data.recentSouvenirs.take(limit).forEach { entry ->
                 val note = entry.completion.souvenirNote
-                val title = entry.challengeTitle ?: "Défi"
+                val title = entry.challengeTitle ?: context.getString(R.string.export_untitled_challenge)
                 val line = if (note != null) "« $note » — $title" else title
                 val photoPath = entry.completion.souvenirPhotoPath
 
@@ -132,44 +132,6 @@ object ExportRenderer {
                     y += 42f
                 }
             }
-        }
-    }
-
-    /**
-     * Format "story" (ratio réseaux sociaux, 9:16) : mise en page distincte,
-     * plus visuelle, exclusive premium (§7) — pas un simple redimensionnement
-     * du résumé classique.
-     */
-    fun drawStory(canvas: Canvas, data: ExportData) {
-        canvas.drawColor(Color.parseColor("#6650A4"))
-
-        val titlePaint = textPaint(color = "#FFFFFF", size = 48f, bold = true)
-        val hugePaint = textPaint(color = "#FFFFFF", size = 220f, bold = true)
-        val labelPaint = textPaint(color = "#EADDFF", size = 36f)
-        val bodyPaint = textPaint(color = "#FFFFFF", size = 34f)
-
-        var y = 160f
-        canvas.drawText("LittleBigSteps", MARGIN, y, titlePaint)
-        y += 260f
-
-        val global = data.globalProgress
-        val streak = global?.currentStreak ?: 0
-        canvas.drawText("$streak", MARGIN, y, hugePaint)
-        y += 70f
-        canvas.drawText(if (streak > 1) "jours de suite" else "jour de suite", MARGIN, y, labelPaint)
-        y += 140f
-
-        canvas.drawText("${global?.totalChallengesCompleted ?: 0} défis complétés au total", MARGIN, y, bodyPaint)
-        y += 90f
-
-        data.mediumProgress.filter { it.isUnlocked }.forEach { progress ->
-            canvas.drawText("${progress.mediumType.label()} · niveau ${progress.level}", MARGIN, y, bodyPaint)
-            y += 56f
-        }
-
-        if (data.unlockedBadges.isNotEmpty()) {
-            y += 40f
-            canvas.drawText("🏅 ${data.unlockedBadges.size} badge(s) débloqué(s)", MARGIN, y, bodyPaint)
         }
     }
 

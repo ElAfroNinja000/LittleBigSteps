@@ -1,16 +1,15 @@
 package com.littlebigsteps.app.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 
 /**
  * Thème de l'app. Volontairement **sans couleur dynamique** (Material You) :
- * l'app a maintenant une identité visuelle propre (voir Color.kt), la laisser
- * se faire repeindre par le fond d'écran de l'utilisateur la ferait disparaître
- * sur tous les appareils Android 12+.
+ * l'app a une identité visuelle propre (voir Color.kt), la laisser se faire
+ * repeindre par le fond d'écran de l'utilisateur la ferait disparaître sur
+ * tous les appareils Android 12+. Thème clair forcé, quel que soit le thème
+ * système du téléphone : l'app n'a pas de palette sombre pensée pour elle-même.
  */
 private val LightColors = lightColorScheme(
     primary = Mint,
@@ -18,12 +17,14 @@ private val LightColors = lightColorScheme(
     primaryContainer = MintLight,
     onPrimaryContainer = MintInk,
 
-    // Navy en secondaire : c'est la couleur des surfaces d'emphase
-    // (accueil, carte de streak), pas une seconde couleur d'action.
-    secondary = Navy,
-    onSecondary = InkOnDark,
-    secondaryContainer = Navy,
-    onSecondaryContainer = InkOnDark,
+    // Surfaces d'emphase (accueil, offre premium) : blanc chaud comme le
+    // reste de l'app — la mise en avant se fait par un contour/accent mint
+    // (voir ces écrans), pas par un aplat sombre. "secondary" n'est donc pas
+    // une seconde couleur d'action, juste le ton neutre de ces surfaces.
+    secondary = WarmSurface,
+    onSecondary = InkPrimary,
+    secondaryContainer = WarmSurface,
+    onSecondaryContainer = InkPrimary,
 
     tertiary = PastelLavender,
     onTertiary = PastelLavenderInk,
@@ -44,43 +45,10 @@ private val LightColors = lightColorScheme(
     onError = WarmSurface
 )
 
-private val DarkColors = darkColorScheme(
-    primary = MintDeep,
-    onPrimary = MintInk,
-    primaryContainer = MintInk,
-    onPrimaryContainer = MintLight,
-
-    secondary = NavySurface,
-    onSecondary = InkOnDark,
-    secondaryContainer = NavySurface,
-    onSecondaryContainer = InkOnDark,
-
-    tertiary = PastelLavenderDark,
-    onTertiary = InkOnDark,
-    tertiaryContainer = PastelLavenderDark,
-    onTertiaryContainer = InkOnDark,
-
-    background = NavyDeep,
-    onBackground = InkOnDark,
-    surface = NavySurface,
-    onSurface = InkOnDark,
-    surfaceVariant = Navy,
-    onSurfaceVariant = InkOnDarkSecondary,
-
-    outline = DarkOutline,
-    outlineVariant = DarkOutlineVariant,
-
-    error = ErrorRedLight,
-    onError = NavyDeep
-)
-
 @Composable
-fun LittleBigStepsTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit
-) {
+fun LittleBigStepsTheme(content: @Composable () -> Unit) {
     MaterialTheme(
-        colorScheme = if (darkTheme) DarkColors else LightColors,
+        colorScheme = LightColors,
         typography = Typography,
         shapes = AppShapes,
         content = content

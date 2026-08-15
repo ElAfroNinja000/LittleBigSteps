@@ -10,18 +10,13 @@ import java.io.File
 import java.io.FileOutputStream
 
 /**
- * Génère localement un résumé de progression en image PNG, PDF, ou format
- * "story" enrichi exclusif premium (Canvas/Bitmap natif, pas de dépendance
- * externe — CLAUDE.md §10) et renvoie un `content://` URI partageable via
- * FileProvider, pour un export/partage autonome (§6).
+ * Génère localement un résumé de progression en image PNG ou PDF (Canvas/Bitmap
+ * natif, pas de dépendance externe — CLAUDE.md §10) et renvoie un `content://`
+ * URI partageable via FileProvider, pour un export/partage autonome (§6).
  */
 interface ProgressExportGenerator {
     fun exportAsImage(data: ExportData): Uri
     fun exportAsPdf(data: ExportData): Uri
-
-    /** Format réseaux sociaux enrichi (§7) — l'appelant doit vérifier
-     *  data.isPremium avant d'appeler, ce générateur ne le fait pas lui-même. */
-    fun exportAsStory(data: ExportData): Uri
 }
 
 class CanvasProgressExportGenerator(
@@ -30,7 +25,7 @@ class CanvasProgressExportGenerator(
 
     override fun exportAsImage(data: ExportData): Uri {
         val bitmap = Bitmap.createBitmap(ExportRenderer.WIDTH, ExportRenderer.HEIGHT, Bitmap.Config.ARGB_8888)
-        ExportRenderer.draw(Canvas(bitmap), data)
+        ExportRenderer.draw(Canvas(bitmap), data, context)
 
         val file = newExportFile("png")
         FileOutputStream(file).use { out -> bitmap.compress(Bitmap.CompressFormat.PNG, 100, out) }
@@ -42,26 +37,12 @@ class CanvasProgressExportGenerator(
         val document = PdfDocument()
         val pageInfo = PdfDocument.PageInfo.Builder(ExportRenderer.WIDTH, ExportRenderer.HEIGHT, 1).create()
         val page = document.startPage(pageInfo)
-        ExportRenderer.draw(page.canvas, data)
+        ExportRenderer.draw(page.canvas, data, context)
         document.finishPage(page)
 
         val file = newExportFile("pdf")
         FileOutputStream(file).use { out -> document.writeTo(out) }
         document.close()
-        return fileToUri(file)
-    }
-
-    override fun exportAsStory(data: ExportData): Uri {
-        val bitmap = Bitmap.createBitmap(
-            ExportRenderer.STORY_WIDTH,
-            ExportRenderer.STORY_HEIGHT,
-            Bitmap.Config.ARGB_8888
-        )
-        ExportRenderer.drawStory(Canvas(bitmap), data)
-
-        val file = newExportFile("png", baseName = "story")
-        FileOutputStream(file).use { out -> bitmap.compress(Bitmap.CompressFormat.PNG, 100, out) }
-        bitmap.recycle()
         return fileToUri(file)
     }
 

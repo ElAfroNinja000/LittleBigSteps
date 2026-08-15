@@ -16,10 +16,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.littlebigsteps.app.R
 import com.littlebigsteps.app.ui.common.findActivity
-import com.littlebigsteps.app.ui.theme.InkOnDarkSecondary
 import com.littlebigsteps.app.ui.theme.PillShape
 
 /**
@@ -42,20 +43,20 @@ fun PremiumScreen(
             .padding(24.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text("Premium", style = MaterialTheme.typography.headlineSmall)
+        Text(stringResource(R.string.premium_title), style = MaterialTheme.typography.headlineSmall)
 
         when {
             state.isPremium -> Text(
-                "Tu es déjà premium — tous les médiums sont débloqués.",
+                stringResource(R.string.premium_already),
                 style = MaterialTheme.typography.bodyLarge
             )
-            state.isLoading -> Text("Chargement de l'offre…", style = MaterialTheme.typography.bodyLarge)
+            state.isLoading -> Text(stringResource(R.string.premium_loading), style = MaterialTheme.typography.bodyLarge)
             state.productDetails == null -> Text(
-                "L'offre premium n'est pas disponible pour l'instant.",
+                stringResource(R.string.premium_unavailable),
                 style = MaterialTheme.typography.bodyLarge
             )
-            // L'offre est un moment d'emphase : même traitement navy que
-            // l'accueil et la carte de streak.
+            // L'offre est un moment d'emphase, comme l'accueil : blanc chaud,
+            // mise en avant par le bouton mint plutôt que par un aplat sombre.
             else -> Surface(
                 shape = MaterialTheme.shapes.large,
                 color = MaterialTheme.colorScheme.secondary,
@@ -67,10 +68,9 @@ fun PremiumScreen(
                     verticalArrangement = Arrangement.spacedBy(14.dp)
                 ) {
                     Text(
-                        "Débloque tous les médiums, les packs thématiques/saisonniers et " +
-                            "les formats d'export enrichis.",
+                        stringResource(R.string.premium_pitch),
                         style = MaterialTheme.typography.bodyLarge,
-                        color = InkOnDarkSecondary
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     state.priceLabel?.let { price ->
                         Text(price, style = MaterialTheme.typography.headlineSmall)
@@ -82,12 +82,12 @@ fun PremiumScreen(
                         contentPadding = PaddingValues(vertical = 14.dp),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("S'abonner", style = MaterialTheme.typography.labelLarge)
+                        Text(stringResource(R.string.premium_subscribe), style = MaterialTheme.typography.labelLarge)
                     }
                 }
             }
         }
 
-        OutlinedButton(onClick = onBack, shape = PillShape) { Text("Retour") }
+        OutlinedButton(onClick = onBack, shape = PillShape) { Text(stringResource(R.string.action_back)) }
     }
 }
