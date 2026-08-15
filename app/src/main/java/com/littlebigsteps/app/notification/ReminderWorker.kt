@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.littlebigsteps.app.LittleBigStepsApplication
+import com.littlebigsteps.app.R
 import com.littlebigsteps.app.ui.common.label
 import kotlinx.coroutines.flow.first
 
@@ -23,8 +24,8 @@ class ReminderWorker(
         val app = applicationContext as LittleBigStepsApplication
         val preferences = app.userPreferencesRepository.observePreferences().first()
         val message = preferences?.freeMedium?.let { medium ->
-            "Envie d'un peu de ${medium.label()} aujourd'hui ? Ton défi t'attend."
-        } ?: "Un petit défi créatif t'attend dans LittleBigSteps."
+            applicationContext.getString(R.string.reminder_message_with_medium, medium.label(applicationContext))
+        } ?: applicationContext.getString(R.string.reminder_message_generic)
 
         NotificationHelper.showReminder(applicationContext, message)
         return Result.success()

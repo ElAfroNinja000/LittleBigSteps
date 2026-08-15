@@ -2,7 +2,7 @@ package com.littlebigsteps.app.data.remote.dto
 
 import kotlinx.serialization.Serializable
 
-/** Miroir de content/packs.json — les packs thématiques/saisonniers premium
+/** Miroir de content/{fr,en}/packs.json — les packs thématiques/saisonniers premium
  *  (CLAUDE.md §7), synchronisés à part du catalogue de base par médium. */
 @Serializable
 data class PacksDto(

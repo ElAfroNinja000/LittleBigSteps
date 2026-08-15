@@ -28,10 +28,10 @@ object NotificationHelper {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
         val channel = NotificationChannel(
             CHANNEL_ID,
-            "Rappel de défi",
+            context.getString(R.string.notification_channel_name),
             NotificationManager.IMPORTANCE_DEFAULT
         ).apply {
-            description = "Rappel périodique pour proposer le défi créatif du moment."
+            description = context.getString(R.string.notification_channel_description)
         }
         val manager = context.getSystemService(NotificationManager::class.java)
         manager.createNotificationChannel(channel)
