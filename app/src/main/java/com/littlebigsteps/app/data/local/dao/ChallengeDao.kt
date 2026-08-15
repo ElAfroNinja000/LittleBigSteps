@@ -29,6 +29,19 @@ interface ChallengeDao {
     @Query("SELECT * FROM challenges WHERE packId = :packId ORDER BY id")
     suspend fun getByPackId(packId: String): List<ChallengeEntity>
 
-    @Query("DELETE FROM challenges WHERE mediumType = :mediumType")
-    suspend fun deleteByMedium(mediumType: MediumType)
+    /**
+     * Retire les défis d'un médium absents du catalogue fraîchement synchronisé.
+     *
+     * Remplace un "tout supprimer puis tout réinsérer" : les défis conservés ne
+     * sont jamais supprimés, donc les suppressions en cascade (activité en cours,
+     * voir ChallengeProgressEntity) et les mises à NULL (portfolio, voir
+     * CompletedChallengeEntity) ne se déclenchent que pour ce qui a réellement
+     * disparu du catalogue — et pas à chaque mise à jour de contenu ou changement
+     * de langue, qui réécrit pourtant toutes les lignes.
+     *
+     * [keepIds] ne doit jamais être vide : `NOT IN ()` est invalide en SQLite
+     * (voir ContentSyncRepository, qui n'appelle ceci qu'avec un catalogue non vide).
+     */
+    @Query("DELETE FROM challenges WHERE mediumType = :mediumType AND id NOT IN (:keepIds)")
+    suspend fun deleteByMediumNotIn(mediumType: MediumType, keepIds: List<String>)
 }

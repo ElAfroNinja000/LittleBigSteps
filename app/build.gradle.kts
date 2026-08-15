@@ -16,8 +16,6 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "0.1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -44,6 +42,18 @@ android {
         }
     }
 
+    // Le catalogue de défis (/content à la racine du repo) est embarqué tel quel
+    // dans l'APK, en plus d'être servi par le CDN : il sert de contenu immédiat
+    // au premier lancement (y compris hors-ligne) et lors d'un changement de
+    // langue, sans attendre le réseau (voir BundledContentSource). Déclaré comme
+    // dossier d'assets plutôt que recopié, pour n'avoir qu'une source de vérité.
+    // Les chemins d'assets sont donc "fr/manifest.json", "en/drawing.json", etc.
+    sourceSets {
+        getByName("main") {
+            assets.srcDir(rootProject.file("content"))
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -65,6 +75,10 @@ ksp {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
+    // AppCompatDelegate.setApplicationLocales() : changement de langue in-app
+    // (Paramètres) — nécessite MainActivity: AppCompatActivity et un thème
+    // dérivant de Theme.AppCompat (voir themes.xml), sinon ne fait rien.
+    implementation(libs.androidx.appcompat)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.activity.compose)
@@ -84,17 +98,12 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.billing.ktx)
     implementation(libs.posthog.android)
+    implementation(libs.konfetti.compose)
 
     implementation(libs.kotlinx.datetime)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.converter.kotlinx.serialization)
 
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
 }

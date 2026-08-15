@@ -12,6 +12,9 @@ import kotlinx.datetime.Instant
 data class ContentManifestEntity(
     @PrimaryKey val id: Int = SINGLETON_ID,
     val contentVersion: String,
+    /** Même rôle que MediumContentVersionEntity.syncedLocale : les packs sont
+     *  eux aussi servis par sous-dossier de langue, à version identique. */
+    val syncedLocale: String,
     val lastSyncAt: Instant
 ) {
     companion object {

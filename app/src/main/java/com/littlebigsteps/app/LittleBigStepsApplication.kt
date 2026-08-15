@@ -1,11 +1,13 @@
 package com.littlebigsteps.app
 
 import android.app.Application
+import android.util.Log
 import com.littlebigsteps.app.analytics.AnalyticsTracker
 import com.littlebigsteps.app.analytics.PostHogAnalyticsTracker
 import com.littlebigsteps.app.billing.BillingRepository
 import com.littlebigsteps.app.billing.PlayBillingRepository
 import com.littlebigsteps.app.data.local.AppDatabase
+import com.littlebigsteps.app.data.local.BundledContentSource
 import com.littlebigsteps.app.data.media.InternalSouvenirPhotoStore
 import com.littlebigsteps.app.data.media.SouvenirPhotoStore
 import com.littlebigsteps.app.data.remote.ContentApiService
@@ -51,7 +53,7 @@ class LittleBigStepsApplication : Application() {
     }
 
     val progressRepository: ProgressRepository by lazy {
-        ProgressRepositoryImpl(database, userPreferencesRepository)
+        ProgressRepositoryImpl(database)
     }
 
     val challengeRepository: ChallengeRepository by lazy {
@@ -59,7 +61,7 @@ class LittleBigStepsApplication : Application() {
     }
 
     val contentSyncRepository: ContentSyncRepository by lazy {
-        ContentSyncRepositoryImpl(contentApi, database)
+        ContentSyncRepositoryImpl(contentApi, database, BundledContentSource(this))
     }
 
     val notificationScheduler: NotificationScheduler by lazy {
@@ -91,13 +93,17 @@ class LittleBigStepsApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         analyticsTracker // force l'init du SDK PostHog dès le lancement de l'app
+        // Applique l'opt-out analytics persisté (réglage Paramètres) — le SDK
+        // démarre "actif" par défaut, il faut le couper explicitement à chaque
+        // lancement si l'utilisateur avait désactivé les statistiques.
+        applicationScope.launch {
+            val enabled = userPreferencesRepository.observePreferences().filterNotNull().first().analyticsEnabled
+            analyticsTracker.setEnabled(enabled)
+        }
         // Connexion démarrée tôt pour restaurer un abonnement existant (réinstallation,
         // nouvel appareil) avant même que l'utilisateur ouvre l'écran Premium.
         billingRepository.startConnection()
-        // Synchro best-effort au lancement (CLAUDE.md §10 : "télécharge le JSON au
-        // lancement + périodiquement"). Échec silencieux : le cache local existant
-        // (s'il y en a un) reste utilisable hors-ligne.
-        applicationScope.launch { runCatching { contentSyncRepository.syncIfNeeded() } }
+        syncContent()
 
         // Flavor de test manuel uniquement (voir app/build.gradle.kts) : simule un
         // achat déjà effectué dès la fin de l'onboarding, sans passer par Play
@@ -107,6 +113,28 @@ class LittleBigStepsApplication : Application() {
                 userPreferencesRepository.observePreferences().filterNotNull().first()
                 userPreferencesRepository.setPremium(true)
             }
+        }
+    }
+
+    /**
+     * Synchro best-effort du contenu (CLAUDE.md §10 : "télécharge le JSON au
+     * lancement + périodiquement"). Appelée au lancement, et à chaque changement
+     * de langue depuis les Paramètres : le catalogue est servi par sous-dossier de
+     * langue, il faut donc le retélécharger pour que titres, descriptions et
+     * conseils suivent la nouvelle langue.
+     *
+     * Lancée sur la portée process et non celle d'un ViewModel : changer la langue
+     * recrée l'Activity, ce qui annulerait une synchro portée par l'écran.
+     *
+     * L'échec ne bloque pas l'app (le cache local existant reste utilisable
+     * hors-ligne) mais il est loggé : un échec totalement muet rendait
+     * indiagnosticable un premier lancement sans catalogue (URL 404, coupure
+     * réseau et JSON invalide donnent le même écran vide).
+     */
+    fun syncContent() {
+        applicationScope.launch {
+            runCatching { contentSyncRepository.syncIfNeeded() }
+                .onFailure { Log.w("LittleBigSteps", "Échec de la synchro du contenu", it) }
         }
     }
 }

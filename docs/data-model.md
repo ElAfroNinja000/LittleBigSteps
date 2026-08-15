@@ -14,8 +14,6 @@ Décisions actées :
 - **MediumType** : `PHOTO`, `DRAWING`, `WRITING`, `CRAFT`
 - **ChallengeLevel** : `BEGINNER` (seul niveau au lancement), `INTERMEDIATE`, `ADVANCED` (réservés au futur)
 - **ChallengeStatus** : `DRAFT`, `IN_PROGRESS`, `DONE` — statut d'une activité "En cours" (voir ChallengeProgressEntity)
-- **Badge** : `STREAK_7`, `STREAK_30`, `TEN_COMPLETIONS`, `FIFTY_COMPLETIONS`, `LEVEL_5_ANY_MEDIUM`
-  — cosmétiques exclusifs premium (CLAUDE.md §7), voir `domain/BadgeEvaluator.kt`
 
 **Frequency** n'est plus un enum mais une classe (`timesPerWeek: Int`, 1 à 7),
 stockée telle quelle (Int) en base.
@@ -71,15 +69,6 @@ Le streak est **global**, pas par médium.
 
 Un pack se parcourt en entier (pas de tirage aléatoire) une fois débloqué ;
 ses défis sont exclus du tirage `pickDailyOptions` (voir ChallengeRepositoryImpl).
-
-### UnlockedBadgeEntity — badge premium débloqué, permanent
-| champ | type | note |
-|---|---|---|
-| badge | Badge (PK) | |
-| unlockedAt | Instant | jamais supprimé, même si la progression redescend ensuite |
-
-Évalué à chaque complétion via `domain/BadgeEvaluator.kt`, uniquement pour les
-utilisateurs premium (voir `ProgressRepositoryImpl.maybeUnlockBadges`).
 
 ### CompletedChallengeEntity — une ligne par complétion
 Un défi peut être refait : pas de contrainte d'unicité sur `challengeId`.

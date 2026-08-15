@@ -17,8 +17,10 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlin.random.Random
 
 /**
  * Étapes "Découverte du défi" et "Réalisation & complétion" du parcours
@@ -27,14 +29,19 @@ import kotlinx.coroutines.launch
  * jauge auto-déclarée (Brouillon/En cours/Terminé), puis la finaliser avec un
  * souvenir optionnel et non vérifié (texte et/ou photo, stockée en local via
  * SouvenirPhotoStore). Gère aussi le parcours des packs thématiques/saisonniers
- * premium (CLAUDE.md §7).
+ * premium (CLAUDE.md §7) et le tirage occasionnel d'un défi "surprise" (bonus
+ * XP, voir [loadOptions]).
  */
 class ChallengeSelectionViewModel(
     private val challengeRepository: ChallengeRepository,
     private val progressRepository: ProgressRepository,
     private val souvenirPhotoStore: SouvenirPhotoStore,
     private val userPreferencesRepository: UserPreferencesRepository,
-    private val analyticsTracker: AnalyticsTracker
+    private val analyticsTracker: AnalyticsTracker,
+    /** Probabilité qu'un tirage de nouvelles propositions inclue un défi
+     *  "surprise" — param injectable pour rendre les tests déterministes
+     *  (TestAppGraph la met à 0). */
+    private val surpriseProbability: Float = 0.25f
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ChallengeSelectionUiState())
@@ -45,6 +52,9 @@ class ChallengeSelectionViewModel(
      *  [observeInProgressFor]), jamais depuis [loadOptions] qui peut être
      *  appelé bien plus souvent sans que le médium change. */
     private var inProgressJob: Job? = null
+
+    /** Même principe que [inProgressJob], pour le catalogue du médium actif. */
+    private var catalogJob: Job? = null
 
     init {
         viewModelScope.launch {
@@ -60,6 +70,7 @@ class ChallengeSelectionViewModel(
             )
             if (defaultMedium != null) {
                 observeInProgressFor(defaultMedium)
+                observeCatalogFor(defaultMedium)
                 loadOptions(defaultMedium)
             } else {
                 _uiState.value = _uiState.value.copy(isLoading = false)
@@ -76,6 +87,7 @@ class ChallengeSelectionViewModel(
             souvenirPhotoPath = null
         )
         observeInProgressFor(medium)
+        observeCatalogFor(medium)
         loadOptions(medium)
     }
 
@@ -88,6 +100,23 @@ class ChallengeSelectionViewModel(
         }
     }
 
+    /** Le catalogue est téléchargé en tâche de fond (ContentSyncRepository), pas
+     *  au moment où cet écran s'affiche : il est encore vide au tout premier
+     *  lancement, et il est réécrit quand la langue change (les textes des
+     *  activités viennent du catalogue). Comme pickDailyOptions le lit en
+     *  one-shot, l'écran garderait sinon un lot vide ou des titres dans
+     *  l'ancienne langue jusqu'au prochain démarrage : on retire donc un
+     *  nouveau lot à chaque fois que le catalogue change. `drop(1)` ignore
+     *  l'état initial, déjà couvert par le loadOptions de l'appelant. */
+    private fun observeCatalogFor(mediumType: MediumType) {
+        catalogJob?.cancel()
+        catalogJob = viewModelScope.launch {
+            challengeRepository.observeChallenges(mediumType).drop(1).collect { challenges ->
+                if (challenges.isNotEmpty()) loadOptions(mediumType)
+            }
+        }
+    }
+
     /** Passe des suggestions du jour au contenu complet d'un pack (CLAUDE.md §7).
      *  L'appelant (écran) doit vérifier isPremiumOnly/isPremium avant d'appeler
      *  ceci — un pack verrouillé redirige plutôt vers l'écran Premium. */
@@ -95,7 +124,14 @@ class ChallengeSelectionViewModel(
         _uiState.value = _uiState.value.copy(isLoading = true)
         viewModelScope.launch {
             val challenges = challengeRepository.challengesInPack(pack.id)
-            _uiState.value = _uiState.value.copy(activePack = pack, newOptions = challenges, isLoading = false)
+            // Un pack est déjà curé : jamais de défi "surprise" dedans, même si
+            // le tirage précédent en avait désigné un.
+            _uiState.value = _uiState.value.copy(
+                activePack = pack,
+                newOptions = challenges,
+                surpriseChallengeId = null,
+                isLoading = false
+            )
         }
     }
 
@@ -118,13 +154,20 @@ class ChallengeSelectionViewModel(
     }
 
     /** "Choisir" sur une nouvelle activité : elle passe directement "En cours"
-     *  (statut Brouillon) et la popup se ferme. */
+     *  (statut Brouillon) et la popup se ferme. Recharge les propositions —
+     *  ChallengeRepository.pickDailyOptions les masque alors toutes tant que
+     *  cette activité est en cours, sauf si le calendrier de renouvellement
+     *  (fréquence choisie à l'onboarding, voir RenewalSchedule) est écoulé :
+     *  c'est la seule façon d'avoir plusieurs activités en cours à la fois,
+     *  jamais en choisissant plusieurs propositions d'un même lot. */
     fun chooseNewChallenge() {
-        val challenge = (_uiState.value.dialog as? ChallengeDialog.NewChallenge)?.challenge ?: return
-        val medium = _uiState.value.mediumType ?: return
-        _uiState.value = _uiState.value.copy(dialog = null)
+        val state = _uiState.value
+        val challenge = (state.dialog as? ChallengeDialog.NewChallenge)?.challenge ?: return
+        val medium = state.mediumType ?: return
+        val isSurprise = challenge.id == state.surpriseChallengeId
+        _uiState.value = state.copy(dialog = null)
         viewModelScope.launch {
-            challengeRepository.startChallenge(challenge.id, medium)
+            challengeRepository.startChallenge(challenge.id, medium, isSurprise)
             loadOptions(medium)
         }
     }
@@ -149,8 +192,23 @@ class ChallengeSelectionViewModel(
         _uiState.value = _uiState.value.copy(dialog = ChallengeDialog.Finalize(entry))
     }
 
+    /** Icône ampoule sur la popup "En cours" : n'est affichée par l'écran que
+     *  si challenge.tips n'est pas vide, mais on revérifie ici aussi. */
+    fun openTips() {
+        val entry = (_uiState.value.dialog as? ChallengeDialog.InProgress)?.entry ?: return
+        if (entry.challenge.tips.isNullOrEmpty()) return
+        _uiState.value = _uiState.value.copy(dialog = ChallengeDialog.Tips(entry))
+    }
+
+    /** Retour à la popup "En cours" plutôt qu'une fermeture complète — les
+     *  conseils sont un niveau de détail de cette popup, pas un parcours à part. */
+    fun closeTips() {
+        val entry = (_uiState.value.dialog as? ChallengeDialog.Tips)?.entry ?: return
+        _uiState.value = _uiState.value.copy(dialog = ChallengeDialog.InProgress(entry))
+    }
+
     fun updateSouvenirNote(note: String) {
-        _uiState.value = _uiState.value.copy(souvenirNote = note)
+        _uiState.value = _uiState.value.copy(souvenirNote = note.take(SOUVENIR_NOTE_MAX_LENGTH))
     }
 
     /** Crée le fichier cible pour l'app caméra et renvoie son URI à passer à l'Intent. */
@@ -185,7 +243,7 @@ class ChallengeSelectionViewModel(
 
         _uiState.value = state.copy(isCompleting = true)
         viewModelScope.launch {
-            val completion = challengeRepository.completeChallenge(
+            val result = challengeRepository.completeChallenge(
                 challengeId = entry.challenge.id,
                 mediumType = medium,
                 souvenirPhotoPath = state.souvenirPhotoPath,
@@ -199,7 +257,10 @@ class ChallengeSelectionViewModel(
             )
             _uiState.value = _uiState.value.copy(
                 isCompleting = false,
-                lastCompletion = completion,
+                // Montée de niveau : popup dédiée à la place du snackbar XP
+                // habituel (pas les deux pour la même complétion).
+                lastCompletion = if (result.leveledUp) null else result.completion,
+                lastLevelUp = if (result.leveledUp) LevelUpEvent(medium, result.newLevel) else null,
                 dialog = null,
                 souvenirNote = "",
                 souvenirPhotoPath = null,
@@ -216,12 +277,30 @@ class ChallengeSelectionViewModel(
         _uiState.value.mediumType?.let { loadOptions(it) }
     }
 
+    /** Ferme la popup de montée de niveau et retire un nouveau lot de
+     *  propositions, comme [dismissCompletion]. */
+    fun dismissLevelUp() {
+        _uiState.value = _uiState.value.copy(lastLevelUp = null, activePack = null)
+        _uiState.value.mediumType?.let { loadOptions(it) }
+    }
+
     private fun loadOptions(mediumType: MediumType) {
         _uiState.value = _uiState.value.copy(isLoading = true, activePack = null)
         viewModelScope.launch {
             val options = challengeRepository.pickDailyOptions(mediumType)
             val packs = challengeRepository.packsForMedium(mediumType)
-            _uiState.value = _uiState.value.copy(newOptions = options, availablePacks = packs, isLoading = false)
+            // Défi "surprise" occasionnel de ce tirage (bonus XP, mise en valeur
+            // visuelle — voir ActivityGrid) : un tirage sur quatre en moyenne,
+            // jamais garanti pour rester "occasionnel".
+            val surpriseChallengeId = options.takeIf { it.isNotEmpty() && Random.nextFloat() < surpriseProbability }
+                ?.random()
+                ?.id
+            _uiState.value = _uiState.value.copy(
+                newOptions = options,
+                availablePacks = packs,
+                surpriseChallengeId = surpriseChallengeId,
+                isLoading = false
+            )
         }
     }
 
@@ -236,3 +315,6 @@ class ChallengeSelectionViewModel(
         removeCurrentSouvenirPhotoFile()
     }
 }
+
+/** Longueur max du commentaire "souvenir" — popup "Bien joué !" (CLAUDE.md §3.3). */
+const val SOUVENIR_NOTE_MAX_LENGTH = 200
