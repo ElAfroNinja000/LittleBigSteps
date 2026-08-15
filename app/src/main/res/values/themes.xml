@@ -1,5 +1,7 @@
 <resources>
     <!-- Thème minimal côté manifeste : le thème réel (Material3) est appliqué en Compose,
-         voir ui/theme/Theme.kt. -->
-    <style name="Theme.LittleBigSteps" parent="android:Theme.Material.Light.NoActionBar" />
+         voir ui/theme/Theme.kt. Parent AppCompat obligatoire : MainActivity hérite
+         d'AppCompatActivity (pour le sélecteur de langue, voir MainActivity.kt) et
+         refuse de démarrer sous un thème framework. -->
+    <style name="Theme.LittleBigSteps" parent="Theme.AppCompat.Light.NoActionBar" />
 </resources>

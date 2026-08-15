@@ -26,11 +26,20 @@ app/src/main/java/com/littlebigsteps/app/
     ├── theme/            # thème Compose (Material3)
     └── MainActivity.kt
 
-content/                  # contenu JSON servi tel quel via raw.githubusercontent.com
-                           # (10 défis placeholder par médium — à remplacer par le
-                           # catalogue final de 30-50/médium, CLAUDE.md §5)
+content/{fr,en}/           # contenu JSON servi tel quel via raw.githubusercontent.com,
+                           # un sous-dossier par langue (10 défis placeholder par
+                           # médium — à remplacer par le catalogue final de
+                           # 30-50/médium, CLAUDE.md §5)
 docs/data-model.md         # référence du schéma de données
 ```
+
+## Langues
+
+App bilingue fr/en, standard Android (`res/values/strings.xml` = français par
+défaut, `res/values-en/strings.xml` = anglais) : la langue suit automatiquement
+celle du système, pas encore de sélecteur manuel dans l'app. Le contenu JSON
+(défis/packs) suit le même principe via `/content/{fr,en}/` — voir
+`NetworkConfig.contentBaseUrl()`.
 
 ## Notifications
 
@@ -62,47 +71,28 @@ reverrouille sur le seul médium gratuit choisi à l'onboarding.
 un placeholder : il doit correspondre à un abonnement réellement créé dans
 Play Console pour que `queryPremiumProductDetails()` renvoie une offre.
 
-## Packs thématiques & badges (premium)
+## Packs thématiques (premium)
 
 Les packs (`ChallengePackEntity`, synchronisés depuis `content/packs.json`,
 optionnel) se parcourent en entier une fois débloqués — leurs défis
 (`ChallengeEntity.packId` non-null) sont exclus du tirage aléatoire du jour.
 Un pack verrouillé redirige vers l'écran Premium au lieu de s'ouvrir.
 
-Les badges (`Badge`, `UnlockedBadgeEntity`) sont des cosmétiques exclusifs
-premium — évalués à chaque complétion (`domain/BadgeEvaluator.kt`) uniquement
-pour les utilisateurs premium, et débloqués une fois pour toutes (jamais
-retirés, même si le streak qui les a déclenchés redescend ensuite).
-
 ## Export
 
 `ProgressExportGenerator` dessine le résumé de progression sur un Canvas natif
-partagé entre image PNG, PDF et story (`ExportRenderer`), écrit dans le cache
-de l'app, puis le partage via `FileProvider` + l'Intent système
-(`ACTION_SEND`) — pas de feed, pas de compte, juste un export autonome
-(CLAUDE.md §6). Boutons sur l'écran Progression.
+partagé entre image PNG et PDF (`ExportRenderer`), écrit dans le cache de
+l'app, puis le partage via `FileProvider` + l'Intent système (`ACTION_SEND`)
+— pas de feed, pas de compte, juste un export autonome (CLAUDE.md §6).
+Boutons sur l'écran Progression.
 
 **Formats enrichis premium (§7)** : gratuit = 5 derniers souvenirs (texte
-seul) ; premium = jusqu'à 10 souvenirs avec miniatures photo intégrées, section
-badges, et un 3ᵉ format exclusif **Story** (ratio 9:16, mise en page dédiée
-pour le partage réseaux sociaux — pas un simple redimensionnement du résumé
-classique). Le tap sur "Story" en gratuit redirige vers Premium au lieu
-d'exporter.
+seul) ; premium = jusqu'à 10 souvenirs avec miniatures photo intégrées.
 
 ## Tests
 
-Suite E2E en Jetpack Compose UI Testing (`app/src/androidTest`) : parcours
-complet onboarding → sélection → complétion avec souvenir → portfolio →
-progression, plus le skip d'onboarding au relancement. Room en mémoire + fakes
-pour Billing/notifications/analytics uniquement — le reste (repositories,
-ViewModels, écrans) est le vrai code de l'app. Détails et rationale dans
-[CLAUDE.md](CLAUDE.md) §11.
-
-```bash
-./gradlew connectedAndroidTest
-```
-
-Nécessite un appareil ou émulateur connecté.
+Pas de tests automatisés — chaque build est vérifié manuellement sur appareil
+réel. Rationale et historique dans [CLAUDE.md](CLAUDE.md) §11.
 
 ## Analytics
 
@@ -139,7 +129,7 @@ wrapper Gradle sera généré automatiquement au premier sync. Le projet cible
 ## État actuel
 
 Core loop complet (onboarding → sélection/complétion → portfolio →
-progression) + notifications, export enrichi (image/PDF/story), capture photo,
-Google Play Billing, packs thématiques, badges premium, analytics et suite de
-tests E2E. Reste : catalogue final de défis (30-50/médium), config externe à
-finaliser (Play Console, PostHog, CDN de prod), CI.
+progression) + notifications, export enrichi (image/PDF), capture photo,
+Google Play Billing, packs thématiques, analytics et suite de tests E2E.
+Reste : catalogue final de défis (30-50/médium), config externe à finaliser
+(Play Console, PostHog, CDN de prod), CI.

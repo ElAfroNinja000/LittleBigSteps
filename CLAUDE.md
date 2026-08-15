@@ -60,7 +60,7 @@ MVP = **uniquement export/partage de la progression** (image/PDF). Pas de feed, 
 **Freemium**, avec une frontière naturelle alignée sur le choix fait à l'onboarding :
 
 - **Gratuit** : accès complet à **un seul médium** au choix (défis, gamification, portfolio, export).
-- **Premium (abonnement récurrent)** : déblocage des autres médiums + packs de défis thématiques/saisonniers + badges/cosmétiques exclusifs + formats d'export enrichis.
+- **Premium (abonnement récurrent)** : déblocage des autres médiums + packs de défis thématiques/saisonniers + formats d'export enrichis.
 
 Abonnement plutôt qu'achat unique : le contenu se renouvelle en continu, un modèle récurrent correspond mieux à une valeur qui continue d'arriver dans le temps.
 
@@ -110,56 +110,180 @@ Abonnement plutôt qu'achat unique : le contenu se renouvelle en continu, un mod
 | Google Play Billing | Gestion de l'abonnement premium |
 | PostHog (ou équivalent) | Analytics anonyme pour piloter le produit |
 
-## 11. Stratégie de test automatisé
+## 11. Stratégie de test
 
-**Approche.** Priorité aux tests bout-en-bout (E2E) sur le parcours cœur
-(onboarding → sélection de défi → complétion avec souvenir → portfolio →
-progression, voir §3) plutôt qu'une pyramide de tests classique complète : la
-valeur immédiate est de garantir que le parcours critique ne casse pas à
-chaque itération. Des tests unitaires ciblés (règles de gamification, logique
-de streak) viendront compléter au fur et à mesure que cette logique se
-stabilise et se complexifie.
+**Décision (2026-08-15) : pas de tests automatisés.** L'app a eu un temps un
+test E2E Compose UI Testing (`app/src/androidTest`, `CoreLoopE2ETest` +
+`TestAppGraph` + fakes) couvrant le parcours cœur. Supprimé à la demande de
+l'utilisateur : il teste systématiquement chaque build manuellement sur
+appareil réel, ce qui suffit à détecter les régressions à ce stade du projet.
+Le test n'avait de toute façon jamais tourné une seule fois depuis son
+écriture (voir §14 — l'émulateur/appareil n'est lancé que sur consigne
+explicite), et ses sélecteurs avaient déjà dérivé du code réel (ex. taps sur
+des roues remplacées depuis par des steppers) sans que rien ne le signale :
+un filet de sécurité qu'on ne fait jamais tourner n'en est pas un.
 
-**Framework retenu : Jetpack Compose UI Testing** (`androidx.compose.ui.test` +
-`AndroidJUnit4`), pas Espresso — toute l'UI de l'app est en Compose, Espresso
-n'apporterait qu'une couche d'interop inutile pour zéro bénéfice ici. Les tests
-sont instrumentés (`app/src/androidTest`), exécutés sur émulateur/appareil réel
-via `./gradlew connectedAndroidTest` ou directement depuis Android Studio.
+**Conséquence directe pour la suite du travail** : aucune régression n'est
+détectée avant que l'utilisateur ne teste manuellement le build. Compiler
+(`assembleFreeDebug`/`assemblePremiumDebug`, toujours autorisé sans consigne
+explicite, voir §14) reste donc la seule vérification disponible avant retour
+utilisateur — elle attrape les erreurs de compilation, jamais les erreurs de
+comportement. D'où une prudence particulière sur les changements à risque
+runtime non couvrables par la compilation (ex. `AppCompatActivity`/thème,
+migrations Room destructives, logique de synchro asynchrone) : les signaler
+explicitement plutôt que les considérer validés par un simple build vert.
 
-**Ce qui est réel vs simulé dans les tests E2E :**
-- **Réel** : Room (base en mémoire, fraîche à chaque test), tous les
-  repositories, tous les ViewModels, la navigation Compose, les écrans
-  eux-mêmes. Le but est d'exercer le vrai code de l'app, pas une maquette.
-- **Simulé (fakes légers, pas de mocks)** : uniquement les vraies frontières
-  externes que l'environnement de test ne peut pas exercer de façon fiable —
-  `BillingRepository` (pas de vrai Play Store en test), `NotificationScheduler`
-  (pas de vrai WorkManager programmé), `AnalyticsTracker` (pas de vrai réseau
-  PostHog). Le contenu des défis est injecté directement dans Room via les DAOs
-  plutôt que synchronisé depuis le réseau, pour ne pas faire dépendre les tests
-  d'une connexion.
+**Si le besoin resurgit** (croissance de l'équipe, régressions répétées sur le
+parcours cœur) : Jetpack Compose UI Testing (`androidx.compose.ui.test` +
+`AndroidJUnit4`) reste le choix naturel, toute l'UI étant en Compose — a déjà
+fait ses preuves ici pour ce que ça vaut. Repartir du dernier commit contenant
+`app/src/androidTest` dans l'historique git plutôt que de zéro.
 
-**Où :** `app/src/androidTest/java/com/littlebigsteps/app/` —
-`TestAppGraph` construit le même graphe de dépendances que
-`LittleBigStepsApplication` (voir ce fichier) mais avec les fakes ci-dessus ;
-les fakes vivent dans `fakes/`. Un test = un parcours utilisateur complet, pas
-un test par écran isolé.
-
-**Hors scope pour l'instant** (nécessite un environnement réel, pas
-automatisable simplement) : flux d'achat Play Billing réel (nécessite une
-piste de test Play Console), livraison réelle de notifications, synchronisation
-réseau réelle du contenu JSON. À couvrir manuellement ou via des tests de
-contrat séparés si le besoin se confirme plus tard.
-
-**CI.** Pas encore de pipeline CI dans ce repo — les tests tournent en local
-pour l'instant (Android Studio ou `./gradlew connectedAndroidTest` sur un
-appareil/émulateur connecté).
-
-## 12. État d'implémentation (2026-08-08)
+## 12. État d'implémentation (2026-08-13)
 
 Le core loop complet (§3) est implémenté et fonctionnel côté code : onboarding
 → sélection de défi → complétion avec souvenir → portfolio → progression.
-Tout le MVP (§4) et le modèle économique (§7, packs et badges inclus) sont
-codés. **Jamais testé sur émulateur/appareil réel** — voir §14.
+Tout le MVP (§4) et le modèle économique (§7, packs inclus) sont codés.
+**Jamais testé sur émulateur/appareil réel** — voir §14.
+
+**Refonte UX/DA appliquée le 2026-08-13** (onboarding, Mes activités,
+Portfolio, Progression) : palette mint/blanc cassé cohérente par médium via
+`mediumColors()`, onboarding en tuiles + roues numériques doubles (plus de
+cadran), popups d'activité communes (`MediumTintedPopup`, blanc cassé + croix
+de fermeture, boutons monochromes), contrôle de statut segmenté à 3 cases
+(`SegmentedProgressControl`, remplace l'ancienne jauge à pastilles), grille
+2 colonnes pour "Mes activités" (En cours avant Nouvelles activités, plusieurs
+activités en cours possibles en simultané), notification "Activité terminée !
++N XP", Progression sans badges/export (retirés de cette vue, code conservé
+ailleurs), carte streak à contour mint, médium free trié en premier. Compile
+sur les deux flavors (`assembleFreeDebug`/`assemblePremiumDebug`) et les
+sources de test (`compileFreeDebugAndroidTestKotlin`) — non exécuté sur
+émulateur, voir §14.
+
+**Corrections/ajouts du 2026-08-14** : thème clair forcé quel que soit le
+thème système (`LittleBigStepsTheme`, plus de `isSystemInDarkTheme()`) ;
+fix du sélecteur d'heure d'onboarding qui défilait tout seul (fermeture
+obsolète dans `VerticalNumberWheel`) et du bouton AM/PM invisible
+(`WheelSelectionWindow` sans largeur propre) ; calendrier de renouvellement
+(`domain/RenewalSchedule.kt`) permettant d'accumuler plusieurs activités en
+cours à la fois selon la fréquence choisie à l'onboarding, plutôt qu'un
+simple filtrage local ; popup de montée de niveau avec confettis
+(`konfetti-compose`) à la finalisation d'une activité qui fait passer un
+médium au niveau supérieur, remplaçant le snackbar XP pour cette
+complétion ; photo obligatoire pour "Finaliser" dans "Bien joué !" (déroge à
+l'optionalité totale du souvenir décrite en §3.3) ; commentaire souvenir
+limité à 200 caractères ; popup de détail sur les cartes du Portfolio
+(titre/médium/date/description/photo/commentaire, description ajoutée à
+`PortfolioEntryEntity`) ; carte streak retirée de Progression (pression
+"ne pas casser la chaîne" jugée à contre-courant du §4, le streak reste
+suivi en base) ; **système de badges supprimé entièrement** (plus une
+feature de l'app — `domain/model/Badge.kt`, `domain/BadgeEvaluator.kt`,
+`UnlockedBadgeEntity`/`BadgeDao` retirés, `AppDatabase` passé en version 3) ;
+**palette/thème sombre supprimés** (`DarkColors`, `Navy*`, `InkOnDark*`,
+`Pastel*Dark`, `ErrorRedLight` — code mort depuis le thème clair forcé,
+`mediumColors()` n'est plus `@Composable` puisqu'il n'a plus besoin de lire
+le thème) ; **format d'export "Story" supprimé** (`ExportFormat.STORY`,
+`drawStory`, `exportAsStory` — câblé mais plus jamais déclenché depuis que
+le bouton a été retiré de l'écran Progression) ; bug de lisibilité corrigé
+au passage sur `PremiumScreen` (texte en couleur thème sombre sur fond
+clair, résidu du retrait du bloc navy).
+
+**Localisation fr/en ajoutée le 2026-08-14** : tout le texte de l'UI
+(écrans, popups, notifications, export Canvas) extrait vers
+`res/values/strings.xml` (français, défaut) et `res/values-en/strings.xml`
+(anglais) — langue suivie automatiquement depuis la langue système par
+défaut, sélecteur manuel ajouté depuis dans la vue Paramètres (voir
+ci-dessous). `MediumType.label()` a deux variantes (`@Composable` pour l'UI,
+avec `Context` explicite pour `ReminderWorker`/`ExportRenderer` qui ne sont
+pas en contexte Compose). `ui/common/DateFormatting.kt` bascule aussi le
+format de date selon la langue (jour-mois-année en fr, mois-jour-année en
+en). Catalogue de défis restructuré en `/content/{fr,en}/` (les ~40 défis
+placeholder + le pack traduits en anglais), `NetworkConfig.contentBaseUrl()`
+choisit le sous-dossier depuis la langue système, replie sur `fr` si non
+prise en charge.
+
+**Vue Paramètres ajoutée le 2026-08-14** (`ui/settings/`, option C validée
+en maquette : liste compacte, icône mint par ligne, pas d'entête de
+section) — accessible depuis une icône engrenage commune aux 3 onglets
+principaux (`ui/navigation/NavGraph.kt`, nouvelle `topBar` du `Scaffold`).
+Réglages : fréquence/heure de rappel (roues/stepper factorisés depuis
+l'onboarding vers `ui/common/WheelPickers.kt`, réutilisés dans les deux
+écrans), interrupteur rappels on/off (indépendant de fréquence/heure,
+`UserPreferencesEntity.notificationsEnabled`), sélecteur de langue
+(Système/Français/English via `AppCompatDelegate.setApplicationLocales()`,
+nouvelle dépendance `androidx.appcompat` — **corrigé le 2026-08-15** : il
+avait été écrit ici que cela fonctionnait sur `ComponentActivity` sans
+hériter d'`AppCompatActivity` ni changer de thème, c'est faux et le
+sélecteur ne faisait rien ; voir le correctif plus bas), gestion de
+l'abonnement (lien Play Store) + restauration des achats, opt-out
+analytics anonymes (`AnalyticsTracker.setEnabled`, `PostHog.optOut()`/
+`optIn()`, appliqué à chaque lancement dans
+`LittleBigStepsApplication.onCreate`), réinitialisation de la progression
+(confirmation obligatoire, `ProgressRepository.resetProgress` +
+`ChallengeRepository.clearHistory`, ne touche pas aux préférences
+onboarding), version de l'app. `AppDatabase` passé en version 5
+(`notificationsEnabled`/`analyticsEnabled`). Export/sauvegarde des données
+explicitement exclu de cette vue (demandé par l'utilisateur).
+**Non compilé après ce lot** — voir §14.
+
+**Popup "Conseils" ajoutée le 2026-08-14** (`ChallengeEntity.tips: List<String>?`,
+`ChallengeDto.tips`) : icône ampoule dans la popup "En cours", visible
+seulement si des conseils sont renseignés pour ce défi précis (masquée
+sinon plutôt que d'ouvrir une popup vide), ouvre `TipsDialog` (liste à
+puces façon checklist). Contenu éditorial rédigé par l'utilisateur
+lui-même dans `/content/{fr,en}` — jamais généré automatiquement, gratuit
+pour tous les médiums. `AppDatabase` passé en version 6.
+
+**Logo/icône de l'app finalisés le 2026-08-14** : direction retenue après
+plusieurs maquettes (nom conservé — LittleBigSteps) — une "rosace"
+organique de 4 tuiles arrondies (une par médium) en teintes vives
+(dérivées de la palette mais saturées pour rester lisibles en icône)
+disposées autour d'un centre, sur fond blanc chaud identique au reste de
+l'UI (`WarmBackground`). Implémenté comme adaptive icon Android :
+`drawable/ic_launcher_foreground.xml` (vector drawable, 4 groupes tournés
+autour de leur propre pivot), `values/colors.xml` →
+`ic_launcher_background`. Non compilé — voir §14.
+
+**Correctifs du 2026-08-15** :
+
+- **Catalogue vide après l'onboarding** : le code pointait sur
+  `/content/{fr,en}/` (lot localisation) alors que le contenu distant était
+  resté à la racine — 404 silencieux, catalogue vide, aucune activité
+  proposée. Contenu restructuré poussé sur `master`. Deux causes aggravantes
+  corrigées au passage : `ChallengeSelectionViewModel` relit désormais les
+  propositions quand le catalogue arrive (`catalogJob`, la synchro étant
+  asynchrone et `pickDailyOptions` un one-shot), et l'échec de synchro est
+  loggé au lieu d'être avalé par `runCatching`.
+- **Sélecteur d'heure** : roues de défilement remplacées par des steppers
+  +/- (`ui/common/NumberSteppers.kt`, `WheelPickers.kt` supprimé) après deux
+  bugs successifs de scroll/snap. Plus aucune mécanique de défilement.
+- **Onboarding premium** : le statut premium était déduit de
+  `BuildConfig.FORCE_PREMIUM` (le flavor) et non de `prefs.isPremium`. En
+  premium l'étape "quel médium gratuit ?" s'affichait alors que tout est
+  débloqué ; en gratuit un abonné réel (achat restauré) était bloqué en
+  sélection unique ; et `submit()` reverrouillait les médiums qu'un
+  abonnement restauré venait d'ouvrir. Statut premium désormais observé
+  depuis les préférences, et **étape `FREE_MEDIUM_CHOICE` supprimée**
+  (inatteignable dans les deux cas).
+- **Sélecteur de langue inopérant** : `AppCompatDelegate.setApplicationLocales()`
+  ne faisait rien et le choix n'était pas conservé. Vérifié dans le bytecode
+  d'AppCompat 1.7.0 : `getLocaleManagerForApplication()` parcourt
+  `sActivityDelegates` et renvoie `null` si aucun délégué AppCompat n'existe,
+  auquel cas la méthode retourne sans rien faire — y compris sur API 33+ ;
+  sous API 33 `applyLocalesToActiveDelegates()` parcourt le même ensemble
+  vide. Trois pièces ajoutées : `MainActivity` hérite d'`AppCompatActivity`,
+  `Theme.LittleBigSteps` passe sous `Theme.AppCompat.Light.NoActionBar`
+  (obligatoire, sinon `AppCompatActivity` refuse de démarrer), et le service
+  `AppLocalesMetadataHolderService` + `autoStoreLocales` est déclaré au
+  manifeste pour la persistance sous API 33 (minSdk 26).
+- **Réglages** : "Restaurer mes achats" et "Statistiques anonymes" retirés de
+  la vue (la restauration reste automatique au lancement via
+  `PlayBillingRepository.startConnection`). La colonne `analyticsEnabled` et
+  `AnalyticsTracker.setEnabled` subsistent mais ne sont plus pilotables :
+  **il n'y a plus d'opt-out analytics dans l'app**, à réévaluer au regard du §10.
+- **Conseils** : 3 conseils par défi rédigés pour les 43 défis fr/en et
+  poussés, versions du manifeste incrémentées. Contenu **généré**, ce qui
+  déroge au §5 ("pas de génération IA") — à trancher dans ce document.
 
 | Domaine | État | Fichiers clés |
 |---|---|---|
@@ -170,15 +294,17 @@ codés. **Jamais testé sur émulateur/appareil réel** — voir §14.
 | Streak/XP/niveaux | ✅ | `data/repository/ProgressRepository.kt`, `domain/GamificationRules.kt` |
 | Souvenir photo (caméra + galerie) | ✅ | `data/media/SouvenirPhotoStore.kt` |
 | Notifications de rappel | ✅ | `notification/` (WorkManager, pas de FCM) |
-| Export image/PDF/story | ✅ | `export/` — enrichi en premium (photos, badges, format story) |
+| Export image/PDF | ✅ | `export/` — enrichi en premium (photos) |
 | Google Play Billing | ✅ code, ⚠️ produit à créer en Play Console (§13) |
 | Packs thématiques/saisonniers | ✅ code, ⚠️ 1 seul pack placeholder dans `/content` |
-| Badges premium | ✅ | `domain/BadgeEvaluator.kt`, `domain/model/Badge.kt` |
 | Analytics (PostHog) | ✅ code, ⚠️ instance à créer (§13) |
 | Synchro contenu JSON | ✅ | `data/repository/ContentSyncRepository.kt` — pointe sur `raw.githubusercontent.com` de ce repo (provisoire, voir §13) |
 | Skip onboarding au relancement | ✅ | `ui/navigation/NavGraph.kt` |
-| Tests E2E (Compose UI Testing) | ✅ | `app/src/androidTest/`, voir §11 |
-| Catalogue de défis final (30-50/médium) | ❌ placeholder only (10/médium) | `/content` |
+| Catalogue de défis final (30-50/médium) | ❌ placeholder only (10/médium) | `/content/{fr,en}` |
+| Localisation fr/en (UI + contenu) | ✅ | `res/values{,-en}/strings.xml`, `/content/{fr,en}` — auto via langue système + sélecteur manuel |
+| Vue Paramètres | ✅ | `ui/settings/` — fréquence, heure, rappels on/off, langue, abonnement, analytics, réinitialisation |
+| Popup "Conseils" par défi | ✅ code, ⚠️ contenu à rédiger (`tips` vide partout dans `/content`) | `ChallengeEntity.tips`, `ui/challenge/ChallengeSelectionScreen.kt` (`TipsDialog`) |
+| Logo / icône de l'app | ✅ | `drawable/ic_launcher_foreground.xml`, `values/colors.xml` |
 | CI | ❌ | — |
 
 **Pas de framework DI** (Hilt etc.) — service locator manuel dans
@@ -198,9 +324,9 @@ depuis un agent seul (comptes/paiement/consoles externes) :
    [AnalyticsConfig.kt](app/src/main/java/com/littlebigsteps/app/analytics/AnalyticsConfig.kt)
    sont des placeholders `TODO-...`. Sans clé valide, le SDK n'envoie rien
    silencieusement (pas de crash).
-3. **CDN de contenu** — `NetworkConfig.CONTENT_BASE_URL` dans
+3. **CDN de contenu** — `NetworkConfig.contentBaseUrl()` dans
    [NetworkConfig.kt](app/src/main/java/com/littlebigsteps/app/data/remote/NetworkConfig.kt)
-   pointe sur `raw.githubusercontent.com/ElAfroNinja000/LittleBigSteps/master/content/`
+   pointe sur `raw.githubusercontent.com/ElAfroNinja000/LittleBigSteps/master/content/{fr,en}/`
    (fonctionnel, testé, mais couplé au repo de code). GitHub Pages sur ce même
    repo (Settings → Pages → branche `master`, dossier `/content`) est l'option
    la plus simple pour en sortir sans nouveau compte.
@@ -217,12 +343,10 @@ depuis un agent seul (comptes/paiement/consoles externes) :
   si l'utilisateur le demande explicitement (build/compilation seuls ne le
   nécessitent pas). Si un émulateur est déjà démarré par l'utilisateur, on peut
   s'y connecter, mais ne pas en démarrer un nouveau sans consigne explicite.
-- **Ne jamais exécuter les tests (`connectedAndroidTest`, `am instrument`, ou
-  toute exécution sur émulateur/appareil) de sa propre initiative** — seulement
-  si l'utilisateur le demande clairement. Compiler le code de test
-  (`compileXxxAndroidTestKotlin`, pour vérifier que ça build) reste normal et
-  ne compte pas comme "lancer les tests" — c'est l'exécution réelle sur
-  émulateur/appareil qui nécessite une consigne explicite.
+- **Pas de tests automatisés (voir §11)** — supprimés le 2026-08-15, tout se
+  vérifie désormais par test manuel de l'utilisateur sur appareil réel après
+  chaque build. Ne jamais réintroduire de suite de tests de sa propre
+  initiative.
 - **Repo distant** : `https://github.com/ElAfroNinja000/LittleBigSteps`,
   branche `master`. Tout est poussé au fil de l'eau, un commit par
   fonctionnalité (voir `git log` pour l'historique détaillé des décisions).
