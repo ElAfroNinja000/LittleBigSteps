@@ -106,9 +106,9 @@ pour une barrière matérielle nulle et un souvenir facile à capturer.
 **Exclus** : musique et danse (accès trop coûteux, souvenir difficile).
 Cuisine envisagée en v2 (dilue le positionnement art/artisanat).
 
-**Rédaction manuelle, pas de génération IA.** Exception actée : les 3 conseils
-par défi (`tips`) ont été générés puis validés — à trancher formellement si
-l'exception doit valoir au-delà.
+**Génération IA autorisée, relecture humaine obligatoire.** L'exception des
+`tips` est étendue à l'ensemble du catalogue : l'agent rédige, l'utilisateur
+relit et valide avant commit. Rien n'entre dans `/content` sans cette relecture.
 
 **Cible de volume** : 30-50 défis/médium. **Actuel : ~10/médium (placeholder).**
 
@@ -211,6 +211,7 @@ seule source de vérité, pas de copie à synchroniser.
 | **Steppers +/-** | Plus aucune roue à défilement (deux bugs de scroll successifs). |
 | **Opt-out analytics retiré de l'UI** | Colonne `analyticsEnabled` conservée en base mais non pilotable. Voir risque §6.5. |
 | **Restauration d'achats automatique** | Au lancement via `startConnection()`, plus de bouton dédié. |
+| **Catalogue rédigé par l'IA, relu avant validation** | Étend l'exception `tips` (§3). L'agent produit fr + en ; l'utilisateur relit avant commit. |
 
 ---
 
