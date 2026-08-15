@@ -14,11 +14,13 @@ de divergence, corriger ce fichier plutôt que le supposer juste.
 
 | Règle | Détail |
 |---|---|
+| **Réponses** | **Toujours succinct et direct.** Aller au fait, pas de préambule ni de reformulation de la demande. |
+| **Commit + push** | **Automatiques en fin de chaque fonctionnalité**, sans demander. Un commit par fonctionnalité, message expliquant le *pourquoi*. Branche `master`, remote `github.com/ElAfroNinja000/LittleBigSteps`. |
+| **Compilation / APK** | **Jamais de sa propre initiative** — l'utilisateur donne le feu vert. Conséquence assumée : du code non compilé peut être poussé ; le signaler dans ces cas-là. |
 | Émulateur | **Ne jamais le lancer de sa propre initiative.** Si l'utilisateur en a démarré un, s'y connecter est OK. |
 | Tests | **Aucun test automatisé, ne jamais en réintroduire** sans consigne explicite. Voir §8. |
-| Vérification | Compiler est la **seule** vérification disponible et est toujours autorisé. Elle attrape les erreurs de compilation, **jamais** les erreurs de comportement. |
+| Portée de la compilation | Attrape la syntaxe, le typage, les ressources. **Jamais** le comportement : crash au démarrage, migration destructive, race async, mise en page. Un build vert n'est pas un signal de qualité. |
 | Risques runtime | Signaler explicitement tout changement non couvrable par la compilation (thème/`AppCompatActivity`, migration Room destructive, synchro asynchrone) plutôt que le déclarer validé par un build vert. |
-| Git | Push au fil de l'eau, un commit par fonctionnalité. Branche `master`, remote `github.com/ElAfroNinja000/LittleBigSteps`. |
 
 **Build** (JDK 17 + SDK platform 34 déjà installés sur `D:\Dev\android-sdk`) :
 
@@ -30,6 +32,26 @@ Deux flavors de **test manuel** (pas un modèle de distribution) : `free` et
 `premium` (`BuildConfig.FORCE_PREMIUM=true`, `applicationId` suffixé
 `.premiumtest` pour cohabiter sur le même appareil). APK dans
 `app/build/outputs/apk/{free,premium}/debug/`.
+
+---
+
+## 0 bis. Process de production — l'agent doit le guider
+
+Dérivé des bugs réels de ce projet : **aucun n'a été détecté par la
+compilation**, et les plus graves sont tous nés à une **frontière externe**
+(CDN, Play Billing, AppCompat/OS, contraintes FK Room, flavor de build).
+
+| Étape | Ce que l'agent fait | Pourquoi (constat projet) |
+|---|---|---|
+| **1. Cadrer** | Rattacher la demande à une décision produit (§1-5) avant de coder. | Le ton « non culpabilisant » a tranché seul le retrait du streak de l'UI. |
+| **2. Maquetter** | Proposer 2-3 directions visuelles/parcours **avant** tout code. | Itération quasi gratuite vs build + test manuel. Utilisé 3× ici (logo, Paramètres, Conseils). |
+| **3. Frontières** | Pour chaque système externe touché, répondre par écrit : que se passe-t-il en cas d'échec ? comment distingue-t-on un échec d'un résultat vide ? | `restorePurchases()` confondait les deux → abonné payant rétrogradé. `syncIfNeeded()` avalait ses erreurs → bug indiagnosticable. |
+| **4. Vérifier les tiers** | Toute affirmation « la lib fait X » est vérifiée (source/bytecode/doc) ou **explicitement marquée comme hypothèse**. | Une hypothèse fausse sur AppCompat a produit une feature morte + 2 fichiers de doc faux + 2 cycles de correction. Vérification réelle : 3 commandes. |
+| **5. Implémenter + committer** | Une fonctionnalité = un commit, poussé aussitôt. | 15 features accumulées → 77 fichiers, 3-4 sujets par fichier, découpage a posteriori impossible. |
+| **6. Compiler** | **Sur feu vert uniquement.** Puis énoncer ce qui reste non vérifié. | Plusieurs APK « BUILD SUCCESSFUL » coexistaient avec un crash potentiel au démarrage. |
+| **7. Livrer le test** | Fournir une **checklist ordonnée par risque** + les **préconditions** (installation propre, mode avion…), jamais « teste l'app ». | Sans précondition, un test ne prouve rien : le correctif anti-`CASCADE` exigeait des données créées après installation. |
+| **8. Corriger** | Chercher la cause, pas le symptôme. Puis auditer ce que ce chemin touche **et ce qu'il rend fréquent**. | 3× le symptôme n'était pas le problème. Le bug de perte de données n'a émergé que parce qu'un correctif rendait la re-synchro fréquente. |
+| **9. Consigner** | Mettre à jour §8/§9 : décisions et pièges, **pas** de journal daté. Purger les marqueurs périmés. | 178 lignes de journal ont fini supprimées comme bruit, en noyant des décisions structurantes. Un fait faux en doc se réplique. |
 
 ---
 
