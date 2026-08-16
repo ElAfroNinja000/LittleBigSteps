@@ -71,7 +71,7 @@
     {
       "id": "craft_005",
       "title": "Origami crane",
-      "description": "Fold a paper crane, the classic origami symbol — a tutorial is fine if you need one.",
+      "description": "Fold a paper crane, the classic origami symbol. A tutorial is fine if you need one.",
       "estimatedMinutes": 20,
       "level": "beginner",
       "isPremiumOnly": false,

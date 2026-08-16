@@ -27,6 +27,12 @@ La cible n'a **aucune pratique établie** (§1). Chaque défi passe ces cinq tes
 l'objet du défi, pas la performance attendue (« Une ombre intéressante », pas
 « Maîtrise les ombres »).
 
+**Aucun tiret long (`—`) ni tiret demi-cadratin (`–`)**, ni dans les titres, ni
+dans les descriptions, ni dans les conseils : c'est une signature de texte
+généré, et elle décrédibilise le contenu. Couper la phrase en deux, ou utiliser
+une virgule ou deux-points. La règle vaut pour les deux langues et pour les
+textes de l'app.
+
 **Les 3 conseils (`tips`)** débloquent, ils n'évaluent pas. Un bon trio :
 1. quand / où s'y prendre pour que ce soit facile ;
 2. un cadrage ou un angle d'attaque concret ;

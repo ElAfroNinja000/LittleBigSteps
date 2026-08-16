@@ -23,7 +23,7 @@
     <string name="onboarding_next">Next</string>
     <string name="onboarding_finish">Finish</string>
     <string name="onboarding_welcome_title">Welcome to LittleBigSteps!</string>
-    <string name="onboarding_welcome_body">Every day, we\'ll suggest one or more small creative activities: drawing, photography, writing, and crafting — at your own pace, with no pressure and no account to create. Complete them as you go and watch your portfolio grow with your creations!</string>
+    <string name="onboarding_welcome_body">Every day, we\'ll suggest one or more small creative activities: drawing, photography, writing, and crafting, at your own pace, with no pressure and no account to create. Complete them as you go and watch your portfolio grow with your creations!</string>
     <string name="onboarding_welcome_cta">Let\'s go!</string>
     <string name="onboarding_medium_choice_title">What are you interested in?</string>
     <string name="onboarding_frequency_title">How many times a week?</string>
@@ -33,7 +33,7 @@
 
     <!-- My activities -->
     <string name="my_activities_title">My activities</string>
-    <string name="no_medium_unlocked">No medium unlocked yet — finish onboarding to get started.</string>
+    <string name="no_medium_unlocked">No medium unlocked yet. Finish onboarding to get started.</string>
     <string name="packs_thematic_title">Themed packs</string>
     <string name="pack_empty">No activities in this pack.</string>
     <string name="no_activity_available">No activity available for this medium right now.</string>
@@ -61,7 +61,7 @@
     <string name="portfolio_title">Portfolio</string>
     <string name="filter_all">All</string>
     <string name="filter_all_dates">All dates</string>
-    <string name="portfolio_empty">No completed activities yet — your portfolio will fill up as you create.</string>
+    <string name="portfolio_empty">No completed activities yet. Your portfolio will fill up as you create.</string>
     <string name="challenge_removed_from_catalog">Activity removed from the catalog</string>
 
     <!-- Progress -->
@@ -74,7 +74,7 @@
 
     <!-- Premium -->
     <string name="premium_title">Premium</string>
-    <string name="premium_already">You\'re already premium — every medium is unlocked.</string>
+    <string name="premium_already">You\'re already premium, every medium is unlocked.</string>
     <string name="premium_loading">Loading offer…</string>
     <string name="premium_unavailable">The premium offer isn\'t available right now.</string>
     <string name="premium_pitch">Unlock every medium, themed and seasonal packs, and enriched export formats.</string>

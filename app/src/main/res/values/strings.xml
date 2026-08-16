@@ -33,7 +33,7 @@
 
     <!-- Mes activités -->
     <string name="my_activities_title">Mes activités</string>
-    <string name="no_medium_unlocked">Aucun médium débloqué pour l\'instant — termine l\'onboarding pour commencer.</string>
+    <string name="no_medium_unlocked">Aucun médium débloqué pour l\'instant. Termine l\'onboarding pour commencer.</string>
     <string name="packs_thematic_title">Packs thématiques</string>
     <string name="pack_empty">Aucune activité dans ce pack.</string>
     <string name="no_activity_available">Aucune activité disponible pour ce médium pour l\'instant.</string>
@@ -61,7 +61,7 @@
     <string name="portfolio_title">Portfolio</string>
     <string name="filter_all">Tous</string>
     <string name="filter_all_dates">Toutes les dates</string>
-    <string name="portfolio_empty">Aucune activité complétée pour l\'instant — ton portfolio se remplira au fil de tes créations.</string>
+    <string name="portfolio_empty">Aucune activité complétée pour l\'instant. Ton portfolio se remplira au fil de tes créations.</string>
     <string name="challenge_removed_from_catalog">Activité retirée du catalogue</string>
 
     <!-- Progression -->
@@ -74,7 +74,7 @@
 
     <!-- Premium -->
     <string name="premium_title">Premium</string>
-    <string name="premium_already">Tu es déjà premium — tous les médiums sont débloqués.</string>
+    <string name="premium_already">Tu es déjà premium, tous les médiums sont débloqués.</string>
     <string name="premium_loading">Chargement de l\'offre…</string>
     <string name="premium_unavailable">L\'offre premium n\'est pas disponible pour l\'instant.</string>
     <string name="premium_pitch">Débloque tous les médiums, les packs thématiques/saisonniers et les formats d\'export enrichis.</string>
