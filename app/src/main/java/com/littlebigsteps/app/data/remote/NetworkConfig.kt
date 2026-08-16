@@ -1,5 +1,6 @@
 package com.littlebigsteps.app.data.remote
 
+import androidx.appcompat.app.AppCompatDelegate
 import java.util.Locale
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -32,15 +33,29 @@ object NetworkConfig {
 
     private val json = Json { ignoreUnknownKeys = true }
 
+    /** Langue choisie dans l'app : le choix explicite fait dans les Paramètres
+     *  (persisté par AppCompat, quel que soit l'OS) prime sur la langue système.
+     *  Sur Android 12 et moins, AppCompatDelegate.setApplicationLocales() ne met
+     *  à jour que l'écran affiché au moment du changement, pas Locale.getDefault()
+     *  — lire Locale.getDefault() ici faisait conclure "déjà à jour" pour la
+     *  langue précédente et le catalogue ne changeait jamais. Lire directement
+     *  AppCompatDelegate.getApplicationLocales() contourne ce défaut, y compris
+     *  hors d'un contexte d'Activity (ce repository tourne dans une coroutine). */
+    private fun preferredLanguage(): String {
+        val appLocales = AppCompatDelegate.getApplicationLocales()
+        return if (!appLocales.isEmpty) appLocales[0]?.language ?: Locale.getDefault().language
+        else Locale.getDefault().language
+    }
+
     /** Langue de contenu effectivement servie : la langue demandée si elle est
      *  prise en charge, sinon le repli français (voir SUPPORTED_CONTENT_LOCALES).
      *  Persistée avec le contenu synchronisé pour détecter un changement de
      *  langue (voir MediumContentVersionEntity.syncedLocale). */
-    fun contentLocale(language: String = Locale.getDefault().language): String =
+    fun contentLocale(language: String = preferredLanguage()): String =
         language.takeIf { it in SUPPORTED_CONTENT_LOCALES } ?: DEFAULT_CONTENT_LOCALE
 
     /** Dossier de contenu correspondant à la langue courante de l'app. */
-    fun contentBaseUrl(language: String = Locale.getDefault().language): String =
+    fun contentBaseUrl(language: String = preferredLanguage()): String =
         "$CONTENT_BASE_URL${contentLocale(language)}/"
 
     // baseUrl requise par Retrofit mais non utilisée : tous les appels passent une
