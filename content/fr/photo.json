@@ -323,8 +323,8 @@
     },
     {
       "id": "photo_020",
-      "title": "Une lumière dans le noir",
-      "description": "Attends la tombée de la nuit et photographie une source de lumière : une lampe, un écran, un réverbère.",
+      "title": "Une lumière dans la pénombre",
+      "description": "Trouve un endroit peu éclairé, une pièce aux rideaux fermés, un couloir, un placard entrouvert, et photographie une source de lumière allumée : lampe, écran, veilleuse.",
       "estimatedMinutes": 10,
       "level": "beginner",
       "isPremiumOnly": false,
@@ -333,8 +333,8 @@
         "nuit"
       ],
       "tips": [
+        "Pas besoin d'attendre la nuit : une pièce aux volets tirés ou un placard fermé suffisent.",
         "Éteins les autres lumières autour pour que la source ressorte.",
-        "Pose le téléphone sur une surface stable : la nuit, le moindre tremblement se voit.",
         "Touche la lumière sur l'écran pour que le reste devienne bien sombre."
       ]
     }

@@ -4,7 +4,7 @@
     {
       "id": "drawing",
       "file": "drawing.json",
-      "version": "4"
+      "version": "5"
     },
     {
       "id": "photo",
@@ -14,12 +14,12 @@
     {
       "id": "writing",
       "file": "writing.json",
-      "version": "3"
+      "version": "4"
     },
     {
       "id": "craft",
       "file": "craft.json",
-      "version": "4"
+      "version": "5"
     }
   ]
 }

@@ -323,8 +323,8 @@
     },
     {
       "id": "photo_020",
-      "title": "A light in the dark",
-      "description": "Wait for nightfall and photograph a source of light: a lamp, a screen, a streetlight.",
+      "title": "A light in the dim",
+      "description": "Find a dim spot, a room with the curtains closed, a hallway, a half-open closet, and photograph a light source that's on: a lamp, a screen, a night light.",
       "estimatedMinutes": 10,
       "level": "beginner",
       "isPremiumOnly": false,
@@ -333,8 +333,8 @@
         "night"
       ],
       "tips": [
+        "No need to wait for night: a room with the shutters closed or a closed closet works fine.",
         "Turn off the other lights around so the source stands out.",
-        "Rest the phone on something steady: at night the slightest shake shows.",
         "Tap the light on screen so everything else goes properly dark."
       ]
     }
