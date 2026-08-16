@@ -1,7 +1,6 @@
 package com.littlebigsteps.app.ui.common
 
-import androidx.appcompat.app.AppCompatDelegate
-import java.util.Locale
+import com.littlebigsteps.app.domain.preferredLanguage
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
@@ -18,18 +17,6 @@ private val MONTHS_EN = listOf(
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
 )
-
-/** Langue choisie dans l'app, avec repli sur la langue système si rien n'a été
- *  choisi explicitement. Même correctif que NetworkConfig.contentLocale() :
- *  sur Android 12 et moins, Locale.getDefault() ne reflète pas un changement de
- *  langue fait dans les Paramètres pendant la session (voir NetworkConfig.kt
- *  pour le détail). Sans ce contournement, les dates restaient dans l'ancienne
- *  langue alors que le reste de l'interface avait déjà changé. */
-private fun preferredLanguage(): String {
-    val appLocales = AppCompatDelegate.getApplicationLocales()
-    return if (!appLocales.isEmpty) appLocales[0]?.language ?: Locale.getDefault().language
-    else Locale.getDefault().language
-}
 
 /** Format simple et lisible selon la langue de l'app — pas de dépendance à une
  *  lib de formatting. Ex fr : "6 août 2026" ; en : "August 6, 2026" (convention

@@ -1,7 +1,6 @@
 package com.littlebigsteps.app.data.remote
 
-import androidx.appcompat.app.AppCompatDelegate
-import java.util.Locale
+import com.littlebigsteps.app.domain.preferredLanguage
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
@@ -32,20 +31,6 @@ object NetworkConfig {
     private const val DEFAULT_CONTENT_LOCALE = "fr"
 
     private val json = Json { ignoreUnknownKeys = true }
-
-    /** Langue choisie dans l'app : le choix explicite fait dans les Paramètres
-     *  (persisté par AppCompat, quel que soit l'OS) prime sur la langue système.
-     *  Sur Android 12 et moins, AppCompatDelegate.setApplicationLocales() ne met
-     *  à jour que l'écran affiché au moment du changement, pas Locale.getDefault()
-     *  — lire Locale.getDefault() ici faisait conclure "déjà à jour" pour la
-     *  langue précédente et le catalogue ne changeait jamais. Lire directement
-     *  AppCompatDelegate.getApplicationLocales() contourne ce défaut, y compris
-     *  hors d'un contexte d'Activity (ce repository tourne dans une coroutine). */
-    private fun preferredLanguage(): String {
-        val appLocales = AppCompatDelegate.getApplicationLocales()
-        return if (!appLocales.isEmpty) appLocales[0]?.language ?: Locale.getDefault().language
-        else Locale.getDefault().language
-    }
 
     /** Langue de contenu effectivement servie : la langue demandée si elle est
      *  prise en charge, sinon le repli français (voir SUPPORTED_CONTENT_LOCALES).
