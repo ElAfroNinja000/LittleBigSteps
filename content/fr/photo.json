@@ -167,6 +167,176 @@
         "Ça peut être minuscule ou banal, personne ne juge.",
         "Photographie-la tout de suite, avant que l'instant passe."
       ]
+    },
+    {
+      "id": "photo_011",
+      "title": "Le ciel entre les choses",
+      "description": "Lève la tête et photographie le ciel encadré par ce qui l'entoure : branches, toits, fils électriques.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "composition",
+        "extérieur"
+      ],
+      "tips": [
+        "Les jours gris fonctionnent très bien : le ciel devient un fond uni.",
+        "Cadre de façon que le ciel occupe au moins la moitié de l'image.",
+        "Depuis une fenêtre, ça marche aussi si tu ne sors pas."
+      ]
+    },
+    {
+      "id": "photo_012",
+      "title": "À contre-jour",
+      "description": "Place-toi de façon que la lumière soit derrière ton sujet, puis photographie-le.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "lumière",
+        "expérimentation"
+      ],
+      "tips": [
+        "Une fenêtre en journée suffit : place l'objet entre elle et toi.",
+        "Ton sujet deviendra sombre, presque une silhouette : c'est l'effet recherché.",
+        "Touche la zone claire sur l'écran pour assombrir encore la silhouette."
+      ]
+    },
+    {
+      "id": "photo_013",
+      "title": "Ton repas tel quel",
+      "description": "Photographie ce que tu manges aujourd'hui, sans rien déplacer ni arranger.",
+      "estimatedMinutes": 5,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "quotidien",
+        "instantané"
+      ],
+      "tips": [
+        "Prends la photo avant de commencer à manger, sinon c'est perdu d'avance.",
+        "Vue du dessus, à la verticale : c'est le cadrage le plus simple.",
+        "La table, les mains, le désordre autour font partie de l'image."
+      ]
+    },
+    {
+      "id": "photo_014",
+      "title": "Une nature morte improvisée",
+      "description": "Rassemble trois objets qui sont à portée de main et photographie-les ensemble.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "composition",
+        "intérieur"
+      ],
+      "tips": [
+        "Pas besoin qu'ils aient un rapport entre eux, l'assemblage suffit.",
+        "Pose-les près d'une fenêtre, la lumière du jour fait le travail.",
+        "Déplace-en un et refais la photo : garde celle que tu préfères."
+      ]
+    },
+    {
+      "id": "photo_015",
+      "title": "Un espace vide",
+      "description": "Photographie un endroit vide : une chaise inoccupée, un couloir, une rue déserte.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "observation",
+        "émotion"
+      ],
+      "tips": [
+        "Le vide se remarque mieux là où on s'attend à voir quelqu'un.",
+        "Recule : plus il y a d'espace autour, plus le vide se ressent.",
+        "Tôt le matin, presque tout est vide."
+      ]
+    },
+    {
+      "id": "photo_016",
+      "title": "La trace de quelqu'un",
+      "description": "Photographie un signe que quelqu'un est passé par là : une tasse laissée, des chaussures à l'entrée, un lit défait.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "observation",
+        "quotidien"
+      ],
+      "tips": [
+        "Ne range rien avant : c'est le désordre qui raconte.",
+        "Approche-toi, un seul objet suffit.",
+        "Ta propre trace compte aussi."
+      ]
+    },
+    {
+      "id": "photo_017",
+      "title": "Attraper le mouvement",
+      "description": "Photographie quelque chose en train de bouger, en essayant cette fois que ce soit net.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "mouvement",
+        "expérimentation"
+      ],
+      "tips": [
+        "Plus il y a de lumière, plus c'est facile : dehors ou près d'une fenêtre.",
+        "Appuie plusieurs fois de suite et garde la meilleure.",
+        "Un objet qui tombe, une main qui bouge, un animal : commence simple."
+      ]
+    },
+    {
+      "id": "photo_018",
+      "title": "Un objet très utilisé",
+      "description": "Photographie un objet qui te sert tous les jours et qui porte les marques de l'usage.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "détail",
+        "quotidien"
+      ],
+      "tips": [
+        "Les traces d'usure sont plus visibles de près.",
+        "Une planche à découper, des clés, une paire de chaussures.",
+        "Tourne l'objet jusqu'à trouver son côté le plus abîmé."
+      ]
+    },
+    {
+      "id": "photo_019",
+      "title": "Sans regarder l'écran",
+      "description": "Prends une photo sans regarder l'écran : tends le bras, vise à l'instinct, appuie.",
+      "estimatedMinutes": 5,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "jeu",
+        "expérimentation"
+      ],
+      "tips": [
+        "Tiens le téléphone à hauteur de hanche, ça donne un point de vue inhabituel.",
+        "Fais-en plusieurs d'affilée, garde celle qui te surprend.",
+        "Le cadrage de travers fait partie du résultat."
+      ]
+    },
+    {
+      "id": "photo_020",
+      "title": "Une lumière dans le noir",
+      "description": "Attends la tombée de la nuit et photographie une source de lumière : une lampe, un écran, un réverbère.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "lumière",
+        "nuit"
+      ],
+      "tips": [
+        "Éteins les autres lumières autour pour que la source ressorte.",
+        "Pose le téléphone sur une surface stable : la nuit, le moindre tremblement se voit.",
+        "Touche la lumière sur l'écran pour que le reste devienne bien sombre."
+      ]
     }
   ]
 }

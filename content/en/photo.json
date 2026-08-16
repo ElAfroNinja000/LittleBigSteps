@@ -167,6 +167,176 @@
         "It can be tiny or ordinary, nobody's judging.",
         "Shoot it right away, before the moment passes."
       ]
+    },
+    {
+      "id": "photo_011",
+      "title": "The sky between things",
+      "description": "Look up and photograph the sky framed by whatever surrounds it: branches, rooftops, power lines.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "composition",
+        "outdoors"
+      ],
+      "tips": [
+        "Grey days work very well: the sky becomes a plain backdrop.",
+        "Frame it so the sky fills at least half the image.",
+        "From a window works too, if you're staying in."
+      ]
+    },
+    {
+      "id": "photo_012",
+      "title": "Backlit",
+      "description": "Position yourself so the light is behind your subject, then photograph it.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "light",
+        "experiment"
+      ],
+      "tips": [
+        "A window during the day is enough: put the object between it and you.",
+        "Your subject will go dark, almost a silhouette. That's the point.",
+        "Tap the bright area on screen to darken the silhouette even more."
+      ]
+    },
+    {
+      "id": "photo_013",
+      "title": "Your meal as it is",
+      "description": "Photograph what you're eating today, without moving or arranging anything.",
+      "estimatedMinutes": 5,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "everyday",
+        "snapshot"
+      ],
+      "tips": [
+        "Take it before you start eating, or it's lost already.",
+        "Straight down from above is the simplest framing.",
+        "The table, your hands, the mess around it are part of the picture."
+      ]
+    },
+    {
+      "id": "photo_014",
+      "title": "An improvised still life",
+      "description": "Gather three objects within arm's reach and photograph them together.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "composition",
+        "indoors"
+      ],
+      "tips": [
+        "They don't need to have anything in common. The arrangement is enough.",
+        "Put them near a window and let daylight do the work.",
+        "Move one of them and shoot again: keep the one you prefer."
+      ]
+    },
+    {
+      "id": "photo_015",
+      "title": "An empty space",
+      "description": "Photograph somewhere empty: an unoccupied chair, a corridor, a deserted street.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "observation",
+        "emotion"
+      ],
+      "tips": [
+        "Emptiness shows best where you'd expect someone to be.",
+        "Step back: the more space around it, the stronger it feels.",
+        "Early in the morning, almost everything is empty."
+      ]
+    },
+    {
+      "id": "photo_016",
+      "title": "Someone's trace",
+      "description": "Photograph a sign that someone has been there: a cup left out, shoes by the door, an unmade bed.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "observation",
+        "everyday"
+      ],
+      "tips": [
+        "Don't tidy anything first: the mess is what tells the story.",
+        "Get close, one object is enough.",
+        "Your own traces count too."
+      ]
+    },
+    {
+      "id": "photo_017",
+      "title": "Catching movement",
+      "description": "Photograph something in motion, this time trying to keep it sharp.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "motion",
+        "experiment"
+      ],
+      "tips": [
+        "The more light there is, the easier it gets: outdoors or near a window.",
+        "Tap several times in a row and keep the best one.",
+        "A falling object, a moving hand, an animal: start simple."
+      ]
+    },
+    {
+      "id": "photo_018",
+      "title": "A well-worn object",
+      "description": "Photograph something you use every day that carries the marks of use.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "detail",
+        "everyday"
+      ],
+      "tips": [
+        "Wear and tear shows up better close in.",
+        "A chopping board, keys, a pair of shoes.",
+        "Turn the object until you find its most battered side."
+      ]
+    },
+    {
+      "id": "photo_019",
+      "title": "Without looking at the screen",
+      "description": "Take a photo without looking at the screen: hold out your arm, aim by instinct, press.",
+      "estimatedMinutes": 5,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "playful",
+        "experiment"
+      ],
+      "tips": [
+        "Hold the phone at hip height for an unusual viewpoint.",
+        "Take several in a row, keep the one that surprises you.",
+        "A crooked frame is part of the result."
+      ]
+    },
+    {
+      "id": "photo_020",
+      "title": "A light in the dark",
+      "description": "Wait for nightfall and photograph a source of light: a lamp, a screen, a streetlight.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "light",
+        "night"
+      ],
+      "tips": [
+        "Turn off the other lights around so the source stands out.",
+        "Rest the phone on something steady: at night the slightest shake shows.",
+        "Tap the light on screen so everything else goes properly dark."
+      ]
     }
   ]
 }
