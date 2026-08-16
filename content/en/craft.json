@@ -168,6 +168,175 @@
         "Never cut through the two outer folds or everything falls apart.",
         "Simple shapes repeat much better than complicated ones."
       ]
+    },
+    {
+      "id": "craft_011",
+      "title": "A small origami animal",
+      "description": "Fold a simple origami animal: a fox, a cat, a bird. A tutorial is fine if you need one.",
+      "estimatedMinutes": 20,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "origami"
+      ],
+      "tips": [
+        "A square sheet, even cut down from an A4 page, works just fine.",
+        "The first folds matter most: take your time to line them up well.",
+        "Pick a model under ten steps to stay within the time given."
+      ]
+    },
+    {
+      "id": "craft_012",
+      "title": "An improvised photo stand",
+      "description": "Build a small stand to hold up a photo or card, using whatever you have on hand.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "improvisation",
+        "useful"
+      ],
+      "tips": [
+        "A bent paperclip, a clothespin, or folded cardboard all work well.",
+        "Test that it stands up before decorating it.",
+        "A printed photo or a postcard works just as well as a drawing."
+      ]
+    },
+    {
+      "id": "craft_013",
+      "title": "A hanging mobile",
+      "description": "Assemble a small mobile by hanging a few found objects from a string or a branch.",
+      "estimatedMinutes": 20,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "improvisation",
+        "decoration"
+      ],
+      "tips": [
+        "Three or four light objects are enough, no need to overload it.",
+        "Mix sizes and shapes so the mobile moves in an interesting way.",
+        "A branch picked up outside works just as well as a bought support."
+      ]
+    },
+    {
+      "id": "craft_014",
+      "title": "A handmade label",
+      "description": "Decorate a label for an everyday object: a jar, a drawer, a notebook.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "decoration",
+        "useful"
+      ],
+      "tips": [
+        "A piece of cardboard or thick paper is all you need as a base.",
+        "Something you use every day makes the label more useful.",
+        "Punch a small hole and attach it with string or thread."
+      ]
+    },
+    {
+      "id": "craft_015",
+      "title": "A recycled pencil holder",
+      "description": "Turn a can, a glass jar, or a milk carton into a pencil holder.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "recycling",
+        "useful"
+      ],
+      "tips": [
+        "Check for sharp edges before you start.",
+        "Paper, string, or paint are enough to cover it.",
+        "A slightly imperfect holder is still perfectly usable."
+      ]
+    },
+    {
+      "id": "craft_016",
+      "title": "A fabric or paper pennant",
+      "description": "Cut and decorate a small triangular pennant out of fabric or paper.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "decoration",
+        "paper"
+      ],
+      "tips": [
+        "A fabric scrap or an old colored sheet works perfectly.",
+        "One pennant is enough, no need for a whole string of them.",
+        "A simple pattern (stripes, dots) cuts faster than a detailed drawing."
+      ]
+    },
+    {
+      "id": "craft_017",
+      "title": "A small folded pouch",
+      "description": "Fold a sheet of paper into a small pouch or box to hold something tiny.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "origami",
+        "useful"
+      ],
+      "tips": [
+        "An origami box tutorial (masu) gives a sturdy result in just a few folds.",
+        "Pick slightly thick paper, it holds its shape better.",
+        "Put something specific inside as soon as it's done, it gives it an immediate use."
+      ]
+    },
+    {
+      "id": "craft_018",
+      "title": "A paper badge",
+      "description": "Cut and decorate a small wearable badge, then attach a pin or paperclip to the back.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "improvisation",
+        "decoration"
+      ],
+      "tips": [
+        "Thin cardboard holds its shape better than plain paper.",
+        "A paperclip bent in half works just as well as a real pin.",
+        "A single pattern or word is enough, no need to overload the badge."
+      ]
+    },
+    {
+      "id": "craft_019",
+      "title": "A decorated paperweight",
+      "description": "Find a flat, heavy stone or object and decorate it to make a paperweight.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "decoration",
+        "nature"
+      ],
+      "tips": [
+        "A smooth, flat stone is easier to decorate than an irregular one.",
+        "Let the paint or glue dry before handling it.",
+        "A simple pattern holds up better over time than a very detailed drawing."
+      ]
+    },
+    {
+      "id": "craft_020",
+      "title": "A cut-out doily",
+      "description": "Fold a sheet of paper into several sections and cut shapes to reveal a doily pattern.",
+      "estimatedMinutes": 20,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "paper",
+        "cutting"
+      ],
+      "tips": [
+        "Fold it fan-style or in a square first, like for a string of paper figures.",
+        "Cut small shapes along the folded edges, not the center, so it stays in one piece.",
+        "Unfold gently at the end, the pattern reveals itself all at once."
+      ]
     }
   ]
 }

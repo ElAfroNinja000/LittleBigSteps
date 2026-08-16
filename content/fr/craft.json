@@ -168,6 +168,175 @@
         "Ne découpe jamais les deux plis extérieurs, sinon tout se détache.",
         "Des formes simples se répètent mieux que des motifs compliqués."
       ]
+    },
+    {
+      "id": "craft_011",
+      "title": "Petit animal en origami",
+      "description": "Plie un animal simple en origami : renard, chat, oiseau. Un tuto suffit si besoin.",
+      "estimatedMinutes": 20,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "origami"
+      ],
+      "tips": [
+        "Un papier carré, même issu d'une feuille A4 recoupée, fonctionne très bien.",
+        "Les premiers plis comptent le plus : prends le temps de bien les aligner.",
+        "Choisis un modèle à moins de dix étapes pour rester dans le temps imparti."
+      ]
+    },
+    {
+      "id": "craft_012",
+      "title": "Porte-photo improvisé",
+      "description": "Fabrique un petit support pour tenir debout une photo ou une carte, avec ce que tu as sous la main.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "improvisation",
+        "utile"
+      ],
+      "tips": [
+        "Un trombone tordu, une pince à linge ou du carton plié font très bien l'affaire.",
+        "Teste que ça tient debout avant de le décorer.",
+        "Une photo imprimée ou une carte postale fonctionnent aussi bien qu'un dessin."
+      ]
+    },
+    {
+      "id": "craft_013",
+      "title": "Mobile suspendu",
+      "description": "Assemble un petit mobile en suspendant quelques objets trouvés à un fil ou une branche.",
+      "estimatedMinutes": 20,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "improvisation",
+        "décoration"
+      ],
+      "tips": [
+        "Trois ou quatre objets légers suffisent, inutile de surcharger.",
+        "Mélange les tailles et les formes pour que le mobile bouge de façon intéressante.",
+        "Une branche ramassée dehors remplace très bien un support acheté."
+      ]
+    },
+    {
+      "id": "craft_014",
+      "title": "Étiquette faite main",
+      "description": "Décore une étiquette pour un objet du quotidien : un pot, un tiroir, un carnet.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "décoration",
+        "utile"
+      ],
+      "tips": [
+        "Un morceau de carton ou de papier épais suffit comme support.",
+        "Un objet que tu utilises tous les jours rend l'étiquette plus utile.",
+        "Perce un petit trou et attache-la avec de la ficelle ou du fil."
+      ]
+    },
+    {
+      "id": "craft_015",
+      "title": "Pot à crayons recyclé",
+      "description": "Transforme une boîte de conserve, un pot en verre ou une brique de lait en pot à crayons.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "recyclage",
+        "utile"
+      ],
+      "tips": [
+        "Vérifie qu'il n'y a pas de bord tranchant avant de commencer.",
+        "Du papier, de la ficelle ou de la peinture suffisent à le recouvrir.",
+        "Un pot un peu raté reste tout à fait utilisable."
+      ]
+    },
+    {
+      "id": "craft_016",
+      "title": "Fanion en tissu ou papier",
+      "description": "Découpe et décore un petit fanion triangulaire dans du tissu ou du papier.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "décoration",
+        "papier"
+      ],
+      "tips": [
+        "Une chute de tissu ou une vieille feuille colorée conviennent parfaitement.",
+        "Un seul fanion suffit, pas besoin d'une guirlande entière.",
+        "Un motif simple (rayures, pois) se découpe plus vite qu'un dessin détaillé."
+      ]
+    },
+    {
+      "id": "craft_017",
+      "title": "Petit sachet plié",
+      "description": "Plie une feuille de papier en un petit sachet ou une boîte pour y ranger quelque chose de minuscule.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "origami",
+        "utile"
+      ],
+      "tips": [
+        "Un tuto de boîte en origami (masu) donne un résultat solide en quelques plis.",
+        "Choisis un papier un peu épais, il tiendra mieux sa forme.",
+        "Range-y un objet précis dès qu'il est terminé, ça lui donne un usage immédiat."
+      ]
+    },
+    {
+      "id": "craft_018",
+      "title": "Badge en papier",
+      "description": "Découpe et décore un petit badge à porter, puis fixe une épingle ou un trombone au dos.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "improvisation",
+        "décoration"
+      ],
+      "tips": [
+        "Du carton fin garde mieux sa forme que du papier ordinaire.",
+        "Un trombone plié en deux remplace très bien une vraie épingle.",
+        "Un seul motif ou un seul mot suffit, pas besoin de surcharger le badge."
+      ]
+    },
+    {
+      "id": "craft_019",
+      "title": "Presse-papier décoré",
+      "description": "Trouve un caillou ou un objet plat et lourd, et décore-le pour en faire un presse-papier.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "décoration",
+        "nature"
+      ],
+      "tips": [
+        "Un caillou lisse et plat se décore plus facilement qu'un caillou irrégulier.",
+        "Laisse sécher la peinture ou la colle avant de le manipuler.",
+        "Un motif simple tient mieux dans le temps qu'un dessin très détaillé."
+      ]
+    },
+    {
+      "id": "craft_020",
+      "title": "Napperon découpé",
+      "description": "Plie une feuille de papier en plusieurs parties et découpe des motifs pour obtenir un napperon.",
+      "estimatedMinutes": 20,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "papier",
+        "découpage"
+      ],
+      "tips": [
+        "Plie d'abord en éventail ou en carré, comme pour une guirlande de bonshommes.",
+        "Découpe de petites formes sur les bords pliés, pas au centre, pour ne pas tout séparer.",
+        "Déplie doucement à la fin, le motif se révèle d'un coup."
+      ]
     }
   ]
 }

@@ -169,6 +169,176 @@
         "Raconte une seule chose, pas tout ce que tu as fait.",
         "Tu n'es pas obligé de l'envoyer, écris-la d'abord pour toi."
       ]
+    },
+    {
+      "id": "writing_011",
+      "title": "Un bruit du quotidien",
+      "description": "Décris précisément un bruit que tu as entendu aujourd'hui, sans dire d'où il vient.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "sensoriel",
+        "observation"
+      ],
+      "tips": [
+        "Choisis un bruit banal : une porte, une bouilloire, un pas dans le couloir.",
+        "Utilise des mots concrets plutôt que des comparaisons compliquées.",
+        "Laisse le lecteur deviner la source à partir de ta description."
+      ]
+    },
+    {
+      "id": "writing_012",
+      "title": "La vie d'un objet",
+      "description": "Choisis un objet autour de toi et imagine, en quelques lignes, tout ce qu'il a traversé avant d'arriver là.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "imagination",
+        "fiction"
+      ],
+      "tips": [
+        "Un objet banal (une tasse, une clé) fonctionne mieux qu'un objet précieux.",
+        "Pas besoin de tout raconter, un ou deux épisodes suffisent.",
+        "Termine sur comment il est arrivé jusqu'à toi."
+      ]
+    },
+    {
+      "id": "writing_013",
+      "title": "Un mensonge assumé",
+      "description": "Écris une affirmation clairement fausse, puis défends-la comme si elle était vraie.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "jeu",
+        "humour"
+      ],
+      "tips": [
+        "Plus l'affirmation de départ est absurde, plus l'exercice est amusant.",
+        "Prends un ton très sérieux pour la défendre, le contraste fait l'effet.",
+        "Pas besoin d'être convaincant, juste d'y aller à fond."
+      ]
+    },
+    {
+      "id": "writing_014",
+      "title": "Une recette pour l'immatériel",
+      "description": "Écris la recette de quelque chose qui n'a pas d'ingrédients : le courage, la patience, un dimanche pluvieux.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "jeu",
+        "poésie"
+      ],
+      "tips": [
+        "Garde la structure d'une vraie recette : ingrédients, puis étapes.",
+        "Choisis un mot abstrait qui te parle en ce moment.",
+        "Les quantités absurdes (une pincée de doute, trois cuillères de silence) fonctionnent bien."
+      ]
+    },
+    {
+      "id": "writing_015",
+      "title": "Une lettre à toi enfant",
+      "description": "Écris quelques lignes à la personne que tu étais enfant.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "lettre",
+        "introspection"
+      ],
+      "tips": [
+        "Pas besoin de viser un âge précis, choisis le souvenir qui te vient en premier.",
+        "Dis-lui une chose que tu aurais aimé savoir à ce moment-là.",
+        "Le ton peut être tendre, drôle ou les deux à la fois."
+      ]
+    },
+    {
+      "id": "writing_016",
+      "title": "Un lieu rien qu'en sons",
+      "description": "Décris un lieu que tu connais bien uniquement à travers les sons qu'on y entend.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "sensoriel",
+        "description"
+      ],
+      "tips": [
+        "Interdis-toi de mentionner ce que tu vois, seulement ce que tu entends.",
+        "Liste les sons dans l'ordre où ils te viennent en tête.",
+        "Un lieu très fréquenté (une cuisine, une rue) donne plus de matière."
+      ]
+    },
+    {
+      "id": "writing_017",
+      "title": "La suite d'un rêve",
+      "description": "Raconte la suite d'un rêve, le tien ou un rêve inventé, à partir du moment où il s'arrête dans ta mémoire.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "fiction",
+        "imagination"
+      ],
+      "tips": [
+        "Si tu ne te souviens d'aucun rêve précis, invente le début en une phrase et enchaîne.",
+        "Les rêves n'ont pas besoin d'être logiques, laisse-toi cette liberté.",
+        "Arrête-toi dès que tu sens que tu forces, la fin peut rester en suspens."
+      ]
+    },
+    {
+      "id": "writing_018",
+      "title": "Un mot qui n'existe pas",
+      "description": "Invente un mot et écris sa définition, comme s'il figurait dans le dictionnaire.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "jeu",
+        "invention"
+      ],
+      "tips": [
+        "Un mot qui sonne bien à l'oral aide souvent à trouver son sens.",
+        "Pense à un sentiment ou une situation qui n'a pas de mot pour le dire.",
+        "Ajoute un exemple d'usage, comme dans un vrai dictionnaire."
+      ]
+    },
+    {
+      "id": "writing_019",
+      "title": "Une journée en plus",
+      "description": "Écris ce que tu ferais si demain durait quarante-huit heures au lieu de vingt-quatre.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "imagination",
+        "introspection"
+      ],
+      "tips": [
+        "Commence par la première heure supplémentaire, précisément.",
+        "Mélange des choses pratiques et des choses inutiles, les deux comptent.",
+        "Termine sur ce que tu ferais en tout dernier."
+      ]
+    },
+    {
+      "id": "writing_020",
+      "title": "Message dans une bouteille",
+      "description": "Écris un message comme si tu le glissais dans une bouteille jetée à la mer, pour une personne inconnue.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "lettre",
+        "fiction"
+      ],
+      "tips": [
+        "Tu ne sais pas qui va le lire, adresse-toi à quelqu'un d'imaginaire.",
+        "Donne un détail concret sur l'endroit où tu es en ce moment.",
+        "Termine par une question à qui le trouvera."
+      ]
     }
   ]
 }

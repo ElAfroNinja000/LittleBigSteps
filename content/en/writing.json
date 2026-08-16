@@ -169,6 +169,176 @@
         "Tell one thing, not everything you've been doing.",
         "You don't have to send it, write it for yourself first."
       ]
+    },
+    {
+      "id": "writing_011",
+      "title": "An everyday sound",
+      "description": "Describe precisely a sound you heard today, without saying where it came from.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "sensory",
+        "observation"
+      ],
+      "tips": [
+        "Pick an ordinary sound: a door, a kettle, footsteps in the hallway.",
+        "Use concrete words rather than elaborate comparisons.",
+        "Let the reader guess the source from your description."
+      ]
+    },
+    {
+      "id": "writing_012",
+      "title": "An object's life",
+      "description": "Pick an object around you and imagine, in a few lines, everything it went through before ending up there.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "imagination",
+        "fiction"
+      ],
+      "tips": [
+        "An ordinary object (a mug, a key) works better than a precious one.",
+        "No need to tell it all, one or two episodes are enough.",
+        "End on how it ended up with you."
+      ]
+    },
+    {
+      "id": "writing_013",
+      "title": "A confident lie",
+      "description": "Write a clearly false statement, then defend it as if it were true.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "playful",
+        "humor"
+      ],
+      "tips": [
+        "The more absurd the starting statement, the more fun the exercise.",
+        "Take a very serious tone to defend it, the contrast makes it work.",
+        "You don't need to be convincing, just fully commit."
+      ]
+    },
+    {
+      "id": "writing_014",
+      "title": "A recipe for the intangible",
+      "description": "Write the recipe for something without ingredients: courage, patience, a rainy Sunday.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "playful",
+        "poetry"
+      ],
+      "tips": [
+        "Keep the structure of a real recipe: ingredients, then steps.",
+        "Pick an abstract word that speaks to you right now.",
+        "Absurd quantities (a pinch of doubt, three spoonfuls of silence) work well."
+      ]
+    },
+    {
+      "id": "writing_015",
+      "title": "A letter to your younger self",
+      "description": "Write a few lines to the person you were as a child.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "letter",
+        "introspection"
+      ],
+      "tips": [
+        "No need to aim for a specific age, pick whichever memory comes first.",
+        "Tell them one thing you wish you'd known back then.",
+        "The tone can be tender, funny, or both."
+      ]
+    },
+    {
+      "id": "writing_016",
+      "title": "A place in sound alone",
+      "description": "Describe a place you know well using only the sounds heard there.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "sensory",
+        "description"
+      ],
+      "tips": [
+        "Don't mention what you see, only what you hear.",
+        "List the sounds in the order they come to mind.",
+        "A busy place (a kitchen, a street) gives you more to work with."
+      ]
+    },
+    {
+      "id": "writing_017",
+      "title": "The rest of a dream",
+      "description": "Continue a dream, yours or an invented one, from the point where it fades in your memory.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "fiction",
+        "imagination"
+      ],
+      "tips": [
+        "If you don't remember a specific dream, invent a one-line start and carry on.",
+        "Dreams don't need to make sense, give yourself that freedom.",
+        "Stop as soon as it feels forced, the ending can stay open."
+      ]
+    },
+    {
+      "id": "writing_018",
+      "title": "A word that doesn't exist",
+      "description": "Invent a word and write its definition, as if it appeared in the dictionary.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "playful",
+        "invention"
+      ],
+      "tips": [
+        "A word that sounds good out loud often helps you find its meaning.",
+        "Think of a feeling or situation that has no word for it yet.",
+        "Add an example sentence, like a real dictionary entry."
+      ]
+    },
+    {
+      "id": "writing_019",
+      "title": "One extra day",
+      "description": "Write what you'd do if tomorrow lasted forty-eight hours instead of twenty-four.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "imagination",
+        "introspection"
+      ],
+      "tips": [
+        "Start with the first extra hour, precisely.",
+        "Mix practical things and pointless things, both count.",
+        "End on what you'd do very last."
+      ]
+    },
+    {
+      "id": "writing_020",
+      "title": "Message in a bottle",
+      "description": "Write a message as if you were sealing it in a bottle and throwing it into the sea, for a stranger.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "letter",
+        "fiction"
+      ],
+      "tips": [
+        "You don't know who'll read it, address it to someone imaginary.",
+        "Give one concrete detail about where you are right now.",
+        "End with a question for whoever finds it."
+      ]
     }
   ]
 }

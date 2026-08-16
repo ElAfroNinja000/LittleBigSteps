@@ -223,6 +223,176 @@
         "The lettering matters as much as the drawing, leave room for it.",
         "This month hasn't happened yet: make it up, you can't get it wrong."
       ]
+    },
+    {
+      "id": "drawing_011",
+      "title": "A hybrid object",
+      "description": "Pick two real objects and draw the imaginary object born from mixing them.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "imagination",
+        "invention"
+      ],
+      "tips": [
+        "Pick two very different objects: the contrast makes the mix more interesting.",
+        "Start with the general shapes, the details can come after.",
+        "Give it a name, it helps decide what it looks like."
+      ]
+    },
+    {
+      "id": "drawing_012",
+      "title": "With your weaker hand",
+      "description": "Draw a simple object using the hand you don't normally use.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "constraint",
+        "playful"
+      ],
+      "tips": [
+        "Pick an object with simple shapes, this isn't the moment for detail.",
+        "The shaky line is part of the result, don't try to fix it.",
+        "Try it a second time if you want to compare."
+      ]
+    },
+    {
+      "id": "drawing_013",
+      "title": "An invented pattern",
+      "description": "Invent a small geometric pattern and repeat it until the page is full.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "pattern",
+        "constraint"
+      ],
+      "tips": [
+        "A pattern of three or four shapes is enough, the repetition does the rest.",
+        "Change the pattern slightly partway through if you feel like it.",
+        "The result doesn't need to be perfectly regular."
+      ]
+    },
+    {
+      "id": "drawing_014",
+      "title": "Without looking at your page",
+      "description": "Pick an object and draw its outline without ever looking at your page, only at the object.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "constraint",
+        "observation"
+      ],
+      "tips": [
+        "Put your pen down and don't lift it until the end.",
+        "The result will be off, that's the point of the exercise.",
+        "An object with simple outlines, like a mug or a plant, works well."
+      ]
+    },
+    {
+      "id": "drawing_015",
+      "title": "A face in shapes",
+      "description": "Draw a face using only simple geometric shapes: circles, triangles, rectangles.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "portrait",
+        "constraint"
+      ],
+      "tips": [
+        "It doesn't need to look like anyone, an imaginary face works just fine.",
+        "Start with the shape of the face, then place the shapes for the features on top.",
+        "Overlap the shapes instead of placing them side by side, it adds depth."
+      ]
+    },
+    {
+      "id": "drawing_016",
+      "title": "What's in your bag",
+      "description": "Empty your bag or your pockets and draw what you find.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "still-life",
+        "everyday"
+      ],
+      "tips": [
+        "Lay the objects out in front of you rather than drawing them inside the bag.",
+        "Pick three or four if drawing everything takes too much space.",
+        "The most ordinary objects are often the most interesting to draw."
+      ]
+    },
+    {
+      "id": "drawing_017",
+      "title": "The map of an imaginary place",
+      "description": "Draw the map of a place that doesn't exist: an island, a city, a country.",
+      "estimatedMinutes": 20,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "imagination",
+        "map"
+      ],
+      "tips": [
+        "Start with the big shapes: coastlines, roads, borders, before the details.",
+        "Name a few spots on your map, it brings the place to life.",
+        "No need for accuracy, an imaginary map has no scale to respect."
+      ]
+    },
+    {
+      "id": "drawing_018",
+      "title": "Your favorite dish, from memory",
+      "description": "Draw your favorite dish purely from memory, without looking at a photo or reference.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "memory",
+        "still-life"
+      ],
+      "tips": [
+        "Close your eyes for a few seconds first to picture it.",
+        "Color and texture matter as much as shape.",
+        "What you forget while drawing is also part of the result."
+      ]
+    },
+    {
+      "id": "drawing_019",
+      "title": "A creature born from a stain",
+      "description": "Make an ink or paint stain on the page, then turn it into a creature.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "imagination",
+        "experiment"
+      ],
+      "tips": [
+        "Let the stain dry a little before deciding what it will become.",
+        "Turn the page in every direction, a shape usually suggests something.",
+        "Add just enough to reveal the creature, no more."
+      ]
+    },
+    {
+      "id": "drawing_020",
+      "title": "The inside of a drawer",
+      "description": "Open a random drawer or cupboard and draw what you find inside.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "still-life",
+        "everyday"
+      ],
+      "tips": [
+        "Leave the objects as they're stored, tidy or messy, both work.",
+        "Pick a drawer you haven't opened in a while, there are often surprises.",
+        "Focus on two or three objects if the drawer is too full."
+      ]
     }
   ]
 }

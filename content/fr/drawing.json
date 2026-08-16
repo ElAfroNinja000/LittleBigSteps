@@ -223,6 +223,176 @@
         "Le lettrage compte autant que le dessin, garde-lui de la place.",
         "Ce mois n'a pas encore eu lieu : invente, tu ne peux pas te tromper."
       ]
+    },
+    {
+      "id": "drawing_011",
+      "title": "Un objet hybride",
+      "description": "Choisis deux objets réels et dessine l'objet imaginaire né de leur mélange.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "imagination",
+        "invention"
+      ],
+      "tips": [
+        "Prends deux objets très différents : le contraste rend le mélange plus intéressant.",
+        "Commence par les formes générales, les détails viendront après.",
+        "Donne-lui un nom, ça aide à décider à quoi il ressemble."
+      ]
+    },
+    {
+      "id": "drawing_012",
+      "title": "Avec ta main la moins habile",
+      "description": "Dessine un objet simple en utilisant la main que tu n'utilises pas d'habitude.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "contrainte",
+        "jeu"
+      ],
+      "tips": [
+        "Choisis un objet aux formes simples, ce n'est pas le moment de viser le détail.",
+        "Le trait tremblant fait partie du résultat, ne cherche pas à le corriger.",
+        "Recommence une deuxième fois si tu veux comparer."
+      ]
+    },
+    {
+      "id": "drawing_013",
+      "title": "Un motif inventé",
+      "description": "Invente un petit motif géométrique et répète-le jusqu'à remplir la page.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "motif",
+        "contrainte"
+      ],
+      "tips": [
+        "Un motif de trois à quatre formes suffit, la répétition fait le reste.",
+        "Change légèrement le motif en cours de route si l'envie te prend.",
+        "Le résultat ne doit pas être parfaitement régulier."
+      ]
+    },
+    {
+      "id": "drawing_014",
+      "title": "Sans regarder ta feuille",
+      "description": "Choisis un objet et dessine son contour sans jamais regarder ta feuille, seulement l'objet.",
+      "estimatedMinutes": 10,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "contrainte",
+        "observation"
+      ],
+      "tips": [
+        "Pose ton crayon et ne le lève plus jusqu'à la fin.",
+        "Le résultat sera décalé, c'est le principe de l'exercice.",
+        "Un objet aux contours simples, une tasse ou une plante, fonctionne bien."
+      ]
+    },
+    {
+      "id": "drawing_015",
+      "title": "Un visage en formes",
+      "description": "Dessine un visage en n'utilisant que des formes géométriques simples : cercles, triangles, rectangles.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "portrait",
+        "contrainte"
+      ],
+      "tips": [
+        "Pas besoin de ressemblance, un visage imaginaire fonctionne très bien.",
+        "Commence par la forme du visage, puis place les formes des traits dessus.",
+        "Superpose les formes plutôt que de les juxtaposer, ça donne du relief."
+      ]
+    },
+    {
+      "id": "drawing_016",
+      "title": "Ce que contient ton sac",
+      "description": "Vide ton sac ou tes poches et dessine ce que tu y trouves.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "nature-morte",
+        "quotidien"
+      ],
+      "tips": [
+        "Étale les objets devant toi plutôt que de les dessiner dans le sac.",
+        "Choisis-en trois ou quatre si tout dessiner prend trop de place.",
+        "Les objets les plus banals sont souvent les plus intéressants à dessiner."
+      ]
+    },
+    {
+      "id": "drawing_017",
+      "title": "La carte d'un lieu imaginaire",
+      "description": "Dessine la carte d'un lieu qui n'existe pas : une île, une ville, un pays.",
+      "estimatedMinutes": 20,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "imagination",
+        "carte"
+      ],
+      "tips": [
+        "Commence par les grandes formes : côtes, routes, frontières, avant les détails.",
+        "Nomme quelques endroits sur ta carte, ça donne vie au lieu.",
+        "Pas besoin d'exactitude, une carte imaginaire n'a pas d'échelle à respecter."
+      ]
+    },
+    {
+      "id": "drawing_018",
+      "title": "Ton plat préféré, de mémoire",
+      "description": "Dessine ton plat préféré uniquement de mémoire, sans regarder de photo ni de référence.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "mémoire",
+        "nature-morte"
+      ],
+      "tips": [
+        "Ferme les yeux quelques secondes avant de commencer pour te le représenter.",
+        "Les couleurs et les textures comptent autant que la forme.",
+        "Ce que tu oublies en dessinant fait aussi partie du résultat."
+      ]
+    },
+    {
+      "id": "drawing_019",
+      "title": "Une créature née d'une tache",
+      "description": "Fais une tache d'encre ou de peinture sur la feuille, puis transforme-la en créature.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "imagination",
+        "expérimentation"
+      ],
+      "tips": [
+        "Laisse la tache sécher un peu avant de décider ce qu'elle deviendra.",
+        "Tourne la feuille dans tous les sens, une forme suggère souvent quelque chose.",
+        "Complète juste ce qu'il faut pour révéler la créature, pas plus."
+      ]
+    },
+    {
+      "id": "drawing_020",
+      "title": "Le contenu d'un tiroir",
+      "description": "Ouvre un tiroir ou un placard au hasard et dessine ce que tu y trouves.",
+      "estimatedMinutes": 15,
+      "level": "beginner",
+      "isPremiumOnly": false,
+      "tags": [
+        "nature-morte",
+        "quotidien"
+      ],
+      "tips": [
+        "Laisse les objets tels qu'ils sont rangés, ou en désordre, les deux fonctionnent.",
+        "Choisis un tiroir que tu n'as pas ouvert depuis longtemps, il y a souvent des surprises.",
+        "Concentre-toi sur deux ou trois objets si le tiroir est trop plein."
+      ]
     }
   ]
 }
